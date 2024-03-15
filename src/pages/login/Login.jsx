@@ -4,17 +4,17 @@ import { useState, useRef } from "react";
 import Register from "../Register";
 
 export default function Login() {
-  const [idValue, setId] = useState("");
-  const [pwValue, setPw] = useState("");
+  const [username, setId] = useState("");
+  const [password, setPw] = useState("");
   const [registerCheck, setRegisterCheck] = useState(false);
 
   const saveId = (event) => {
     setId(event.target.value);
-    // console.log(idValue);
+    // console.log(username);
   };
   const savePw = (event) => {
     setPw(event.target.value);
-    // console.log(pwValue);
+    // console.log(password);
   };
 
   const id_Pw_List = [
@@ -77,14 +77,14 @@ export default function Login() {
         <button
           className="login_btn"
           onClick={() => {
-            if (check_Id_PW(idValue, pwValue) === 2) {
+            if (check_Id_PW(username, password) === 2) {
               alert("로그인 성공");
-            } else if (check_Id_PW(idValue, pwValue) === 0) {
+            } else if (check_Id_PW(username, password) === 0) {
               alert("아이디 오류");
-            } else if (check_Id_PW(idValue, pwValue) === 1) {
+            } else if (check_Id_PW(username, password) === 1) {
               alert("패스워드 오류");
             }
-            console.log(check_Id_PW(idValue, pwValue));
+            console.log(check_Id_PW(username, password));
           }}
         >
           로그인

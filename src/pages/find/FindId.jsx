@@ -2,25 +2,26 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "../../css/find/Find.css";
 import TopBar from "../../components/TopBar";
-import Check_ID from "../../components/Check_ID";
+import Check_ID from "../../components/CheckID";
+
 export default function FindId() {
-  const movePage = useNavigate();
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [isClickable, setIsClickable] = useState(true);
   const [timer, setTimer] = useState(null);
-  const [auth_Number, setauth_Number] = useState("");
+  const [authCode, setauthCode] = useState("");
   const [email, setemail] = useState("");
-  const [is_Auth, set_Is_Auth] = useState(false);
-  const [is_Next, set_Is_Next] = useState(false);
-  const _auth_Number = "123456";
+  const [isAuth, setisAuth] = useState(false);
+  const [isNext, setIsNext] = useState(false);
+  const _authCode = "123456";
 
   const saveAuth = (event) => {
-    setauth_Number(event.target.value);
+    setauthCode(event.target.value);
   };
 
   function authentication() {
-    if (auth_Number === _auth_Number) {
-      set_Is_Auth(true);
+    if (authCode === _authCode) {
+      setisAuth(true);
     } else {
       alert("인증번호가 틀렸습니다.");
     }
@@ -28,7 +29,6 @@ export default function FindId() {
 
   function toggleCheck() {
     if (!isClickable) return;
-
     setIsChecked(true);
     setIsClickable(false);
     setTimer(60);
@@ -48,36 +48,39 @@ export default function FindId() {
   });
 
   const goCheck_ID = (event) => {
-    if (is_Auth) {
-      set_Is_Next(true);
+    if (isAuth) {
+      setIsNext(true);
     } else {
       alert("인증을 완료해 주세요.");
     }
   };
 
+  const goFind_PW = (event) => {
+    navigate("/user/FindPW")
+  };
+
   function cancle() {
-    movePage("/Login");
+    navigate("/");
   }
 
   return (
     <div>
       <TopBar />
-      {!is_Next ? (
+      {!isNext ? (
         <>
           <div className="findId_bg">
-            <div className="findId_main">
-              <p className="findId_title">아이디 찾기</p>
-              <hr />
-              <p className="find_text">
+              <div className="findId_title">아이디 찾기</div>
+              <div className="find_text">
                 아이디를 찾기 위해서 이메일 인증을 진행해주세요
-              </p>
-
+              </div>
+              {/* 이메일 작성 폼 */}
               <div className="find_email_top">
                 <input
                   type="text"
                   placeholder="Email"
                   className="find_email"
                 ></input>
+                {/* 인증 메일 전송 버튼 */}
                 <button
                   className="find_send_email"
                   onClick={toggleCheck}
@@ -86,8 +89,9 @@ export default function FindId() {
                   {isChecked ? "✔️" : "인증메일 전송"}
                 </button>
               </div>
+              <div className="find_auth_top">
               <div className="find_authentication">
-                <div style={{ position: "relative", width: "60%" }}>
+                 {/* 인증번호 작성 폼*/}
                   <input
                     className="find_authentication_number"
                     type="text"
@@ -100,18 +104,24 @@ export default function FindId() {
                   >
                     인증
                   </button>
-                </div>
-                <p className="find_timer">{timer}</p>
               </div>
-              <button className="find_cancle" onClick={cancle}>
-                취소
+              <p className="find_timer">{timer}</p>
+              </div>
+             <button className="find_next_btn"  onClick={goCheck_ID}>아이디 찾기</button>
+              <div className="find_navigate_other">
+              {/* 로그인 페이지로 가기 버튼 */}
+              <button className="find_navigate_login" onClick={cancle}>
+                로그인 페이지로 가기
               </button>
-              <button className="find_next_btn" onClick={goCheck_ID}>
-                다음
+              <div className="vline"></div>
+              {/* 비밀번호 찾기로 가기 버튼 */}
+              <button className="find_navigate_findpw" onClick={goFind_PW}>
+                비밀번호 찾기
               </button>
-            </div>
+              </div>
+
           </div>
-          )
+          
         </>
       ) : (
         <Check_ID />

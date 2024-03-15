@@ -2,30 +2,34 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "../../css/find/Find.css";
 import TopBar from "../../components/TopBar";
-import Check_PW from "../../components/Check_PW";
+import Check_PW from "../../components/CheckPW";
 export default function FindId() {
   const movePage = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [isClickable, setIsClickable] = useState(true);
   const [timer, setTimer] = useState(null);
-  const [auth_Number, setauth_Number] = useState("");
+  const [authCode, setauthCode] = useState("");
   const [email, setemail] = useState("");
-  const [is_Auth, set_Is_Auth] = useState(false);
-  const [is_Next, set_Is_Next] = useState(false);
-  const _auth_Number = "123456";
+  const [isAuth, setisAuth] = useState(false);
+  const [isNext, setisNext] = useState(false);
+  const _authCode = "123456";
 
+
+  //텍스트필드에 적힌 코드를 저장하는 변수
   const saveAuth = (event) => {
-    setauth_Number(event.target.value);
+    setauthCode(event.target.value);
   };
 
+  //옳바른 인증인지 확인하는 함수
   function authentication() {
-    if (auth_Number === _auth_Number) {
-      set_Is_Auth(true);
+    if (authCode === _authCode) {
+      setisAuth(true);
     } else {
       alert("인증번호가 틀렸습니다.");
     }
   }
 
+  //체크를 한번 누르면 시간내에 못누르게 하는 함수
   function toggleCheck() {
     if (!isClickable) return;
 
@@ -34,6 +38,7 @@ export default function FindId() {
     setTimer(60);
   }
 
+  // 타이머
   useEffect(() => {
     if (timer > 0) {
       const intervalId = setInterval(() => {
@@ -47,22 +52,24 @@ export default function FindId() {
     }
   });
 
+  //인증이 완료 되었나 확인
   const goCheck_PW = (event) => {
-    if (is_Auth) {
-      set_Is_Next(true);
+    if (isAuth) {
+      setisNext(true);
     } else {
       alert("인증을 완료해 주세요.");
     }
   };
 
+  // 취소시 로그인 페이지로
   function cancle() {
-    movePage("/Login");
+    movePage("/");
   }
 
   return (
     <div>
       <TopBar />
-      {!is_Next ? (
+      {!isNext ? (
         <>
           (
           <div className="findId_bg">
