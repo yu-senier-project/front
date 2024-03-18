@@ -24,6 +24,7 @@ input::-webkit-inner-spin-button {
 }
 .vline {
   position: relative;
-  border-left : thick solid #6f7070;
-  height : 30px;
+  border-left: thick solid #6f7070;
+  height: 30px;
 }
+/* vline이 먼가요?? */
