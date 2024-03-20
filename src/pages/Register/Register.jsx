@@ -1,9 +1,9 @@
-import RegisterCompanySearch from "../components/register/RegisterCompanySearch";
-import RegisterMain from "../components/register/RegisterMain";
+import RegisterCompanySearch from "../../components/register/RegisterCompanySearch";
+import RegisterMain from "../../components/register/RegisterMain";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import "../css/register/Register.css";
+import "../../css/register/Register.css";
 export default function Register({ setRegisterCheck }) {
   let [checked, setChecked] = useState(null); //
 
