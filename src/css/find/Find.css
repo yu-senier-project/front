@@ -34,10 +34,11 @@
   flex-direction: row;
   position: relative;
   align-items: center;
+  background-color: rgb(255, 255, 255);
 }
 .find_email {
   margin: 0px 0px 0px 10px;
-  width: 90%;
+  width: 88%;
   height: 50px;
   border-radius: 10px;
   padding-left: 10px;
@@ -50,9 +51,9 @@
   position: absolute;
   width: 100px;
   height: 30px;
-  right: 35px;
+  right: 50px;
   border-radius: 10px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border: 1px solid white;
   border: none;
   cursor: pointer;
@@ -118,9 +119,9 @@
 }
 .find_authentication_btn {
   position: absolute;
-  width: 15%;
+  width: 9%;
   height: 30px;
-  right: 5px;
+  right: 15px;
   text-align: center;
   background-color: #ffffff;
   border: none;
@@ -167,7 +168,7 @@
   width: 31.5%;
   height: 35px;
   border-radius: 10px; 
-  margin-right: 20px;
+  margin-right: 50px;
   font-size: 15px;
 
 }

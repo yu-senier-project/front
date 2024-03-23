@@ -1,15 +1,16 @@
 .check_bg {
-  background-color: #d9d9d9;
+  background-color: #ffffff;
   width: 90%;
   height: 600px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .check_main {
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   border: #d9d9d9;
   border-radius: 5%;
   padding-bottom: 20px;
@@ -30,22 +31,31 @@
 }
 
 .check_id {
-  background-color: #fcfcfc;
-  font-size: 20px;
-  margin-left: 20px;
+  background-color: #ffffff;
+  font-size: 30px;
 }
 .check_pw {
   background-color: #fcfcfc;
   font-size: 20px;
   margin-left: 20px;
 }
-.check_next_btn {
+.check_navigate_find_pw{
   background-color: #71c9ce;
-  margin: 20px 30px 10px 0px;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 100px 10px 100px;
+  margin-top: 30px;
   float: right;
   border: #ffffff;
   color: #f5f5f5;
+  cursor: pointer;
+
+}
+.check_next_btn {
+  background-color: #fdfdfd;
+  margin: 30px 0px 0px 0px;
+  padding: 10px 30px 10px 30px;
+  float: right;
+  border: #ffffff;
+  color: #000000;
   cursor: pointer;
 }
 

@@ -6,24 +6,25 @@ export default function Check_ID() {
   const authentication = false;
 
   function goLogin() {
-    movePage("/Login");
+    movePage("/");
   }
   return (
     <div>
       <div className="check_bg">
-        <div className="check_main">
-          <p className="check_title">아이디 찾기</p>
-          <hr />
-          <div className="check_content">
-            <p>회원님의 아이디는 아래와 같습니다</p>
-          </div>
-          <div className="check_id">
-            <p>jmk101711</p>
-          </div>
-          <button className="check_next_btn" onClick={goLogin}>
-            확인
-          </button>
+        <p className="check_title">아이디 찾기</p>
+        <hr />
+        <div className="check_content">
+          <p>입력하신 정보와 일치하는 아이디는 아래와 같습니다</p>
         </div>
+        <div className="check_id">
+          <p>
+            <b>jmk101711</b>
+          </p>
+        </div>
+        <button className="check_navigate_find_pw">비밀번호 찾기</button>
+        <button className="check_next_btn" onClick={goLogin}>
+          <b>로그인 페이지로 가기</b>
+        </button>
       </div>
     </div>
   );
