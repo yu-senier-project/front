@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "../../css/login/Login.css";
 import { useState, useRef } from "react";
 import Register from "../Register";
+import baseUrl from "../../util/baseUrl";
+import axios from "axios";
 
 export default function Login() {
   const [username, setId] = useState("");
@@ -24,27 +26,28 @@ export default function Login() {
   ];
 
   function check_Id_PW(id, pw) {
-    let id_State = false;
-    let pw_State = false;
-    let state = 0; // 0 아이디 오류, 1 비밀번호 오류, 2 성공
-    for (let i = 0; i < id_Pw_List.length; i++) {
-      if (id_Pw_List[i].id === id) {
-        id_State = true;
-      }
-      if (id_Pw_List[i].pw === pw) {
-        pw_State = true;
-        break;
-      }
-    }
-    if (id_State && pw_State) {
-      state = 2;
-    } else if (id_State && !pw_State) {
-      state = 1;
-    } else if ((!id_State && pw_State) || (!id_State && !pw_State)) {
-      state = 0;
-    }
-
-    return state;
+    const postData = {
+      username: id,
+      password: pw,
+    };
+    const url = `${baseUrl}/api/v1/auth/login`;
+    axios
+      .post(url, postData)
+      .then(function (response) {
+        //로그인 성공시
+        if (response.status === 200) {
+          alert("로그인 성공");
+        }
+      })
+      .catch(function (error) {
+        // 오류 발생시
+        console.error("로그인 실패:", error);
+        if (error.response && error.response.status === 400) {
+          alert("로그인 정보가 올바르지 않습니다.");
+        } else {
+          alert("로그인 처리 중 오류가 발생했습니다.");
+        }
+      });
   }
 
   const movePage = useNavigate();
@@ -77,14 +80,7 @@ export default function Login() {
         <button
           className="login_btn"
           onClick={() => {
-            if (check_Id_PW(username, password) === 2) {
-              alert("로그인 성공");
-            } else if (check_Id_PW(username, password) === 0) {
-              alert("아이디 오류");
-            } else if (check_Id_PW(username, password) === 1) {
-              alert("패스워드 오류");
-            }
-            console.log(check_Id_PW(username, password));
+            check_Id_PW(username, password);
           }}
         >
           로그인
