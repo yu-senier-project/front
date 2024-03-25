@@ -1,11 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "../../css/register/RegisterCompanySearch.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterCompanySearch(props) {
-  const count = useRef(0);
+  const nav = useNavigate();
+
+  // 로딩중인지 확인하는 함수
+  const [loading, setLoading] = useState(false);
 
   // 체크박스 하나만 선택하도록 하는 함수
   function checkOnlyOne(element) {
@@ -24,30 +28,68 @@ export default function RegisterCompanySearch(props) {
       alert("회사를 선택해주세요!");
       return;
     } else {
-      props.회원가입단계변경(1);
+      getCompanyEmail();
     }
   }
 
+  // 회사 이메일 받아 오는 함수
+  const getCompanyEmail = async () => {
+    setLoading(true);
+    try {
+      let res = await axios.get(
+        `http://13.51.99.142:8080/api/v1/company/get-email/${props.companyName}`
+      );
+      props.setCompanyEmail(res.data.email);
+      console.log(res);
+      setLoading(false);
+      props.회원가입단계변경(1);
+    } catch (e) {
+      console.log(e);
+      alert("오류가 발생했습니다. 다시 시도해주세요");
+      window.location.reload();
+    }
+  };
+
   // 회사 검색 결과 데이터 저장 state
-  const [회사검색결과, 회사검색결과변경] = useState([
-    "영남대학교",
-    "영남회사",
-    "영남일보",
-    "우리영남",
-    "영남",
-  ]);
+  const [회사검색결과, 회사검색결과변경] = useState([]);
 
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    if (count.current == 0) {
-      count.current++;
+    if (input == "") {
       return;
     }
-    axios.get("/company.json").then((res) => {
-      console.log(res);
-    });
+    getCompanyName();
   }, [input]);
+
+  async function getCompanyName() {
+    try {
+      let res = await axios.get(
+        "http://13.51.99.142:8080/api/v1/company/search",
+        {
+          params: {
+            keyword: input,
+          },
+        }
+      );
+      console.log(res.data);
+      if (Array.isArray(res.data)) {
+        let companyName = res.data.map((item) => {
+          return item.name;
+        });
+        회사검색결과변경(companyName);
+      } else {
+        회사검색결과변경([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (loading) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <div>
       {/*회사명 검색창 부분 */}
@@ -73,7 +115,11 @@ export default function RegisterCompanySearch(props) {
           <>
             {회사검색결과.map((a, i) => (
               <div className="register-modal-searchResult-name">
-                <label for={`checkbox${i}`}>{a}</label>
+                <div className="register-modal-searchResult-title">
+                  <label for={`checkbox${i}`}>
+                    <span>{a}</span>
+                  </label>
+                </div>
                 <input
                   id={`checkbox${i}`}
                   type="checkbox"

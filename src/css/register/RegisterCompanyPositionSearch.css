@@ -1,0 +1,23 @@
+.RegisterCompanyPositionSearch > input {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+.RegisterCompanyPositionSearch {
+  position: relative;
+}
+
+.RegisterCompanyPositionSearch-searchIcon {
+  position: absolute;
+  font-size: 20px;
+  right: 10px;
+  top: 22px;
+}
+
+.RegisterCompanyPositionSearch-button {
+  margin-top: 310px;
+}

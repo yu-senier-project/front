@@ -24,7 +24,11 @@
   top: 35px;
   left: 150px;
   font-size: 14px;
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: grey;
+  white-space: nowrap;
 }
 
 .register-modal-back {

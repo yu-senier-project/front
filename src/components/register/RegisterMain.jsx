@@ -2,12 +2,38 @@
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import Spin from "../../util/Spin";
 import "../../css/register/RegisterMain.css";
 
-export default function RegisterMain({ companyName }) {
+export default function RegisterMain({ companyName, companyEmail, position }) {
+  //email중복일때 포커스 할 useRef
+  const emailFocus = useRef();
+
+  //id 중복일때 포커스 할 useRef
+  const idFocus = useRef();
+
+  // firstName 포거스 할 useRef
+  const firstNameFocus = useRef();
+
+  // enter 입력 처리 함수
+  const handleEnter = (e, func) => {
+    if (e.key == "Enter") {
+      func();
+    }
+  };
+
+  //완료 버튼 눌렀을때 로딩중표현 state
+  const [loading, setLoading] = useState(false);
+
   //아이디 중복체크 했는지 확인
   const [idDupCheck, setIdDupCheck] = useState(false);
+
+  // 이메일 인증번호 저장 state
+  const [emailAuthNum, setEmailAuthNum] = useState();
+
+  // 아이디 중복 검사 중인지 확인
+  const [idCheckLoading, setIdCheckLoading] = useState(false);
 
   //이메일 인증했는지 검사
   const [emailCheck, setEmailCheck] = useState(false);
@@ -26,15 +52,129 @@ export default function RegisterMain({ companyName }) {
     emailCheck: 0,
   });
 
+  // 회원정보 저장 state
   const [회원정보, 회원정보변경] = useState({
     firstName: "",
     secondName: "",
     id: "",
     pwd: "",
     pwdCheck: "",
-    email: "",
+    email: `@${companyEmail}`,
     emailCheck: "",
   });
+
+  // 생년월일 저장 state
+  const [selectedDate, setSelectedDate] = useState({
+    year: null,
+    month: null,
+    day: null,
+  });
+
+  //회원정보가 제대로 입력되었는지 확인하는 함수
+  function checkInfoTrue() {
+    let firstNameTrue = !회원정보["firstName"] == "";
+    let secondNameTrue = !회원정보["secondName"] == "";
+    let idTrue = !회원정보["id"].length <= 5 && idDupCheck;
+    let pwdTrue = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z]).{6,}$/.test(
+      회원정보["pwd"]
+    );
+    let pwdCheckTrue = !회원정보["pwdCheck"] != 회원정보["pwd"];
+    let emaiTrue = /^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
+      회원정보["email"]
+    );
+    let birthTrue =
+      selectedDate.year != null &&
+      selectedDate.month != null &&
+      selectedDate.day != null;
+
+    let emailCheckTrue = emailCheck;
+    if (
+      firstNameTrue &&
+      secondNameTrue &&
+      idTrue &&
+      pwdTrue &&
+      pwdCheckTrue &&
+      emaiTrue &&
+      birthTrue &&
+      emailCheckTrue
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //완료 버튼 눌렀을때
+  function registerFinsh() {
+    if (!idDupCheck) {
+      alert("아이디 중복검사를 해주세요");
+      return;
+    }
+    if (!emailCheck) {
+      alert("이메일 인증을 완료해주세요");
+      return;
+    }
+    if (!checkInfoTrue()) {
+      alert("회원정보를 제대로 입력해주세요");
+      return;
+    }
+
+    setLoading(true);
+
+    const data = {
+      firstName: 회원정보.firstName,
+      lastName: 회원정보.secondName,
+      username: 회원정보.id,
+      password: 회원정보.pwd,
+      email: 회원정보.email,
+      position: position,
+      companyName: companyName,
+      birth: `${selectedDate.year}-${selectedDate.month}-${selectedDate.day}`,
+    };
+    axios
+      .post(`http://13.51.99.142:8080/api/v1/auth/register`, { ...data })
+      .then((res) => {
+        setLoading(false);
+        console.log(res);
+        alert("회원가입 완료");
+        window.location.reload();
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
+        setEmailCheck(false);
+        setEmailAuth(false);
+        setEmailAuthNum("");
+        alert(e.response.data.message);
+      });
+  }
+
+  // 아이디 중복 확인 체크하는 함수
+  async function idDupCheckFunction() {
+    if (회원정보.id.length < 6) {
+      alert("아이디를 6글자 이상 입력해주세요");
+      return;
+    }
+    if (idCheckLoading) {
+      return;
+    }
+    setIdCheckLoading(true);
+    try {
+      let les = await axios.get(
+        `http://13.51.99.142:8080/api/v1/auth/check-duplicate/${회원정보.id}`
+      );
+      setIdCheckLoading(false);
+      if (!idDupCheck && !les.data.isExist) {
+        setIdDupCheck(true);
+      } else {
+        alert("중복된 아이디 입니다. 다시 입력해주세요");
+        idFocus.current.focus();
+        changeInfo({ target: { value: "" } }, "id");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   //에러 메시지랑 테두리 변경할 경우 체크할 함수
   function checkError(name) {
@@ -52,6 +192,21 @@ export default function RegisterMain({ companyName }) {
     회원정보변경(obj);
   }
 
+  //이메일 인증번호 일치하는지 확인하는 함수
+  function checkAuthEmail() {
+    const data = { email: 회원정보.email, authCode: emailAuthNum };
+    axios
+      .post(`http://13.51.99.142:8080/api/v1/email-auth/confirm`, data)
+      .then((res) => {
+        console.log(res);
+        setEmailCheck(true);
+      })
+      .catch((e) => {
+        alert("인증번호를 다시 입력해주세요");
+        console.log(e);
+      });
+  }
+
   const input클릭확인 = (name) => {
     if (focusArr[name] == 0) {
       let obj = { ...focusArr };
@@ -64,17 +219,37 @@ export default function RegisterMain({ companyName }) {
 
   // 인증버튼 재전송 함수
   const handleResend = () => {
-    setTimer(10); // 타이머 초기값으로 재설정
+    if (!회원정보.email.includes(companyEmail)) {
+      alert("회사 이메일을 확인해주세요");
+      return;
+    }
+    if (emailAuth) {
+      return;
+    }
+    setEmailAuth(true);
+    setTimer(180); // 타이머 초기값으로 재설정
     setTriggerTimer((prev) => !prev); // triggerTimer 값을 토글하여 useEffect를 다시 실행하도록 함
-    timerfinish.current = 10; // useRef를 초기값으로 재설정
+    timerfinish.current = 180; // useRef를 초기값으로 재설정
+
+    //인증번호 전송
+    axios
+      .get(
+        `http://13.51.99.142:8080/api/v1/email-auth/request/${회원정보.email}`
+      )
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // 타이머 시간 변수
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(180);
 
   //처음 마운트될때 실행 안되게 하는 변수
   const [timerCheck, setTimerCheck] = useState(false);
-  const timerfinish = useRef(10);
+  const timerfinish = useRef(180);
 
   // 타이머
   useEffect(() => {
@@ -97,13 +272,6 @@ export default function RegisterMain({ companyName }) {
     // 컴포넌트가 언마운트되면 타이머를 정리
     return () => clearInterval(timerInterval);
   }, [triggerTimer, timer]);
-
-  // 생년월일 저장 state
-  const [selectedDate, setSelectedDate] = useState({
-    year: null,
-    month: null,
-    day: null,
-  });
 
   // 년도 선택 옵션 생성 (1900년부터 현재년도까지)
   const yearOptions = [];
@@ -136,12 +304,22 @@ export default function RegisterMain({ companyName }) {
     );
   }
 
+  useEffect(() => {
+    firstNameFocus.current.focus();
+  }, []);
+
+  if (loading) {
+    return <div>회원가입 진행중...</div>;
+  }
+
   return (
     <div className="registerMain">
       {/* 이름 입력 */}
       <div className="registerMain-name">
         <div className="registerMain-name-first">
           <input
+            ref={firstNameFocus}
+            value={회원정보["firstName"]}
             type="text"
             placeholder="성"
             onFocus={() => {
@@ -163,6 +341,7 @@ export default function RegisterMain({ companyName }) {
         </div>
         <div className="registerMain-name-second">
           <input
+            value={회원정보["secondName"]}
             type="text"
             placeholder="이름"
             onFocus={() => {
@@ -187,8 +366,13 @@ export default function RegisterMain({ companyName }) {
       {/* 아이디 입력 */}
       <div className="registerMain-id">
         <input
+          onKeyDown={(e) => {
+            handleEnter(e, idDupCheckFunction);
+          }}
+          ref={idFocus}
           type="text"
           placeholder="아이디"
+          value={회원정보["id"]}
           onChange={(e) => {
             changeInfo(e, "id");
           }}
@@ -207,18 +391,20 @@ export default function RegisterMain({ companyName }) {
           className="registerMain-id-dupCheckBtn"
           onClick={() => {
             if (!idDupCheck) {
-              setIdDupCheck(true);
+              idDupCheckFunction();
             }
           }}
-          disabled={idDupCheck}
+          disabled={idCheckLoading || idDupCheck}
         >
-          {idDupCheck ? (
+          {idCheckLoading ? (
+            <Spin />
+          ) : idDupCheck ? (
             <FontAwesomeIcon
               icon={faCheck}
               className="registerMain-id-dupCheckIcon"
             />
           ) : (
-            "중복확인"
+            <span>중복확인</span>
           )}
         </button>
 
@@ -231,7 +417,8 @@ export default function RegisterMain({ companyName }) {
       <div className="registerMain-pwd">
         <div className="registerMain-name-first register-pwd">
           <input
-            type="text"
+            value={회원정보["pwd"]}
+            type="password"
             placeholder="비밀번호"
             onChange={(e) => {
               changeInfo(e, "pwd");
@@ -262,7 +449,8 @@ export default function RegisterMain({ companyName }) {
         </div>
         <div className="registerMain-name-second">
           <input
-            type="text"
+            value={회원정보["pwdCheck"]}
+            type="password"
             placeholder="비밀번호 확인"
             onChange={(e) => {
               changeInfo(e, "pwdCheck");
@@ -293,22 +481,27 @@ export default function RegisterMain({ companyName }) {
       <div className="registerMain-email">
         <div style={{ height: "59px" }}>
           <input
+            onKeyDown={(e) => {
+              handleEnter(e, handleResend);
+            }}
+            ref={emailFocus}
             type="email"
             onChange={(e) => {
               changeInfo(e, "email");
             }}
+            value={회원정보["email"]}
             onFocus={() => {
               input클릭확인("email");
             }}
             placeholder="이메일"
             className={
               focusArr["email"] === 1 &&
-              !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/.test(
+              !/^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
                 회원정보["email"]
               )
                 ? "register-red"
                 : focusArr["email"] === 1 &&
-                  /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/.test(
+                  /^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
                     회원정보["email"]
                   )
                 ? "register-blue"
@@ -317,17 +510,13 @@ export default function RegisterMain({ companyName }) {
           />
           <button
             className={`registerMain-email-authBtn ${
-              !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/.test(
+              !/^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
                 회원정보["email"]
               )
                 ? "registerMain-email-authBtnNo"
                 : null
             }`}
             onClick={() => {
-              if (emailAuth) {
-                return;
-              }
-              setEmailAuth(true);
               handleResend();
             }}
           >
@@ -343,7 +532,7 @@ export default function RegisterMain({ companyName }) {
             )}
           </button>
           {focusArr["email"] === 1 &&
-          !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/.test(
+          !/^[A-Za-z0-9._%+-]{6,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
             회원정보["email"]
           ) ? (
             <p>올바른 이메일 주소를 입력해주세요</p>
@@ -360,7 +549,14 @@ export default function RegisterMain({ companyName }) {
         ) : null}
         {/* 인증번호창 */}
         <input
+          onKeyDown={(e) => {
+            handleEnter(e, checkAuthEmail);
+          }}
           type="number"
+          value={emailAuthNum}
+          onChange={(e) => {
+            setEmailAuthNum(e.target.value);
+          }}
           placeholder="인증번호"
           className={`${emailCheck ? "register-blue" : null}`}
           disabled={emailAuth || emailCheck ? false : true}
@@ -370,7 +566,7 @@ export default function RegisterMain({ companyName }) {
             emailAuth || emailCheck ? null : "none"
           }`}
           onClick={() => {
-            setEmailCheck(true);
+            checkAuthEmail();
           }}
         >
           {emailCheck ? (
@@ -407,9 +603,14 @@ export default function RegisterMain({ companyName }) {
           <select
             className={`${selectedDate.month != null ? "register-blue" : null}`}
             value={selectedDate.month}
-            onChange={(e) =>
-              setSelectedDate({ ...selectedDate, month: e.target.value })
-            }
+            onChange={(e) => {
+              Number(e.target.value) < 10
+                ? setSelectedDate({
+                    ...selectedDate,
+                    month: `0${e.target.value}`,
+                  })
+                : setSelectedDate({ ...selectedDate, month: e.target.value });
+            }}
           >
             <option value="" disabled hidden selected>
               월 선택
@@ -422,9 +623,14 @@ export default function RegisterMain({ companyName }) {
         <div>
           <select
             value={selectedDate.day}
-            onChange={(e) =>
-              setSelectedDate({ ...selectedDate, day: e.target.value })
-            }
+            onChange={(e) => {
+              Number(e.target.value) < 10
+                ? setSelectedDate({
+                    ...selectedDate,
+                    day: `0${e.target.value}`,
+                  })
+                : setSelectedDate({ ...selectedDate, day: e.target.value });
+            }}
             className={`${selectedDate.day != null ? "register-blue" : null}`}
           >
             <option value="" disabled hidden selected>
@@ -435,7 +641,14 @@ export default function RegisterMain({ companyName }) {
         </div>
       </div>
 
-      <button className="registerMain-nextBtn">완료</button>
+      <button
+        className="registerMain-nextBtn"
+        onClick={() => {
+          registerFinsh();
+        }}
+      >
+        완료
+      </button>
     </div>
   );
 }
