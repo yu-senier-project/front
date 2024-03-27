@@ -4,7 +4,7 @@ import "../../css/find/Find.css";
 import TopBar from "../../components/TopBar";
 import Check_PW from "../../components/CheckPW";
 export default function FindId() {
-  const movePage = useNavigate();
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [isClickable, setIsClickable] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -63,7 +63,7 @@ export default function FindId() {
 
   // 취소시 로그인 페이지로
   function cancle() {
-    movePage("/");
+    navigate("/");
   }
 
   return (

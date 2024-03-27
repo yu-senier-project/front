@@ -1,20 +1,10 @@
-import { useState, useEffect } from "react";
+export default function Timer({ timer }) {
+  if (timer === 0) {
+    return null; // 타이머가 0이면 아무것도 렌더링하지 않음
+  }
+  if (timer === 180) {
+    return null; // 초기상태에 아무것도 렌더링 하지 않음
+  }
 
-export default function Timer({ time }) {
-  const [timer, setTimer] = useState();
-  useEffect(() => {
-    if (timer > 0) {
-      const intervalId = setInterval(() => {
-        setTimer(timer - 1);
-      }, 1000);
-      return () => clearInterval(intervalId);
-    } else {
-      setTimer(null);
-    }
-  });
-  return (
-    <>
-      <p className="find_timer">{timer}</p>
-    </>
-  );
+  return <div>{timer}</div>;
 }

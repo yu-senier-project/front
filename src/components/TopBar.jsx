@@ -11,7 +11,7 @@ export default function TopBar() {
     <header>
       <div className="top_bar">
         <button onClick={goLogin} className="top_bar_name">
-          Facetagram
+          CNS
         </button>
         <div className="top_bar_login">
           <input placeholder="아이디" className="top_bar_id"></input>

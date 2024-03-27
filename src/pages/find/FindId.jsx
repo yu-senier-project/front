@@ -5,23 +5,47 @@ import TopBar from "../../components/TopBar";
 import Check_ID from "../../components/CheckID";
 import Auth from "../../components/Auth";
 import SendEmail from "../../components/SendEmail";
+import Timer from "../../components/Timer";
+
 export default function FindId() {
   const navigate = useNavigate();
   const [isAuth, setisAuth] = useState(false);
   const [isNext, setIsNext] = useState(false);
-  const [timer, setTimer] = useState(null);
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
   const [email, setEmail] = useState();
 
   const handleChangeEmail = (newState) => {
     setEmail(newState);
   };
 
+  const startTimer = () => {
+    setTimer(5);
+    setIsRunning(true);
+  };
+
+  useEffect(() => {
+    let interval = null;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      setIsRunning(false);
+    }
+  }, [timer]);
+
   const handleChangeAuth = (newState) => {
     setisAuth(newState);
   };
-  const handleChangeTimer = (newState) => {
-    setTimer(newState);
-  };
+
   const goCheck_ID = (event) => {
     if (isAuth) {
       setIsNext(true);
@@ -33,11 +57,9 @@ export default function FindId() {
   const goFind_PW = (event) => {
     navigate("/user/FindPW");
   };
-
   function cancle() {
     navigate("/");
   }
-
   return (
     <div>
       <TopBar />
@@ -50,11 +72,17 @@ export default function FindId() {
             </div>
 
             <SendEmail
+              startTimer={startTimer}
               onChangeEmail={handleChangeEmail}
-              onChangeTimer={handleChangeTimer}
               email={email}
+              timer={timer}
             />
-            <Auth onChangeAuth={handleChangeAuth} email={email} />
+            <div
+              style={{ width: "100%", display: "flex", flexDirection: "row" }}
+            >
+              <Auth onChangeAuth={handleChangeAuth} email={email} />
+              <Timer timer={timer}></Timer>
+            </div>
             <button className="find_next_btn" onClick={goCheck_ID}>
               아이디 찾기
             </button>

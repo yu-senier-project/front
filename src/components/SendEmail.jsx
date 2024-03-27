@@ -3,20 +3,12 @@ import baseUrl from "../util/baseUrl";
 import axios from "axios";
 import "../css/find/Find.css";
 
-export default function SendEmail({ onChangeEmail, onChangeTimer, email }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [isClickable, setIsClickable] = useState(true);
-
+export default function SendEmail({ onChangeEmail, email, startTimer, timer }) {
   const saveEmail = (event) => {
     onChangeEmail(event.target.value);
-    // console.log(email);
   };
   function sendEmail() {
-    if (!isClickable) return;
-    setIsChecked(true);
-    setIsClickable(false);
-    onChangeTimer(60);
-
+    startTimer();
     const url = `${baseUrl}/api/v1/email-auth/request/${email}`;
     console.log(url);
     axios
@@ -44,11 +36,12 @@ export default function SendEmail({ onChangeEmail, onChangeTimer, email }) {
         <button
           className="find_send_email"
           onClick={() => {
+            console.log(timer);
             sendEmail(email);
           }}
-          disabled={!isClickable}
+          disabled={timer !== 0} // 타이머 상태에 따른 조건 추가
         >
-          {isChecked ? "✔️" : "인증메일 전송"}
+          {timer === 0 ? "인증메일 전송" : "✔️"}
         </button>
       </div>
     </>

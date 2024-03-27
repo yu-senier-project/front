@@ -50,13 +50,13 @@ export default function Login() {
       });
   }
 
-  const movePage = useNavigate();
+  const navigate = useNavigate();
 
   function goFind_Id() {
-    movePage("/user/FindId");
+    navigate("/user/FindId");
   }
   function goFind_Pw() {
-    movePage("/user/FindPw");
+    navigate("/user/FindPw");
   }
   return (
     <div className="login">

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../css/find/Find.css";
 import baseUrl from "../util/baseUrl";
 import axios from "axios";
-import Timer from "./Timer";
 export default function Auth({ onChangeAuth, email }) {
   const [authCode, setAuthCode] = useState("");
-
   const saveAuth = (event) => {
     setAuthCode(event.target.value);
   };
@@ -41,6 +39,7 @@ export default function Auth({ onChangeAuth, email }) {
       <div className="find_auth_top">
         <div className="find_authentication">
           {/* 인증번호 작성 폼*/}
+
           <input
             className="find_authentication_number"
             type="text"
@@ -55,7 +54,6 @@ export default function Auth({ onChangeAuth, email }) {
           >
             인증
           </button>
-          <Timer />
         </div>
       </div>
     </>
