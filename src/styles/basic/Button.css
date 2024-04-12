@@ -1,0 +1,19 @@
+.Button{
+    width: 50%;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #71C9CE;
+    color: white;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.Button:focus{
+    outline: none;
+}
+.Button:hover{
+    background-color: #60aeb3;
+}
+.Button:active{
+    background-color: #71C9CE;
+}
