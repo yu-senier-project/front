@@ -1,18 +1,14 @@
-import { useState } from "react";
 import "./App.css";
-import Input from "./component/basic/Input";
-import Button from "./component/basic/Button";
+import BigNav from "./component/nav/BigNav";
+import SmallNav from "./component/nav/SmallNav";
+import Nav from "./component/nav/Nav";
 
 function App() {
   return (
-    <>
-      <div className="Div">
-        <Input placeholder={"아이디"}></Input>
-        <Input placeholder={"비밀번호"}></Input>
-        <Button text={"로그인"}></Button>
-        <Button text={"회원가입"}></Button>
-      </div>
-    </>
+    <div className="App">
+      <BigNav></BigNav>
+      {/* <SmallNav></SmallNav> */}
+    </div>
   );
 }
 

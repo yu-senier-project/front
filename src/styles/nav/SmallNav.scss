@@ -1,0 +1,46 @@
+.SmallNav {
+  position: fixed;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid black;
+  height: 100%;
+  width: 180px;
+  transform: translateX(-100px);
+  transition: all 0.5s;
+  padding: 20px;
+  h1 {
+    transition: all 0.5s;
+    transform: translateX(90px);
+    width: 50px;
+  }
+}
+
+.SmallNav-menuWrap {
+  height: 100%;
+}
+
+.SmallNav-menu {
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  .icon {
+    transition: all 0.5s;
+    transform: translateX(110px);
+  }
+  &:hover {
+    border-bottom: 1px solid black;
+  }
+}
+
+.SmallNav:hover {
+  transform: translateX(0px);
+  .icon {
+    transform: translateX(0px);
+  }
+  h1 {
+    transform: translateX(0px);
+  }
+}
