@@ -1,6 +1,17 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Sedgwick+Ave+Display&display=swap"); // 로고 필기체
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Noto+Sans+KR:wght@100..900&family=Sedgwick+Ave+Display&display=swap"); // 전체 폰트 적용
+
+body,
+p,
+div,
+span {
   margin: 0px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
+
 div,
 input {
   box-sizing: border-box;
@@ -18,4 +29,54 @@ input {
   width: 20%;
   height: 20px;
   font-size: 7px;
+}
+
+.nav-open {
+  transition: all 0.5s;
+  margin-left: 180px;
+}
+
+.nav-close {
+  transition: all 0.5s;
+  margin-left: 0px;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none; // 웹킷 브라우저에서 기본 스타일 제거
+  -moz-appearance: none; // 모질라 브라우저에서 기본 스타일 제거
+  appearance: none; // 기본 브라우저에서 기본 스타일 제거
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc; // 체크되지 않았을 때의 테두리 색상
+  border-radius: 50%;
+  outline: none; // focus 시에 나타나는 기본 스타일 제거
+  cursor: pointer;
+}
+
+// 체크될 시에, 변화되는 스타일 설정
+input[type="radio"]:checked {
+  background-color: #22d3ee; // 체크 시 내부 원으로 표시될 색상
+  border: 3px solid white; // 테두리가 아닌, 테두리와 원 사이의 색상
+  box-shadow: 0 0 0 1.6px #22d3ee; // 얘가 테두리가 됨
+  // 그림자로 테두리를 직접 만들어야 함 (퍼지는 정도를 0으로 주면 테두리처럼 보입니다.)
+  // 그림자가 없으면 그냥 설정한 색상이 꽉 찬 원으로만 나옵니다.
+}
+
+@for $i from 1 through 500 {
+  .width-#{$i} {
+    // width: percentage($i / 100);
+    width: #{$i}px;
+  }
+}
+
+@for $i from 1 through 100 {
+  .hegiht-#{$i} {
+    width: percentage($i / 100);
+  }
+}
+
+@for $i from 1 through 40 {
+  .font-#{$i} {
+    font-size: #{$i}px;
+  }
 }

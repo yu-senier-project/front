@@ -1,0 +1,13 @@
+.Buttons {
+  display: flex;
+  gap: 10px;
+
+  .buttons {
+    font-size: 20px;
+    cursor: pointer;
+
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+}

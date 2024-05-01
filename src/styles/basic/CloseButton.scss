@@ -1,0 +1,11 @@
+.CloseButton {
+  background-color: white;
+  border: none;
+
+  &:hover {
+    border-bottom: 1px solid black;
+  }
+  &:active {
+    color: red;
+  }
+}

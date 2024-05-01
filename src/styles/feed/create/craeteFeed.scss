@@ -1,0 +1,92 @@
+.CreateFeed {
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap {
+  background-color: white;
+  height: 600px;
+  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 60px);
+
+  grid-template-areas:
+    "top top top top top top top top top top"
+    "img img img img img img content content content content"
+    "img img img img img img content content content content"
+    "img img img img img img content content content content"
+    "img img img img img img content content content content"
+    "img img img img img img content content content content"
+    "img img img img img img setting setting setting setting"
+    "img img img img img img setting setting setting setting"
+    "img img img img img img setting setting setting setting"
+    "img img img img img img setting setting setting setting";
+
+  border-radius: 10px;
+  box-shadow: 5px 5px 3px #666;
+}
+
+.top {
+  grid-area: top;
+  border-bottom: 1px solid black;
+  padding-left: 20px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.img {
+  position: relative;
+  grid-area: img;
+  border-right: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background-color: #71c9ce;
+  color: white;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+  border-radius: 10px;
+  line-height: 40px;
+
+  &:hover {
+    background-color: #60aeb3;
+  }
+  &:active {
+    background-color: #71c9ce;
+  }
+}
+
+.createFeed-content {
+  grid-area: content;
+  border-bottom: 1px solid black;
+}
+
+.setting {
+  grid-area: setting;
+}
+
+.btn-wrap {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+#createFeed-closeButton {
+  margin-left: auto;
+  margin-right: 10px;
+}

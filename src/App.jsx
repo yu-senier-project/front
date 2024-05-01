@@ -1,13 +1,17 @@
 import "./App.css";
-import BigNav from "./component/nav/BigNav";
-import SmallNav from "./component/nav/SmallNav";
-import Nav from "./component/nav/Nav";
+import Home from "./pages/Home";
+import Feed from "./component/feed/main/Feed";
+import CreateFeed from "./component/feed/create/CreateFeed";
 
 function App() {
   return (
     <div className="App">
-      <BigNav></BigNav>
-      {/* <SmallNav></SmallNav> */}
+      <Home></Home>
+      {/* <BigNav></BigNav>
+      <Content></Content> */}
+      {/* <CreateFeed></CreateFeed>
+      <Feed></Feed>
+      <Feed></Feed> */}
     </div>
   );
 }

@@ -12,20 +12,21 @@ import {
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import useNavStore from "../../store/nav/useNavStore";
 
 const BigNav = () => {
-  const [toggle, setToggle] = useState(true);
+  const { open, setOpen } = useNavStore((state) => state);
 
-  let navClassName = `BigNav ${toggle ? "Block" : "None"}`;
-  let className = `${toggle ? "None" : "Block"}`;
+  let navClassName = `BigNav ${open ? "Block" : "None"}`;
+  let className = `${open ? "None" : "Block"}`;
   const onClick = () => {
-    setToggle(!toggle);
+    setOpen();
   };
 
   return (
     <div>
       <div className={navClassName}>
-        <button className="Nav-toggle-btn" onClick={onClick}>
+        <button className="Nav-toggle-btn-close" onClick={onClick}>
           <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
         </button>
         <h1>CNS</h1>
@@ -69,7 +70,6 @@ const BigNav = () => {
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
-      <div className={`empty ${toggle ? "Block" : "None   "}`}></div>
     </div>
   );
 };

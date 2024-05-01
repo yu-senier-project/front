@@ -6,20 +6,17 @@
   height: 100vh;
   width: 180px;
   padding: 20px;
-  transition: all 1s;
+  transition: all 0.5s;
 }
 
 .None {
-  display: none;
+  transform: translateX(-180px);
 }
 
 .Block {
   display: block;
 }
 
-.BigNav-menuWrap {
-  height: 100%;
-}
 .BigNav-menu {
   cursor: pointer;
   font-size: 18px;
@@ -43,16 +40,11 @@
   }
 }
 
-.Nav-toggle-btn {
+.Nav-toggle-btn-close {
   @extend %toggle-btn;
   transform: translateX(120px);
 }
 
 .Nav-toggle-btn-open {
   @extend %toggle-btn;
-}
-
-.empty {
-  width: 200px;
-  height: 100vh;
 }
