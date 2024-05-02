@@ -3,6 +3,7 @@
   flex-direction: row;
   margin-bottom: 20px;
   align-items: center;
+  cursor: pointer;
 }
 
 .usercard-comment {

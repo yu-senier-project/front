@@ -9,7 +9,7 @@ const CloseButton = ({ size, onCloseButton }) => {
   };
   return (
     <button className="CloseButton" onClick={onCloseButton}>
-      <FontAwesomeIcon icon={faX} style={style} />
+      <FontAwesomeIcon className="CloseButton-icon" icon={faX} style={style} />
     </button>
   );
 };

@@ -9,7 +9,11 @@ const Content = () => {
   };
   return (
     <div className="Content">
-      <UserCard userName={"yeongi0111"} width="width-15"></UserCard>
+      <UserCard
+        userName={"yeongi0111"}
+        width="width-40"
+        img="public/image/dp.jpg"
+      ></UserCard>
       <textarea
         id="custom_textarea"
         placeholder="문구를 입력하세요..."

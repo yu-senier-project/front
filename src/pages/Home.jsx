@@ -7,7 +7,6 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <SmallNav></SmallNav>
       {toggle && <CreateFeed></CreateFeed>}
       <Feed></Feed>
       <Feed></Feed>

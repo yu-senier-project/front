@@ -1,4 +1,5 @@
 import "../../styles/nav/SmallNav.scss";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -21,18 +22,22 @@ const SmallNav = () => {
     <div className="SmallNav">
       <h1>CNS</h1>
       <div className="SmallNav-menuWrap">
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faHouse} className="icon" />
-          <p>홈</p>
-        </div>
+        <Link to={"/"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faHouse} className="icon" />
+            <p>홈</p>
+          </div>
+        </Link>
         <div className="SmallNav-menu">
           <FontAwesomeIcon icon={faMessage} className="icon" />
           <p>메시지</p>
         </div>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
-          <p>검색</p>
-        </div>
+        <Link to={"/search"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+            <p>검색</p>
+          </div>
+        </Link>
         <div className="SmallNav-menu">
           <FontAwesomeIcon icon={faCalendarDays} className="icon" />
           <p>프로젝트</p>

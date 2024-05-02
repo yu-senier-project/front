@@ -1,18 +1,23 @@
 import "./App.css";
 import Home from "./pages/Home";
-import Feed from "./component/feed/main/Feed";
-import CreateFeed from "./component/feed/create/CreateFeed";
+import Search from "./pages/Search";
+import SmallNav from "./component/nav/SmallNav";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Home></Home>
-      {/* <BigNav></BigNav>
-      <Content></Content> */}
-      {/* <CreateFeed></CreateFeed>
-      <Feed></Feed>
-      <Feed></Feed> */}
-    </div>
+    // <div className="App">
+
+    //   {/* <Home></Home> */}
+    //   <Search></Search>
+    // </div>
+    <Router>
+      <SmallNav></SmallNav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Search" element={<Search />} />
+      </Routes>
+    </Router>
   );
 }
 
