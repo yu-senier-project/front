@@ -4,7 +4,7 @@ import "../../styles/basic/HashMentionInput.scss";
 
 const HashMentionInput = ({ value, onChange }) => {
   const [mentionText, setMentionText] = useState([]);
-
+  const [hashText, setHashText] = useState([]);
   const style = {
     width: "100%",
     height: "180px",
@@ -44,10 +44,6 @@ const HashMentionInput = ({ value, onChange }) => {
     console.log(result);
   };
 
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
-
   // 사용자 추천을 렌더링하는 함수
   const renderUserSuggestion = (suggestion, search, highlightedDisplay) => (
     <div className="user-suggestion">{highlightedDisplay}</div>
@@ -59,11 +55,11 @@ const HashMentionInput = ({ value, onChange }) => {
   };
 
   const handleAddMention = (mention, plainTextValue, index, start, end) => {
-    // 멘션된 부분을 필요한 형식으로 변환하여 저장합니다.
-    let len = plainTextValue.length;
-    let idx = value.lastIndexOf("@");
-    let newString = value.slice(0, idx + 1) + plainTextValue;
-    // setValue(newString);
+    setMentionText([...mentionText, plainTextValue]);
+  };
+
+  const handleAddHash = (mention, plainTextValue, index, start, end) => {
+    setHashText([...hashText, plainTextValue]);
   };
 
   return (
@@ -77,7 +73,7 @@ const HashMentionInput = ({ value, onChange }) => {
       >
         {/* 사용자 멘션 */}
         <Mention
-          style={{ backgroundColor: "#3ea2a7" }}
+          style={{ color: "lightblue" }}
           trigger="@"
           data={[
             { id: "1", display: "UserOne" },
@@ -91,7 +87,6 @@ const HashMentionInput = ({ value, onChange }) => {
           appendSpaceOnAdd={true}
         />
         <Mention
-          style={{ backgroundColor: "red" }}
           trigger="#"
           data={[
             { id: "1", display: "UserOne" },
@@ -101,7 +96,7 @@ const HashMentionInput = ({ value, onChange }) => {
             { id: "5", display: "Userss" },
           ]} // 예
           renderSuggestion={renderUserSuggestion}
-          onAdd={handleAddMention}
+          onAdd={handleAddHash}
           appendSpaceOnAdd={true}
         />
       </MentionsInput>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 
@@ -13,25 +13,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../basic/Button";
 
-const Image = () => {
+const Image = ({ formData }) => {
   const [showImages, setShowImages] = useState([]);
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    formData.delete("file");
+    if (images.length !== 0) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("file", images[i]);
+      }
+    }
+
+    let values = formData.values();
+    for (const pair of values) {
+      console.log(pair);
+    }
+  }, [images]);
 
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
+
     let imageUrlLists = [...showImages];
+    if (imageUrlLists.length == 10) {
+      alert("이미지는 10장만 넣을 수 있습니다!");
+      return;
+    }
+
+    let list = [];
     for (let i = 0; i < imageLists.length; i++) {
+      list.push(imageLists[i]);
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
     }
+    setImages([...images, ...list]);
 
     if (imageUrlLists.length > 10) {
       imageUrlLists = imageUrlLists.slice(0, 10);
     }
     setShowImages(imageUrlLists);
-    console.log(showImages);
   };
 
   const handleDeleteImage = (id) => {
+    setImages(images.filter((_, index) => index !== id));
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 

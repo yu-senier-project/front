@@ -5,11 +5,15 @@ import Image from "./Image";
 import CloseButton from "../../basic/CloseButton";
 import Button from "../../basic/Button";
 import useCreateFeed from "../../../store/feed/useCreateFeed";
+import { useEffect, useState } from "react";
 const CreateFeed = () => {
   const { setToggle } = useCreateFeed((state) => state);
+  const formData = new FormData();
+
   const onClose = () => {
     setToggle();
   };
+
   return (
     <div className="CreateFeed">
       <div className="wrap">
@@ -20,7 +24,7 @@ const CreateFeed = () => {
           </div>
         </div>
         <div className="img">
-          <Image></Image>
+          <Image formData={formData}></Image>
         </div>
         <div className="createFeed-content">
           <Content></Content>

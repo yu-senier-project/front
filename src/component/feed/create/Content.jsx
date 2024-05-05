@@ -26,8 +26,6 @@ const Content = () => {
         img="public/image/dp.jpg"
       ></UserCard>
       <HashMentionInput value={value} onChange={setValue}></HashMentionInput>
-
-      <p>{value.length}/100</p>
     </div>
   );
 };
