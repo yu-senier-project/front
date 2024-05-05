@@ -19,7 +19,6 @@ const Image = () => {
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showImages];
-
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
@@ -29,6 +28,7 @@ const Image = () => {
       imageUrlLists = imageUrlLists.slice(0, 10);
     }
     setShowImages(imageUrlLists);
+    console.log(showImages);
   };
 
   const handleDeleteImage = (id) => {

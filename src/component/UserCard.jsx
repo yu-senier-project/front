@@ -19,7 +19,17 @@ export default function UserCard({ userName, comment, width, img }) {
         <span>
           <b>{userName}</b>
         </span>
-        {comment ? <span>{comment} </span> : null}
+        {comment ? (
+          <div
+            style={{
+              marginLeft: "10px",
+              width: "100px",
+              overflowWrap: "break-word",
+            }}
+          >
+            {comment}{" "}
+          </div>
+        ) : null}
       </div>
     </div>
   );

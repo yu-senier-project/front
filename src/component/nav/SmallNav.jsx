@@ -11,9 +11,11 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import useCreateFeed from "../../store/feed/useCreateFeed";
+import CreateFeed from "../feed/create/CreateFeed";
 
 const SmallNav = () => {
   const { setToggle } = useCreateFeed((state) => state);
+
   const onCreate = () => {
     setToggle();
     console.log(toggle);
