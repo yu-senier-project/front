@@ -25,6 +25,10 @@ export default function IdFind() {
   };
 
   const sendAuthCode = () => {
+    if (formData.email === "") {
+      alert("이메일을 작성해주세요");
+      return;
+    }
     toggle();
     console.log(formData.email);
     axios
@@ -34,11 +38,16 @@ export default function IdFind() {
       });
   };
   const checkAuthCode = () => {
-    const data = formData.authCode;
+    const data = {
+      email: formData.email,
+      authCode: formData.authCode,
+    };
+    console.log(data);
     if (isActive) {
       axios.post(BaseUrl + `/api/v1/email-auth/confirm`, data).then((res) => {
         if (res.status === 200) {
           alert("!!");
+          setCheck(true);
         } else {
           alert("--");
         }
@@ -82,7 +91,6 @@ export default function IdFind() {
             seconds < 10 ? `0${seconds}` : seconds
           }`}</span>
         </div>
-
         <Button size={"Small"} text={"아이디 찾기"} onCilck={checkAuthCode} />
       </div>
     </div>
