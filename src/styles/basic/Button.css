@@ -8,7 +8,16 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
-
+.text {
+  background-color: transparent;
+  color: black;
+  height: 20px;
+  width: 50%;
+  font-size: 10px;
+}
+.registration {
+  background-color: #bfd8af;
+}
 .Button:focus {
   outline: none;
 }

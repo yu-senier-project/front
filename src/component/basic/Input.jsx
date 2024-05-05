@@ -1,7 +1,8 @@
-// Input - ref(ux), onkeydown, onfocus, value, type, onChange,  placeholder, size, color, border
-
-import { useState } from "react";
+import React, { forwardRef } from "react";
 import "../../styles/basic/Input.css";
+
+
+
 
 export default function Input({
   reference, // 페이지 이동시 포커스
