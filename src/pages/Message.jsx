@@ -1,21 +1,19 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
+import apiClient from "../util/BaseUrl";
 export default function Message() {
+  const a = async () => {
+    const response = await apiClient.get("/api/v1/chat/index?memberId=1");
+    console.log(response);
+  };
+
   return (
     <div>
-      <Link to={"/Home"}>
-        <button
-          onClick={() => {
-            axios
-              .get("http://13.51.99.142:8080/api/v1/auth/register/check/123")
-              .then((res) => {
-                console.log(res);
-              });
-          }}
-        >
-          ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-        </button>
-      </Link>
+      {/* <Link to={"/Home"}> */}
+      <button onClick={a}>
+        ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      </button>
+      {/* </Link>  */}
     </div>
   );
 }
