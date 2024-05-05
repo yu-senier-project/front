@@ -5,7 +5,8 @@ import Imgs from "./Imgs";
 import Texts from "./Texts";
 import ChatButton from "./ChatButton";
 import UserInfo from "./UserInfo";
-import Chat from "../../chat/Chat";
+import ChatModal from "../../chat/ChatModal";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const Feed = ({ feedList }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -20,6 +21,7 @@ const Feed = ({ feedList }) => {
         <UserInfo
           clock={feedList.clock}
           username={feedList.nickname}
+          Icon={faEllipsis}
         ></UserInfo>
       </div>
       <div className="Feed-texts">
@@ -33,7 +35,14 @@ const Feed = ({ feedList }) => {
           ></Texts>
           <ChatButton onClick={handleChatButtonClick}></ChatButton>
         </div>
-        <div>{isChatOpen ? <Chat id={feedList.id}></Chat> : null}</div>
+        <div>
+          {isChatOpen ? (
+            <ChatModal
+              feedList={feedList}
+              handleChatButtonClick={handleChatButtonClick}
+            ></ChatModal>
+          ) : null}
+        </div>
       </div>
     </div>
   );
