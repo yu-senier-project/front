@@ -7,7 +7,16 @@
     border: none;
     margin-bottom: 10px;
 }
-
+.text{
+    background-color: transparent;
+    color: black;
+    height: 20px;
+    width: 50%;
+    font-size: 10px;
+}
+.registration{
+    background-color: #BFD8AF;
+}
 .Button:focus{
     outline: none;
 }

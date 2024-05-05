@@ -1,18 +1,21 @@
-
-div,input{
+div,
+input {
   box-sizing: border-box;
 }
-.Large{
-width: 70%;
-height: 50px;
+.Large {
+  width: 70%;
+  height: 50px;
 }
-.Small{
-width: 30%;
-height: 50px;
-font-size: 12px;
+.Small {
+  width: 30%;
+  height: 50px;
+  font-size: 12px;
 }
-.Tiny{
-width: 20%;
-height: 20px;
-font-size: 7px;
+.Tiny {
+  width: 20%;
+  height: 20px;
+  font-size: 7px;
+}
+body {
+  margin: 0px;
 }
