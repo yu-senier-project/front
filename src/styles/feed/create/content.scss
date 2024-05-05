@@ -1,0 +1,19 @@
+#custom_textarea {
+  width: 98%;
+  height: 190px;
+  font-size: 18px;
+  resize: none;
+  color: black;
+  border: none;
+  outline: none;
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  p {
+    color: #777777;
+    margin-left: auto;
+  }
+}

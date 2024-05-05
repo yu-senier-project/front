@@ -1,0 +1,15 @@
+.ChatInput {
+  margin-top: 10px;
+  position: relative;
+}
+
+.ChatInput-submit {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+
+  button {
+    background-color: lightgrey;
+    border: none;
+  }
+}

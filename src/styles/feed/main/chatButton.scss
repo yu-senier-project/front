@@ -1,0 +1,9 @@
+.ChatButton {
+  p {
+    cursor: pointer;
+    color: #bfbfbf;
+    &:last-child {
+      margin-bottom: 10px;
+    }
+  }
+}

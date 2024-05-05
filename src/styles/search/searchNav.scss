@@ -1,0 +1,25 @@
+.SearchNav {
+  border-top: 1px solid black;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.SearchNav-tap {
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0px 0px 5px 5px;
+  width: 70px;
+
+  &:hover {
+    background-color: lightgrey;
+  }
+
+  &:active {
+    background-color: grey;
+  }
+}
+
+.SearchNav-border {
+  border-top: 5px solid black;
+}

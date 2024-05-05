@@ -1,0 +1,18 @@
+#usercard {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.usercard-comment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+#userImg {
+  /* width: 50px; */
+  border-radius: 50%;
+}
