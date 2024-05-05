@@ -24,7 +24,7 @@ const SmallNav = () => {
     <div className="SmallNav">
       <h1>CNS</h1>
       <div className="SmallNav-menuWrap">
-        <Link to={"/"}>
+        <Link to={"/Home"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faHouse} className="icon" />
             <p>홈</p>
