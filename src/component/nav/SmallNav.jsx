@@ -24,16 +24,18 @@ const SmallNav = () => {
     <div className="SmallNav">
       <h1>CNS</h1>
       <div className="SmallNav-menuWrap">
-        <Link to={"/"}>
+        <Link to={"/Home"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faHouse} className="icon" />
             <p>홈</p>
           </div>
         </Link>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faMessage} className="icon" />
-          <p>메시지</p>
-        </div>
+        <Link to={"/Message"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faMessage} className="icon" />
+            <p>메시지</p>
+          </div>
+        </Link>
         <Link to={"/search"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
