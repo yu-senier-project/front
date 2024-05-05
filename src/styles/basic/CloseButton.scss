@@ -1,0 +1,13 @@
+.CloseButton {
+  background-color: white;
+  border: none;
+}
+
+.CloseButton-icon {
+  &:hover {
+    border-bottom: 1px solid black;
+  }
+  &:active {
+    color: red;
+  }
+}

@@ -1,0 +1,24 @@
+.UserInfo {
+  display: flex;
+  align-items: center;
+}
+
+.UserInfo-clock {
+  margin-left: 15px;
+  height: 42px;
+  color: #777777;
+}
+
+.UserInfo-setting-btn {
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  position: relative;
+  margin-left: auto;
+  bottom: 10px;
+  font-size: 20px;
+
+  &:hover {
+    border-bottom: 1px solid black;
+  }
+}

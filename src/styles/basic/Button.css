@@ -1,28 +1,29 @@
-.Button{
-    width: 50%;
-    height: 40px;
-    border-radius: 10px;
-    background-color: #71C9CE;
-    color: white;
-    border: none;
-    margin-bottom: 10px;
+.Button {
+  width: 50%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #71c9ce;
+  color: white;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
-.text{
-    background-color: transparent;
-    color: black;
-    height: 20px;
-    width: 50%;
-    font-size: 10px;
+.text {
+  background-color: transparent;
+  color: black;
+  height: 20px;
+  width: 50%;
+  font-size: 10px;
 }
-.registration{
-    background-color: #BFD8AF;
+.registration {
+  background-color: #bfd8af;
 }
-.Button:focus{
-    outline: none;
+.Button:focus {
+  outline: none;
 }
-.Button:hover{
-    background-color: #60aeb3;
+.Button:hover {
+  background-color: #60aeb3;
 }
-.Button:active{
-    background-color: #71C9CE;
+.Button:active {
+  background-color: #71c9ce;
 }

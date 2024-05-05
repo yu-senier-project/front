@@ -1,25 +1,24 @@
 .Input {
-    border-radius : 5px;
-    border : 2px solid #B9B8B8;
-    width : 50%;
-    height : 40px;
-    color : rgb(0, 0, 0); 
-    margin-bottom: 10px;
-    padding: 10px;
-    outline: none;
+  border-radius: 5px;
+  border: 2px solid #b9b8b8;
+  /* width : 50%; */
+  height: 40px;
+  color: rgb(0, 0, 0);
+  margin-bottom: 10px;
+  padding: 10px;
+  outline: none;
 }
-.Large{
-    width: 70%;
-    height: 50px;
+.Large {
+  width: 70%;
+  height: 50px;
 }
-.Small{
-    width: 30%;
-    height: 30px;
+.Small {
+  width: 30%;
+  height: 30px;
 }
-.None{
-    border: none;
+.None {
+  border: none;
 }
-.Gray{
-    background-color: rgb(226, 226, 226);
-
+.Gray {
+  background-color: rgb(226, 226, 226);
 }
