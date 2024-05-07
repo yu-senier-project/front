@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import useCreateFeed from "../../store/feed/useCreateFeed";
 import CreateFeed from "../feed/create/CreateFeed";
+import { logout } from "../../util/auth";
 
 const SmallNav = () => {
   const { setToggle } = useCreateFeed((state) => state);
@@ -59,6 +60,7 @@ const SmallNav = () => {
         <FontAwesomeIcon icon={faGear} className="icon" />
         <p>설정</p>
       </div>
+      <button onClick={logout}>로그아웃</button>
     </div>
   );
 };

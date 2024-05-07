@@ -12,6 +12,7 @@ import {
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { logout } from "../../util/auth";
 import useNavStore from "../../store/nav/useNavStore";
 
 const BigNav = () => {
@@ -70,6 +71,7 @@ const BigNav = () => {
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
+      <button onClick={logout}>로그아웃</button>
     </div>
   );
 };
