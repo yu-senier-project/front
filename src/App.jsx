@@ -1,12 +1,13 @@
 // app.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import IdFind from "./pages/IdFind";
+import IdFind from "./pages/Auth/IdFind";
 import PasswordFind from "./pages/PasswordFind";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SmallNav from "./component/nav/SmallNav";
 import Message from "./pages/Message";
+import IdCheck from "./pages/Auth/IdCheck";
 import useCreateFeed from "./store/feed/useCreateFeed";
 import CreateFeed from "./component/feed/create/CreateFeed";
 import useLoginStore from "./store/login/useLoginStore";
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/Id" element={<IdFind />} />
+        <Route path="/CheckId" element={<IdCheck />} />
         <Route path="/Password" element={<PasswordFind />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Search" element={<Search />} />
