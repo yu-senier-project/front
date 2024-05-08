@@ -8,7 +8,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import CloseButton from "../basic/CloseButton";
 import { useRef } from "react";
 
-const ChatModal = ({ feedList, handleChatButtonClick }) => {
+const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
   const backgroundRef = useRef();
 
   // 모달 바깥 클릭했을 때 닫는 코드
@@ -40,7 +40,7 @@ const ChatModal = ({ feedList, handleChatButtonClick }) => {
         </div>
         <div className="Feed-texts">
           <div className="main-img">
-            <Imgs></Imgs>
+            <Imgs imgList={imgList}></Imgs>
             <Buttons></Buttons>
             <Texts
               comment={feedList.comment}

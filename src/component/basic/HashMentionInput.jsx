@@ -2,24 +2,21 @@ import React, { useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
 import "../../styles/basic/HashMentionInput.scss";
 
-const HashMentionInput = ({ value, onChange }) => {
+const HashMentionInput = ({ value, onChange, appendHash, appendMention }) => {
   const [mentionText, setMentionText] = useState([]);
   const [hashText, setHashText] = useState([]);
+
   const style = {
     width: "100%",
     height: "180px",
     input: {
-      // backgroundColor: '#121212',
-      // color: '#FFF',
       color: "inherit",
       minHeight: "32px",
       outline: "none",
       width: "100%",
       borderRadius: "6px 6px 0 6px",
       border: `none`,
-      // fontSize: 18,
       display: "block",
-      // lineHeight: 1.5,
     },
 
     suggestions: {
@@ -55,11 +52,11 @@ const HashMentionInput = ({ value, onChange }) => {
   };
 
   const handleAddMention = (mention, plainTextValue, index, start, end) => {
-    setMentionText([...mentionText, plainTextValue]);
+    appendMention(plainTextValue);
   };
 
   const handleAddHash = (mention, plainTextValue, index, start, end) => {
-    setHashText([...hashText, plainTextValue]);
+    appendHash(plainTextValue);
   };
 
   return (
