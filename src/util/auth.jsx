@@ -78,18 +78,19 @@ export function refreshAccessTokenInterceptor() {
 export async function login(data) {
   try {
     const response = await apiClient.post("/api/v1/auth/login", data);
-    // console.log("@@@@", response);
+    console.log("Response Status:", response.status);
+    console.log("Response Headers:", response.headers);
+
     if (response.status === 200) {
       // 응답에서 authorization 헤더 추출
-      const authorizationHeader = response.headers["authorization"];
-      // console.log(authorizationHeader);
-      if (authorizationHeader) {
-        const accessToken = authorizationHeader.replace("Bearer ", "");
-        localStorage.setItem("accessToken", accessToken);
-      } else {
-        console.error("Authorization 헤더가 없습니다.");
-        return false;
-      }
+      // const authorizationHeader = response.headers["authorization"];
+      // if (authorizationHeader) {
+      //   const accessToken = authorizationHeader.replace("Bearer ", "");
+      //   localStorage.setItem("accessToken", accessToken);
+      // } else {
+      //   console.error("Authorization 헤더가 없습니다.");
+      //   return false;
+      // }
 
       // 사용자 데이터 저장
       localStorage.setItem("userNickName", data.nickname);
@@ -101,7 +102,6 @@ export async function login(data) {
     }
   } catch (error) {
     console.error("로그인 오류:", error);
-    alert("로그인에 실패했습니다. 다시 시도해주세요.");
     return false;
   }
 }
