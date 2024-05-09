@@ -1,51 +1,52 @@
-import React, { useState } from "react";
-import "../../styles/message/roomselecter.scss";
-function RoomSelecter({ selectedRoom, rooms, onSelectRoom, onAddRoom }) {
-  const [newRoomName, setNewRoomName] = useState("");
+// RoomSelecter.js
+import React, { useState } from 'react';
+import '../../styles/message/roomselecter.scss';
+import apiClient from '../../util/BaseUrl';
+
+function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom }) {
+  const [newRoomName, setNewRoomName] = useState('');
 
   const handleAddRoom = (e) => {
     e.preventDefault();
     if (newRoomName.trim()) {
       onAddRoom(newRoomName);
-      setNewRoomName("");
+      setNewRoomName('');
     }
   };
 
   return (
     <div className="chat_nav">
+      {/* 수정해야함 */}
       <form className="add_room_form" onSubmit={handleAddRoom}>
-        {/* <BsPlusSquare className="add_room_icon" /> */}
-        <input
-          type="text"
-          value={newRoomName}
-          onChange={(e) => setNewRoomName(e.target.value)}
-          placeholder="새로운 채팅"
-          className="add_room_input"
-        />
-        <button type="submit" className="add_room_button">
-          추가
-        </button>
+        <p  className="add_room_input">
+         새로운 채팅
+         
+          </p>
+      
       </form>
-      {/* <div className="profile">
-        <img src="https://via.placeholder.com/40" alt="User" />
-        <span>my_userId</span>
-      </div> */}
       <ul>
-        {rooms.map((room) => (
-          <li
-            key={room.id}
-            className={selectedRoom === room.id ? "selected" : ""}
-            onClick={() => onSelectRoom(room.id)}
-          >
-            <img src={room.image} alt={room.name} />
-            <span>{room.name}</span>
+        {/* 수정 */}
+        {rooms.length > 0 ? (
+          rooms.map((room) => (
+           <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
+            <li
+              key={room.roomId}
+              className={selectedRoom === room.roomId ? 'selected' : ''}
+              onClick={() =>{
+                onSelectRoom(room.roomId)}}
+            >
+              <p>{room.roomName}</p>
+            </li>
+            {room.isRead?<></>:<div style={{height:"10px",width:"10px",backgroundColor:"#123411", borderRadius:"50%"}}></div>}
+            </div>
+          ))
+        ) : (
+          <li>
+            <span>방 목록이 없습니다.</span>
           </li>
-        ))}
-        <li className="more">
-          <span>...</span>
-        </li>
+        )}
       </ul>
-    </div>
+     </div>
   );
 }
 

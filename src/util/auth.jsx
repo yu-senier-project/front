@@ -17,12 +17,23 @@ export function refreshAccessTokenInterceptor() {
     console.log("토큰 재발급");
 
     // 새 토큰 발급 요청
-    const response = await apiClient.post("/api/v1/auth/refresh");
-    const newAccessToken = response.headers.authorization.replace(
-      "Bearer ",
-      ""
-    );
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      throw new Error("No refresh token available");
+    }
+
+    const response = await apiClient.post("/api/v1/auth/refresh", {}, {
+      headers: {
+        "Authorization": `Bearer ${refreshToken}`
+      }
+    });
+
+    const newAccessToken = response.headers.authorization.replace("Bearer ", "");
+    const newRefreshToken = response.headers.refreshtoken.replace("Bearer ", "");
+
     localStorage.setItem("accessToken", newAccessToken);
+    localStorage.setItem("refreshToken", newRefreshToken);
+
     return newAccessToken;
   }
 
@@ -51,10 +62,8 @@ export function refreshAccessTokenInterceptor() {
         // 토큰 재발급 상태로 변경
         originalRequest._retry = true;
         isRefreshing = true;
-        console.log("!!");
 
         try {
-          console.log("@@");
           const newAccessToken = await refreshAccessToken();
           isRefreshing = false; // 재발급 완료 후 상태 변경
           onRefreshed(newAccessToken);
