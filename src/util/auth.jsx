@@ -83,19 +83,23 @@ export async function login(data) {
 
     if (response.status === 200) {
       // 응답에서 authorization 헤더 추출
-      // const authorizationHeader = response.headers["authorization"];
-      // if (authorizationHeader) {
-      //   const accessToken = authorizationHeader.replace("Bearer ", "");
-      //   localStorage.setItem("accessToken", accessToken);
-      // } else {
-      //   console.error("Authorization 헤더가 없습니다.");
-      //   return false;
-      // }
+      const token1 = response.headers["authorization"];
+      const token2 = response.headers["refreshtoken"];
+      if (token1 && token2) {
+        const accessToken = token1.replace("Bearer ", "");
+        const refreshToken = token2.replace("Bearer ", "");
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+      } else {
+        console.error("토큰이 없습니다.");
+        return false;
+      }
 
       // 사용자 데이터 저장
       localStorage.setItem("userNickName", data.nickname);
       localStorage.setItem("userPassword", data.password);
-
+      console.log(response.data);
+      localStorage.setItem("memberId", response.data["memberId"]);
       return true;
     } else {
       return false;
