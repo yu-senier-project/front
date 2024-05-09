@@ -1,10 +1,11 @@
 .ChatUserCard {
   display: flex;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
+  position: relative;
 
   .ChatUserCard-text {
     margin-left: 15px;
-    font-size: 17px;
+    font-size: 15px;
     overflow-wrap: break-word;
 
     .ChatUserCard-userName {
@@ -12,17 +13,28 @@
       margin-right: 10px;
     }
   }
-
-  .ChatUserCard-chat {
-    span {
-      font-size: 13px;
-      color: rgb(160, 160, 160);
-      cursor: pointer;
-    }
-  }
 }
 
 #ChatUserCard-img {
   border-radius: 50%;
+  cursor: pointer;
+}
+
+.ChatUserCard-HeartBtn {
+  button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    font-size: 16px;
+  }
+}
+
+.ChatUserCard-reply {
+  margin-left: 55px;
+}
+
+.ChatUserCard-chat-grey {
+  font-size: 12px;
+  color: rgb(160, 160, 160);
   cursor: pointer;
 }

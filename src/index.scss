@@ -75,9 +75,9 @@ input[type="radio"]:checked {
   }
 }
 
-@for $i from 1 through 100 {
+@for $i from 1 through 500 {
   .hegiht-#{$i} {
-    width: percentage($i / 100);
+    height: #{$i}px;
   }
 }
 

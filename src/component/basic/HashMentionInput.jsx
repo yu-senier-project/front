@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
 import "../../styles/basic/HashMentionInput.scss";
+import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
-const HashMentionInput = ({ value, onChange, appendHash, appendMention }) => {
+const HashMentionInput = ({
+  value,
+  onChange,
+  appendHash,
+  appendMention,
+  placeholder,
+  width,
+  height,
+  backgroundColor,
+  fontSize,
+}) => {
   const [mentionText, setMentionText] = useState([]);
   const [hashText, setHashText] = useState([]);
 
   const style = {
-    width: "100%",
-    height: "180px",
+    width: `${width}%`,
+    height: `${height}px`,
+    backgroundColor: backgroundColor,
+    borderRadius: "10px",
+    fontSize: `${fontSize}px`,
     input: {
       color: "inherit",
       minHeight: "32px",
@@ -62,7 +76,7 @@ const HashMentionInput = ({ value, onChange, appendHash, appendMention }) => {
   return (
     <div>
       <MentionsInput
-        placeholder="문구를 입력하세요..."
+        placeholder={placeholder}
         id="HashMentionInput"
         value={value}
         onChange={handleChange}
