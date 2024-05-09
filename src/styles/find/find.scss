@@ -1,0 +1,65 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#find_content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .email_input {
+        // border: 1px solid black;
+        width: 100%;
+        display: grid;
+        place-items: center;
+
+        .auth_button {
+            position: absolute;
+            background-color: transparent;
+            border: none;
+            margin-left: 320px;
+            margin-bottom: 12px;
+        }
+    }
+    .authcode_input{
+        width: 100%;
+        display: grid;
+        place-items: center;
+        .auth_time{
+            position: absolute;
+            background-color: transparent;
+            border: none;
+            margin-left: 320px;
+            margin-bottom: 12px;
+            color: red;
+        }
+    }
+}
+
+.check_container{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .check_id{
+        margin: 150px;
+    }
+    .findpassword_button{
+        border: none;
+        background-color: #71C9CE;
+        width: 30%;
+        height: 40px;
+        margin-bottom: 20px;
+        color: white;
+        // font-size: 15px;
+    }
+    .login_button{
+        border: none;
+        background-color: transparent;
+        
+    }
+}

@@ -6,7 +6,7 @@ import PasswordFind from "./pages/PasswordFind";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SmallNav from "./component/nav/SmallNav";
-import Message from "./pages/Message/Message";
+// import Message from "./pages/Message/Message";
 import IdCheck from "./pages/Auth/IdCheck";
 import useCreateFeed from "./store/feed/useCreateFeed";
 import CreateFeed from "./component/feed/create/CreateFeed";
@@ -31,7 +31,7 @@ function App() {
         <Route path="/Password" element={<PasswordFind />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Search" element={<Search />} />
-        <Route path="/Message" element={<Message />} />
+        {/* <Route path="/Message" element={<Message />} /> */}
       </Routes>
     </BrowserRouter>
   );
