@@ -1,16 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../styles/chat/MentionInput.scss";
+import { SearchHashTag } from "./SearchHashTag";
 import { SearchUser } from "./SearchUser";
 
 export const MentionInput = ({
   value,
   onChange,
   inputRef,
-  replyUser,
   mentionList,
+  hashList,
 }) => {
   // @ 입력시 검색 창
   const [onMention, setOnMention] = useState(false);
+
+  // # 입력시 검색 창
+  const [onHash, setOnHash] = useState(false);
+
+  // 해쉬태그 검색할 값
+  const [hashValue, setHashValue] = useState("");
 
   // 멘션에서 검색할 값
   const [metionValue, setMentionValue] = useState("");
@@ -23,9 +30,12 @@ export const MentionInput = ({
   }, []);
 
   useEffect(() => {
+    // 멘션
     if (value[value.length - 1] == " ") {
       setOnMention(false);
       setMentionValue("");
+      setOnHash(false);
+      setHashValue("");
       return;
     }
 
@@ -43,10 +53,25 @@ export const MentionInput = ({
     mentionList.current = mentionList.current.filter((item) =>
       value.includes(item)
     );
-  }, [value, onMention, currentCusor]);
+
+    // 해시태그
+    if (onHash) {
+      let hash = value.substring(currentCusor + 1);
+      setHashValue(hash);
+    }
+
+    hashList.current = hashList.current.filter((item) => value.includes(item));
+
+    if (!value.includes("#")) {
+      setOnHash(false);
+      setHashValue("");
+      return;
+    }
+  }, [value, onMention, currentCusor, onHash]);
 
   const onChangeInput = (e) => {
     onChange(e.target.value);
+    // 멘션
     if (value[value.length - 1] == "@") {
       if (value.length > 1) {
         if (value[value.length - 2] != " ") {
@@ -57,13 +82,33 @@ export const MentionInput = ({
       setOnMention(true);
       return;
     }
+
+    //해시태그
+    if (value[value.length - 1] == "#") {
+      if (value.length > 1) {
+        if (value[value.length - 2] != " ") {
+          return;
+        }
+      }
+      setCurrentCusor(e.target.selectionStart - 1);
+      setOnHash(true);
+      return;
+    }
   };
 
   const onMentionClick = (userName) => {
     mentionList.current.push(`@${userName}`);
-    console.log(mentionList.current);
     let newValue = value.substring(0, currentCusor) + userName + " ";
     setOnMention(false);
+    onChange(newValue);
+
+    inputRef.current.focus();
+  };
+
+  const onHashClick = (hash) => {
+    hashList.current.push(`#${hash}`);
+    let newValue = value.substring(0, currentCusor) + hash + " ";
+    setOnHash(false);
     onChange(newValue);
 
     inputRef.current.focus();
@@ -72,10 +117,10 @@ export const MentionInput = ({
   return (
     <div className="MentionInput">
       {onMention ? (
-        <SearchUser
-          onMentionClick={onMentionClick}
-          metionValue={metionValue}
-        ></SearchUser>
+        <SearchUser onMentionClick={onMentionClick}></SearchUser>
+      ) : null}
+      {onHash ? (
+        <SearchHashTag onHashClick={onHashClick}></SearchHashTag>
       ) : null}
       <input
         type="text"
