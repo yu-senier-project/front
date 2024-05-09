@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 const UserInfo = ({ username, img, clock, handleSettingButtonClick }) => {
   return (
-    <div className="UserInfo">
+    <div className="UserInfo" style={{ height: "50px" }}>
       <UserCard
         userName={username}
-        width={"width-45"}
+        width={"width-40"}
         img="public/image/dp.jpg"
       ></UserCard>
       <p className="UserInfo-clock">{clock}</p>
