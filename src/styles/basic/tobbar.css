@@ -1,0 +1,10 @@
+#tobbar {
+    background-color: #71c9ce;
+    height: 100px;
+    width: 100%;
+    font-size: 50px;
+    padding-left: 30px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+  }

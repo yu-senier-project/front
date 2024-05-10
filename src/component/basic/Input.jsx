@@ -1,9 +1,6 @@
 import React, { forwardRef } from "react";
 import "../../styles/basic/Input.css";
 
-
-
-
 export default function Input({
   reference, // 페이지 이동시 포커스
   onkeydown, // 키보드 다른거 눌렀을때 버튼
@@ -18,6 +15,7 @@ export default function Input({
   width,
   font,
   style,
+  name,
 }) {
   const className = `Input ${size} ${color} ${border} width-${width} font-${font}`;
   return (
@@ -31,6 +29,7 @@ export default function Input({
       placeholder={placeholder}
       value={value}
       style={style}
+      name={name}
     ></input>
   );
 }

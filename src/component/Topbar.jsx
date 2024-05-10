@@ -1,4 +1,4 @@
-import "../styles/find.css";
+import "../styles/basic/tobbar.css";
 import { Link } from "react-router-dom";
 export default function Tobbar() {
   return (

@@ -7,7 +7,7 @@ const SearchTop = () => {
     <div className="search-top">
       <h1>검색</h1>
       <div id="search-top-btn">
-        <Link to={"/"}>
+        <Link to={"/Home"}>
           <CloseButton size={25}></CloseButton>
         </Link>
       </div>

@@ -7,9 +7,9 @@ const apiClient = axios.create({
   baseURL: "http://13.51.99.142:8080",
   headers: {
     "Content-Type": "application/json",
-    // Authorization: "Bearer " + localStorage.getItem("accessToken"),
+
   },
-  //   withCredentials: true,
+
 });
 apiClient.interceptors.request.use(
   (config) => {
