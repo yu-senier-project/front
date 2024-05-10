@@ -11,12 +11,11 @@ import "../../../styles/feed/create/image.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../basic/Button";
 
-const Image = ({ formData }) => {
-  const [showImages, setShowImages] = useState([]);
+const Image = ({ formData, imgList }) => {
+  const [showImages, setShowImages] = useState(imgList);
 
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(imgList);
 
   useEffect(() => {
     formData.delete("file");
@@ -25,21 +24,16 @@ const Image = ({ formData }) => {
         formData.append("file", images[i]);
       }
     }
-
-    let values = formData.values();
-    for (const pair of values) {
-      console.log(pair);
-    }
   }, [images]);
 
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
-
-    let imageUrlLists = [...showImages];
-    if (imageUrlLists.length == 10) {
+    if (imageLists.length + showImages.length > 10) {
       alert("이미지는 10장만 넣을 수 있습니다!");
       return;
     }
+
+    let imageUrlLists = [...showImages];
 
     let list = [];
     for (let i = 0; i < imageLists.length; i++) {

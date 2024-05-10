@@ -20,9 +20,6 @@ const Buttons = () => {
       <div className="buttons">
         <FontAwesomeIcon icon={faPaperPlane} />
       </div>
-      <div className="buttons">
-        <FontAwesomeIcon icon={faBookmark} />
-      </div>
     </div>
   );
 };

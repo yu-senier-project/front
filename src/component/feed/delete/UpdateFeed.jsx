@@ -1,19 +1,23 @@
-import "../../../styles/feed/create/craeteFeed.scss";
-import Content from "./Content";
-import CreateSetting from "./CreateSetting";
-import Image from "./Image";
+import React from "react";
+import Content from "../create/Content";
+import CreateSetting from "../create/CreateSetting";
 import CloseButton from "../../basic/CloseButton";
 import Button from "../../basic/Button";
-import useCreateFeed from "../../../store/feed/useCreateFeed";
 import { useState } from "react";
-const CreateFeed = () => {
-  const { setToggle } = useCreateFeed((state) => state);
+import UpdateSetting from "./UpdateSetting";
+import UpdateImage from "./UpdateImage";
+
+export const UpdateFeed = ({
+  hanldUpdateCloseButtonClick,
+  feedList,
+  imgList,
+}) => {
   const formData = new FormData();
 
-  const [hash, setHash] = useState([]);
-  const [mention, setMention] = useState([]);
-  const [content, setContent] = useState("");
-  const [isChat, setIsChat] = useState(true);
+  const [hash, setHash] = useState(feedList.hashtag);
+  const [mention, setMention] = useState(feedList.mention);
+  const [content, setContent] = useState(feedList.comment);
+  const [isChat, setIsChat] = useState(feedList.isChatOpne);
 
   const onRemove = () => {
     const result = content.replace(/@\[([\w\s]+)\]\(\d+\)/g, "$1");
@@ -42,23 +46,20 @@ const CreateFeed = () => {
     setIsChat(value);
   };
 
-  const onClose = () => {
-    setToggle();
-  };
-
-  console.log(isChat);
-
   return (
     <div className="CreateFeed">
       <div className="wrap">
         <div className="top">
-          <h3>새 게시물 만들기</h3>
+          <h3>게시물 수정하기</h3>
           <div id="createFeed-closeButton">
-            <CloseButton size={"18"} onCloseButton={onClose}></CloseButton>
+            <CloseButton
+              size={"18"}
+              onCloseButton={hanldUpdateCloseButtonClick}
+            ></CloseButton>
           </div>
         </div>
         <div className="img">
-          <Image formData={formData}></Image>
+          <UpdateImage formData={formData} imgList={imgList}></UpdateImage>
         </div>
         <div className="createFeed-content">
           <Content
@@ -69,7 +70,10 @@ const CreateFeed = () => {
           ></Content>
         </div>
         <div className="setting">
-          <CreateSetting onSetIsChat={onSetIsChat}></CreateSetting>
+          <UpdateSetting
+            onSetIsChat={onSetIsChat}
+            isChat={isChat}
+          ></UpdateSetting>
           <div className="btn-wrap">
             <Button
               text={"게시글 등록"}
@@ -82,5 +86,3 @@ const CreateFeed = () => {
     </div>
   );
 };
-
-export default CreateFeed;

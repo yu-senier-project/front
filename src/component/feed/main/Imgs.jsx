@@ -7,9 +7,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Pagination, Navigation } from "swiper/modules";
-const Imgs = () => {
-  let imgList = ["car1.png", "car2.png", "car3.png"];
-
+const Imgs = ({ imgList }) => {
+  console.log(imgList);
   return (
     <div className="Imgs">
       <Swiper
