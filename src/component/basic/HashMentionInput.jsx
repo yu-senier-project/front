@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
 import "../../styles/basic/HashMentionInput.scss";
+import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
-const HashMentionInput = ({ value, onChange }) => {
+const HashMentionInput = ({
+  value,
+  onChange,
+  appendHash,
+  appendMention,
+  placeholder,
+  width,
+  height,
+  backgroundColor,
+  fontSize,
+}) => {
   const [mentionText, setMentionText] = useState([]);
+  const [hashText, setHashText] = useState([]);
 
   const style = {
-    width: "100%",
-    height: "180px",
+    width: `${width}%`,
+    height: `${height}px`,
+    backgroundColor: backgroundColor,
+    borderRadius: "10px",
+    fontSize: `${fontSize}px`,
     input: {
-      // backgroundColor: '#121212',
-      // color: '#FFF',
       color: "inherit",
       minHeight: "32px",
       outline: "none",
       width: "100%",
       borderRadius: "6px 6px 0 6px",
       border: `none`,
-      // fontSize: 18,
       display: "block",
-      // lineHeight: 1.5,
     },
 
     suggestions: {
@@ -44,10 +55,6 @@ const HashMentionInput = ({ value, onChange }) => {
     console.log(result);
   };
 
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
-
   // 사용자 추천을 렌더링하는 함수
   const renderUserSuggestion = (suggestion, search, highlightedDisplay) => (
     <div className="user-suggestion">{highlightedDisplay}</div>
@@ -59,17 +66,17 @@ const HashMentionInput = ({ value, onChange }) => {
   };
 
   const handleAddMention = (mention, plainTextValue, index, start, end) => {
-    // 멘션된 부분을 필요한 형식으로 변환하여 저장합니다.
-    let len = plainTextValue.length;
-    let idx = value.lastIndexOf("@");
-    let newString = value.slice(0, idx + 1) + plainTextValue;
-    // setValue(newString);
+    appendMention(plainTextValue);
+  };
+
+  const handleAddHash = (mention, plainTextValue, index, start, end) => {
+    appendHash(plainTextValue);
   };
 
   return (
     <div>
       <MentionsInput
-        placeholder="문구를 입력하세요..."
+        placeholder={placeholder}
         id="HashMentionInput"
         value={value}
         onChange={handleChange}
@@ -77,7 +84,7 @@ const HashMentionInput = ({ value, onChange }) => {
       >
         {/* 사용자 멘션 */}
         <Mention
-          style={{ backgroundColor: "#3ea2a7" }}
+          style={{ color: "lightblue" }}
           trigger="@"
           data={[
             { id: "1", display: "UserOne" },
@@ -91,7 +98,6 @@ const HashMentionInput = ({ value, onChange }) => {
           appendSpaceOnAdd={true}
         />
         <Mention
-          style={{ backgroundColor: "red" }}
           trigger="#"
           data={[
             { id: "1", display: "UserOne" },
@@ -101,7 +107,7 @@ const HashMentionInput = ({ value, onChange }) => {
             { id: "5", display: "Userss" },
           ]} // 예
           renderSuggestion={renderUserSuggestion}
-          onAdd={handleAddMention}
+          onAdd={handleAddHash}
           appendSpaceOnAdd={true}
         />
       </MentionsInput>
