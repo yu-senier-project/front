@@ -1,44 +1,69 @@
 // useMessageStore.js
 
 import { create } from 'zustand';
-import apiClient from '../../util/BaseUrl';
 import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+import Stomp from 'stompjs';
+import apiClient from '../../util/BaseUrl';
 
-// WebSocket URL과 SockJS를 이용하여 STOMP 클라이언트 생성
-const socketUrl = 'http://13.51.99.142/stomp-chat'; // 실제 WebSocket 서버 URL로 변경 필요
-const client = new Client({
-    webSocketFactory: () => new SockJS(socketUrl),
-    reconnectDelay: 10000, // 연결 실패 시 5초 후 재시도
-    debug: function (str) {
-        console.log(str);
-    },
-});
-
+const socketUrl = 'http://13.51.99.142:8080/stomp-chat';
+const socket = new SockJS(socketUrl);
+const stompClient = Stomp.over(socket);
+// const token = localStorage.getItem('accessToken');
 let isConnected = false;
 
-// STOMP 연결 초기화
 function connectStompClient() {
-    if (client.active || isConnected) return;
+    if (stompClient.connected || isConnected) return;
 
-    client.onConnect = (frame) => {
-        console.log('Connected: ' + frame);
-        isConnected = true;
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+        Authorization: `Bearer ${token}`,
     };
 
-    client.onStompError = (frame) => {
-        console.error('STOMP Error: ' + frame.headers['message']);
-        isConnected = false;
-    };
-
-    client.activate(); // 연결 시작
+    stompClient.connect(
+        console.log('111', headers),
+        headers,
+        (frame) => {
+            console.log('Connected: ' + frame);
+            isConnected = true;
+        },
+        (error) => {
+            console.error('STOMP Error: ' + error);
+            isConnected = false;
+        }
+    );
 }
 
-const useMessageStore = create((set) => ({
+function subscribeToRoom(roomId) {
+    if (!isConnected) {
+        console.error('WebSocket is not connected, connecting now...');
+        connectStompClient(); // 클라이언트 연결 시도
+        return; // 연결 후 다시 시도하도록 즉시 종료
+    }
+
+    // 이미 구독된 채팅방인지 확인
+    if (!useMessageStore.getState().isSubscribedToRoom(roomId)) {
+        stompClient.subscribe(`/sub/chat-room/${roomId}`, (message) => {
+            const receivedMessage = JSON.parse(message.body);
+            console.log('Received message:', receivedMessage);
+
+            useMessageStore.setState((state) => ({
+                messages: {
+                    ...state.messages,
+                    [roomId]: [...(state.messages[roomId] || []), receivedMessage],
+                },
+            }));
+        });
+
+        useMessageStore.getState().addSubscribedRoom(roomId);
+    }
+}
+
+const useMessageStore = create((set, get) => ({
     rooms: [],
     selectedRoom: null,
     roomNumber: 1,
     messages: {},
+    subscribedRooms: [],
 
     setRooms: (rooms) => set({ rooms }),
 
@@ -50,6 +75,13 @@ const useMessageStore = create((set) => ({
         set((state) => ({
             messages: { ...state.messages, [roomId]: newMessages },
         })),
+
+    addSubscribedRoom: (roomId) =>
+        set((state) => ({
+            subscribedRooms: [...state.subscribedRooms, roomId],
+        })),
+
+    isSubscribedToRoom: (roomId) => (get().subscribedRooms || []).includes(roomId),
 
     addRoom: async (roomName, memberId) => {
         try {
@@ -86,23 +118,22 @@ const useMessageStore = create((set) => ({
     },
 
     sendMessage: async (text, roomId) => {
-        // STOMP 통신을 통한 텍스트 메시지 전송
         try {
             const message = {
                 roomId: roomId,
                 text: text,
                 memberId: localStorage.getItem('memberId'),
                 messageType: 'TEXT',
-                subjectid: '',
             };
             console.log(message);
+
+            // 채팅방 구독
+            subscribeToRoom(roomId);
+
             // 연결 상태 확인 후 메시지 전송
             if (isConnected) {
                 console.log('Sending message:', message);
-                client.publish({
-                    destination: `/pub/chat-room/${roomId}`,
-                    body: JSON.stringify(message),
-                });
+                stompClient.send(`/pub/chat-room/${roomId}`, {}, JSON.stringify(message));
 
                 set((state) => ({
                     messages: {
@@ -112,7 +143,7 @@ const useMessageStore = create((set) => ({
                 }));
             } else {
                 console.error('WebSocket is not connected');
-                connectStompClient(); // 연결을 다시 시도
+                connectStompClient(); // 연결 다시 시도
             }
         } catch (error) {
             console.error('Error sending message:', error);
@@ -120,20 +151,20 @@ const useMessageStore = create((set) => ({
     },
 
     sendFileMessage: async (fileName, fileData, roomId) => {
-        // STOMP 통신을 통한 파일 메시지 전송
         try {
             const fileMessage = {
                 roomId,
                 fileName,
                 fileData,
+                messageType: 'IMAGE',
             };
+
+            // 채팅방 구독
+            subscribeToRoom(roomId);
 
             // 연결 상태 확인 후 메시지 전송
             if (isConnected) {
-                client.publish({
-                    destination: `/pub/chat-room/image/${roomId}`,
-                    body: JSON.stringify(fileMessage),
-                });
+                stompClient.send(`/pub/chat-room/image/${roomId}`, {}, JSON.stringify(fileMessage));
 
                 set((state) => ({
                     messages: {
@@ -143,7 +174,7 @@ const useMessageStore = create((set) => ({
                 }));
             } else {
                 console.error('WebSocket is not connected');
-                connectStompClient(); // 연결을 다시 시도
+                connectStompClient(); // 연결 다시 시도
             }
         } catch (error) {
             console.error('Error sending file message:', error);
@@ -151,7 +182,7 @@ const useMessageStore = create((set) => ({
     },
 }));
 
-// STOMP 클라이언트 연결 시작
+// 연결 시작
 connectStompClient();
 
 export default useMessageStore;

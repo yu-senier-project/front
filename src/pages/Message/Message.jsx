@@ -1,3 +1,4 @@
+// Message.js
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { CgAddR } from 'react-icons/cg';
@@ -6,7 +7,6 @@ import useMessageStore from '../../store/message/useMessageStore';
 import useLoginStore from '../../store/login/useLoginStore';
 import '../../styles/message/roomselecter.scss';
 import '../../styles/message/message.scss';
-import apiClient from '../../util/BaseUrl';
 
 export default function Message() {
     const { isLogin } = useLoginStore();
@@ -115,15 +115,15 @@ export default function Message() {
                     <ul id="pre_messages">
                         {(messages[selectedRoom] || []).map((data) => (
                             <li className={data.from === memberId ? 'message_self' : 'message_other'} key={data.chatId}>
-                                {data.file ? (
+                                {data.messageType === 'image' ? (
                                     <div className={data.memberId === memberId ? 'message_self' : 'message_other'}>
                                         <a href={data.file} download>
-                                            {data.content}
+                                            {data.fileName}
                                         </a>
                                     </div>
                                 ) : (
-                                    <div className={data.memberId === memberId ? 'message_self' : 'message_other'}>
-                                        <span className="message_text">{data.content}</span>
+                                    <div className={data.from === memberId ? 'message_self' : 'message_other'}>
+                                        <span>{data.content}</span>
                                     </div>
                                 )}
                             </li>
@@ -153,15 +153,6 @@ export default function Message() {
                         <IoIosSend />
                     </button>
                 </div>
-                <button
-                    onClick={() => {
-                        apiClient.get('/api/v1/chat-room/2').then((r) => {
-                            console.log(r.data);
-                        });
-                    }}
-                >
-                    asdfasdf
-                </button>
             </div>
         </div>
     );
