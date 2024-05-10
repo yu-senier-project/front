@@ -4,120 +4,120 @@
     flex-direction: row;
     height: 100vh;
     width: 80vw;
-  }
-  
-  .message_container {
+}
+
+.message_container {
     flex: 1;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-  
+
     .message_header {
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      flex-direction: column;
-  
-      .message_profile_image {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        margin-left: 10px;
-      }
-  
-      .message_profile_name {
-        margin-left: 10px;
-        font-size: 1.5rem;
-      }
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        flex-direction: column;
+
+        .message_profile_image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .message_profile_name {
+            margin-left: 10px;
+            font-size: 1.5rem;
+        }
     }
-  
+
     #messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      background-color: white;
-  
-      #pre_messages {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-  
-      .message_self {
-        text-align: right;
-  
-        .message_self {
-          display: flex;
-          background-color: #71c9ce;
-          color: white;
-          padding: 10px;
-          border-radius: 10px;
-          margin-bottom: 5px;
-          max-width: 60%;
-          margin-left: auto;
-        }
-      }
-  
-      .message_other {
-        text-align: left;
-  
-        .message_other {
-          display: flex;
-          background-color: #e0e0e0;
-          padding: 10px;
-          border-radius: 10px;
-          margin-bottom: 5px;
-          max-width: 60%;
-          margin-right: auto;
-        }
-      }
-    }
-  
-    .form_container {
-      display: flex;
-      background-color: #e0e0e0;
-      padding: 5px;
-      border-radius: 30px;
-      margin: 10px;
-      align-items: center;
-  
-      #send_file_button {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-        svg {
-          width: 25px;
-          height: 25px;
-          color: gray;
-        }
-      }
-  
-      #message_input {
         flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 20px;
-        outline: none;
-        background-color: transparent;
-        font-size: 14px;
-        margin-right: 10px;
-      }
-  
-      #send_message_button {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        svg {
-          width: 25px;
-          height: 25px;
-          color: gray;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: white;
+
+        #pre_messages {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-      }
+
+        .message_self {
+            text-align: right;
+
+            .message_self {
+                display: flex;
+                background-color: #71c9ce;
+                color: white;
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 5px;
+                max-width: 40%;
+                margin-left: auto;
+            }
+        }
+
+        .message_other {
+            text-align: left;
+
+            .message_other {
+                display: flex;
+                background-color: #e0e0e0;
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 5px;
+                max-width: 40%;
+                margin-right: auto;
+            }
+        }
     }
-  }
-  
-  .load_more_button {
+
+    .form_container {
+        display: flex;
+        background-color: #e0e0e0;
+        padding: 5px;
+        border-radius: 30px;
+        margin: 10px;
+        align-items: center;
+
+        #send_file_button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            svg {
+                width: 25px;
+                height: 25px;
+                color: gray;
+            }
+        }
+
+        #message_input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            background-color: transparent;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        #send_message_button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            svg {
+                width: 25px;
+                height: 25px;
+                color: gray;
+            }
+        }
+    }
+}
+
+.load_more_button {
     background-color: #71c9ce;
     color: white;
     padding: 10px;
@@ -125,5 +125,4 @@
     border-radius: 10px;
     cursor: pointer;
     margin: 10px auto;
-  }
-  
+}
