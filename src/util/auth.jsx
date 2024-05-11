@@ -15,26 +15,31 @@ export function refreshAccessTokenInterceptor() {
   // 토큰 재발급 함수
   async function refreshAccessToken() {
     console.log("토큰 재발급");
-
-    // 새 토큰 발급 요청
     const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
+    console.log(refreshToken);
+    // 새 토큰 발급 요청
+    try {
+      const response = await apiClient.post(
+        "/api/v1/auth/refresh",
+        {},
+        {
+          headers: {
+            RefreshToken: refreshToken, // 헤더에 리프레시 토큰을 올바르게 설정
+          },
+        }
+      );
+
+      // 새 액세스 토큰 추출
+      const newAccessToken = response.headers.authorization.replace(
+        "Bearer ",
+        ""
+      );
+      localStorage.setItem("accessToken", newAccessToken);
+      return newAccessToken;
+    } catch (error) {
+      console.error("토큰 재발급 실패:", error);
+      return null; // 에러 발생 시 null 반환
     }
-
-    const response = await apiClient.post("/api/v1/auth/refresh", {}, {
-      headers: {
-        "Authorization": `Bearer ${refreshToken}`
-      }
-    });
-
-    const newAccessToken = response.headers.authorization.replace("Bearer ", "");
-    const newRefreshToken = response.headers.refreshtoken.replace("Bearer ", "");
-
-    localStorage.setItem("accessToken", newAccessToken);
-    localStorage.setItem("refreshToken", newRefreshToken);
-
-    return newAccessToken;
   }
 
   // 응답 인터셉터 설정
@@ -48,23 +53,19 @@ export function refreshAccessTokenInterceptor() {
       if (response && response.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           console.log("토큰 재발급 중");
-          // 토큰 재발급 중인 경우 기다림
-          return new Promise((resolve) => {
-            refreshSubscribers.push((newAccessToken) => {
-              originalRequest.headers[
-                "Authorization"
-              ] = `Bearer ${newAccessToken}`;
-              resolve(apiClient(originalRequest));
-            });
-          });
+          return;
         }
 
         // 토큰 재발급 상태로 변경
         originalRequest._retry = true;
         isRefreshing = true;
+        console.log("!!");
 
         try {
+          console.log("@@");
           const newAccessToken = await refreshAccessToken();
+          // console.log("토큰 갱신 완료", newAccessToken);
+
           isRefreshing = false; // 재발급 완료 후 상태 변경
           onRefreshed(newAccessToken);
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -100,6 +101,7 @@ export async function login(data) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
       } else {
+        console.log(token1, token2);
         console.error("토큰이 없습니다.");
         return false;
       }
