@@ -7,6 +7,7 @@ import "../../styles/chat/chatModal.scss";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import CloseButton from "../basic/CloseButton";
 import { useRef } from "react";
+import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
 const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
   const backgroundRef = useRef();
@@ -27,7 +28,7 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
       <div className="ChatModal-wrap">
         <div className="Feed-userInfo ChatModalUser">
           <UserInfo
-            clock={feedList.clock}
+            clock={feedList.createdAt}
             username={feedList.nickname}
             Icon={faX}
           ></UserInfo>
@@ -39,15 +40,50 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
           </div>
         </div>
         <div className="Feed-texts">
-          <div className="main-img">
-            <Imgs imgList={imgList}></Imgs>
-            <Buttons></Buttons>
-            <Texts
-              comment={feedList.comment}
-              loveNum={feedList.loveNum}
-              nickname={feedList.nickname}
-            ></Texts>
-          </div>
+          {imgList?.length !== 0 ? (
+            <div className="main-img">
+              <Imgs imgList={imgList}></Imgs>
+              <Buttons></Buttons>
+              <div
+                className="Texts"
+                style={{ height: "100px", overflow: "scroll" }}
+              >
+                <p className="Texts-good">좋아요 {feedList.loveNum}개</p>
+                {feedList.nickname !== "" && (
+                  <div>
+                    <span className="Texts-id">{feedList.nickname}</span>
+                    <span
+                      className="Texts-content"
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
+                      {feedList.content}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <p
+                style={{
+                  marginBottom: "10px",
+                  whiteSpace: "pre-wrap",
+                  width: "500px",
+                  height: "470px ",
+                  overflow: "scroll",
+                }}
+              >
+                {feedList.content}
+              </p>
+              <Buttons></Buttons>
+              <Texts
+                comment={""}
+                loveNum={feedList.loveNum}
+                nicknamse={""}
+              ></Texts>
+            </div>
+          )}
+
           <div>{<Chat id={feedList.id}></Chat>}</div>
         </div>
       </div>

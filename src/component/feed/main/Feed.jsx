@@ -9,8 +9,20 @@ import ChatModal from "../../chat/ChatModal";
 import { Setting } from "../../basic/Setting";
 import { UpdateFeed } from "../delete/UpdateFeed";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "@tanstack/react-query";
+import { getFeedImg } from "../../../apis/feedApis";
+import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 
-const Feed = ({ feedList, imgList }) => {
+const Feed = ({ feedList }) => {
+  const { isLoading, data } = useQuery({
+    queryKey: ["feedImg", feedList.id],
+    queryFn: () => getFeedImg(feedList.id),
+    refetchOnWindowFocus: true, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
+    staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
+  });
+
+  let imgList = data?.data;
+
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const [isSettingOpen, setIsSettingOpen] = useState(false);
@@ -39,7 +51,6 @@ const Feed = ({ feedList, imgList }) => {
 
   return (
     <div className="Feed">
-      {/* <UpdateFeed></UpdateFeed> */}
       {isUpdate ? (
         <UpdateFeed
           hanldUpdateCloseButtonClick={hanldUpdateCloseButtonClick}
@@ -53,35 +64,68 @@ const Feed = ({ feedList, imgList }) => {
           handleUpdateButtonClick={handleUpdateButtonClick}
         ></Setting>
       ) : null}
-      <div className="Feed-userInfo">
-        <UserInfo
-          clock={feedList.clock}
-          username={feedList.nickname}
-          Icon={faEllipsis}
-          handleSettingButtonClick={handleSettingButtonClick}
-        ></UserInfo>
-      </div>
-      <div className="Feed-texts">
-        <div className="main-img">
-          <Imgs imgList={imgList}></Imgs>
-          <Buttons></Buttons>
-          <Texts
-            comment={feedList.comment}
-            loveNum={feedList.loveNum}
-            nickname={feedList.nickname}
-          ></Texts>
-          <ChatButton onClick={handleChatButtonClick}></ChatButton>
-        </div>
+      <UserInfo
+        clock={feedList.createdAt}
+        username={feedList.nickname}
+        Icon={faEllipsis}
+        handleSettingButtonClick={handleSettingButtonClick}
+      ></UserInfo>
+      {imgList?.length !== 0 ? (
         <div>
-          {isChatOpen ? (
-            <ChatModal
-              imgList={imgList}
-              feedList={feedList}
-              handleChatButtonClick={handleChatButtonClick}
-            ></ChatModal>
-          ) : null}
+          <div className="Feed-userInfo"></div>
+          <div className="Feed-texts">
+            <div className="main-img">
+              <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
+              <Buttons></Buttons>
+              <Texts
+                comment={feedList.content}
+                loveNum={feedList.loveNum}
+                nickname={feedList.nickname}
+              ></Texts>
+              <ChatButton
+                onClick={handleChatButtonClick}
+                chatNum={feedList.commentCnt}
+              ></ChatButton>
+            </div>
+            <div>
+              {isChatOpen ? (
+                <ChatModal
+                  imgList={imgList}
+                  feedList={feedList}
+                  handleChatButtonClick={handleChatButtonClick}
+                ></ChatModal>
+              ) : null}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <div>
+            <p style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}>
+              {feedList.content}
+            </p>
+            <Buttons></Buttons>
+            <Texts
+              comment={""}
+              loveNum={feedList.loveNum}
+              nicknamse={""}
+            ></Texts>
+            <ChatButton
+              onClick={handleChatButtonClick}
+              chatNum={feedList.commentCnt}
+            ></ChatButton>
+          </div>
+          <div>
+            {isChatOpen ? (
+              <ChatModal
+                imgList={imgList}
+                feedList={feedList}
+                handleChatButtonClick={handleChatButtonClick}
+              ></ChatModal>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

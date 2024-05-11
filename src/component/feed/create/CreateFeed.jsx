@@ -5,36 +5,79 @@ import Image from "./Image";
 import CloseButton from "../../basic/CloseButton";
 import Button from "../../basic/Button";
 import useCreateFeed from "../../../store/feed/useCreateFeed";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { postFeed, postFeedImg } from "../../../apis/feedApis";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loading } from "../../basic/Loading";
 const CreateFeed = () => {
+  const queryClient = useQueryClient();
   const { setToggle } = useCreateFeed((state) => state);
   const formData = new FormData();
+  const hashList = useRef([]);
+  const mentionList = useRef([]);
+  const inputRef = useRef(null);
 
-  const [hash, setHash] = useState([]);
-  const [mention, setMention] = useState([]);
   const [content, setContent] = useState("");
   const [isChat, setIsChat] = useState(true);
+  const [imageList, setImageList] = useState([]);
 
   const onRemove = () => {
-    const result = content.replace(/@\[([\w\s]+)\]\(\d+\)/g, "$1");
+    const result = content.replace(/\[([\w\s\uAC00-\uD7A3]+)\]\(\d+\)/g, "$1");
     return result;
   };
 
-  const onSubmit = () => {
+  const postFeedWithImage = async (data) => {
+    let formData = new FormData();
+    let imageData;
+    let isImg = false;
+    if (data.imageList.length !== 0) {
+      for (let i = 0; i < data.imageList.length; i++) {
+        formData.append("files", data.imageList[i]);
+      }
+      imageData = await postFeedImg(formData);
+      isImg = true;
+    }
+
+    const postData = {
+      content: data.removeContent,
+      hashtag: data.hashList.current,
+      mention: data.mentionList.current,
+      isCommentEnabled: data.isChat,
+      postFileList: isImg ? imageData : [],
+    };
+
+    return await postFeed(postData);
+  };
+
+  const { data, mutate, mutateAsync, status } = useMutation({
+    mutationFn: postFeedWithImage,
+    onSuccess: (data) => {
+      onClose();
+      queryClient.invalidateQueries("feeds");
+      queryClient.invalidateQueries("feedImg");
+    },
+    onError: () => {
+      alert("게시물 등록에 실패했습니다. 다시 시도해 주세요!");
+    },
+  });
+
+  const onSubmit = async () => {
     let removeContent = onRemove();
-  };
-
-  const appendHash = (text) => {
-    let arr = [...hash, text];
-    setHash(arr);
-  };
-
-  const appendMention = (text) => {
-    let arr = [...mention, text];
-    setMention(arr);
+    mutate({
+      imageList,
+      removeContent,
+      hashList,
+      mentionList,
+      isChat,
+    });
   };
 
   const onChangeContent = (e) => {
+    if (content.length >= 251) {
+      alert("250자까지 작성가능합니다.");
+      setContent(content.slice(0, 250));
+      return;
+    }
     setContent(e);
   };
 
@@ -46,7 +89,13 @@ const CreateFeed = () => {
     setToggle();
   };
 
-  console.log(isChat);
+  if (status == "pending") {
+    return (
+      <div>
+        <Loading text={"게시물 등록중..."}></Loading>
+      </div>
+    );
+  }
 
   return (
     <div className="CreateFeed">
@@ -58,14 +107,15 @@ const CreateFeed = () => {
           </div>
         </div>
         <div className="img">
-          <Image formData={formData}></Image>
+          <Image formData={formData} setImageList={setImageList}></Image>
         </div>
         <div className="createFeed-content">
           <Content
-            appendHash={appendHash}
-            appendMention={appendMention}
+            hashList={hashList}
+            mentionList={mentionList}
             onChangeContent={onChangeContent}
             content={content}
+            inputRef={inputRef}
           ></Content>
         </div>
         <div className="setting">
@@ -74,7 +124,7 @@ const CreateFeed = () => {
             <Button
               text={"게시글 등록"}
               fontSize={16}
-              onCilck={onSubmit}
+              onClick={onSubmit}
             ></Button>
           </div>
         </div>

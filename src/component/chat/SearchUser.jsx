@@ -44,9 +44,9 @@ export const SearchUser = ({ onMentionClick }) => {
           return newIndex;
         });
       } else if (e.key === "Enter") {
+        e.stopPropagation();
         const selectedUser = users[selectedIndexRef.current];
         onMentionClick(selectedUser.userName);
-        e.stopPropagation();
       }
     };
 

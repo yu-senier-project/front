@@ -66,11 +66,11 @@ const HashMentionInput = ({
   };
 
   const handleAddMention = (mention, plainTextValue, index, start, end) => {
-    appendMention(plainTextValue);
+    appendMention(`@${plainTextValue}`);
   };
 
   const handleAddHash = (mention, plainTextValue, index, start, end) => {
-    appendHash(plainTextValue);
+    appendHash(`#${plainTextValue}`);
   };
 
   return (
@@ -100,11 +100,11 @@ const HashMentionInput = ({
         <Mention
           trigger="#"
           data={[
-            { id: "1", display: "UserOne" },
-            { id: "2", display: "UserTwo" },
-            { id: "3", display: "Uswo" },
-            { id: "4", display: "UsasdfasdTwo" },
-            { id: "5", display: "Userss" },
+            { id: "1", display: "모이프" },
+            { id: "2", display: "마마마" },
+            { id: "3", display: "보보보" },
+            { id: "4", display: "ㄹㄹㄹㄹ" },
+            { id: "5", display: "가보자" },
           ]} // 예
           renderSuggestion={renderUserSuggestion}
           onAdd={handleAddHash}

@@ -24,6 +24,7 @@ export default function Login() {
     };
     const success = await login(data);
     if (success) {
+      localStorage.setItem("login", true);
       setIsLogin();
       navigate("/Home");
     } else {

@@ -13,16 +13,18 @@ import CreateFeed from "./component/feed/create/CreateFeed";
 import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
 function App() {
+  const login = localStorage.getItem("login");
   const { toggle } = useCreateFeed((state) => state);
   const { isLogin } = useLoginStore((state) => state);
   return (
     <BrowserRouter>
-      {isLogin && <SmallNav></SmallNav>}
+      {login && <SmallNav></SmallNav>}
       {toggle && <CreateFeed></CreateFeed>}
       <Routes>
         <Route path="/" element={<Login />} />
@@ -33,6 +35,7 @@ function App() {
         <Route path="/Search" element={<Search />} />
         {/* <Route path="/Message" element={<Message />} /> */}
       </Routes>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </BrowserRouter>
   );
 }
