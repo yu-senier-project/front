@@ -23,7 +23,7 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom }) {
             <ul>
                 {/* 수정 */}
                 {rooms.length > 0 ? (
-                    rooms.map((room) => (
+                    rooms.map((room, index) => (
                         <div
                             style={{
                                 display: 'flex',
