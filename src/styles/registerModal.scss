@@ -1,24 +1,75 @@
-.registermodal_contaniner {
-    position: fixed; // 포지션을 fixed로 설정
-    top: 50%; // 상단에서 50% 위치
-    left: 50%; // 왼쪽에서 50% 위치
-    transform: translate(-50%, -50%); // 정확한 중앙 정렬을 위해 변환 사용
-    padding: 20px;
+.register-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  width: 50%;
+  height: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    width: 50%;
-    height: 600px;
-    background-color: #fff; // 밝은 배경
-    border-radius: 8px; // 모서리 둥글게
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 그림자 효과
-    text-align: center;
-    p {
-        margin: 10px 0;
-        color: #333; // 어두운 글자 색
-        font-size: 16px;
-        line-height: 1.5;
-    }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     h1 {
-        float: left;
-        padding-left: 25px;
+      float: left;
+      padding-left: 27px;
+      margin-bottom: 10px;
     }
+    .close-button {
+      background-color: transparent;
+      border: none;
+      padding-right: 10px;
+      cursor: pointer;
+    }
+  }
+  .company-list {
+    background-color: rgb(216, 216, 216);
+    height: 300px;
+    width: 90%;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 3px solid #ccc; // 아이템 사이의 구분선
+
+      &:last-child {
+        border-bottom: none; // 마지막 항목은 구분선 없음
+      }
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #71c9ce; // 버튼 배경색
+      color: white; // 텍스트 색상
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s; // 버튼 호버 효과
+
+      &:hover {
+        background-color: darken(#60aeb3, 10%);
+      }
+      &:active {
+        background-color: #71c9ce;
+      }
+    }
+  }
 }
