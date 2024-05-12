@@ -31,6 +31,7 @@ export const MentionTextarea = ({
   }, []);
 
   useEffect(() => {
+    console.log(hashList?.current);
     //없는 해시태그 입력시
     if (hashValue !== "") {
       if (value[value.length - 1] == " ") {
@@ -40,7 +41,7 @@ export const MentionTextarea = ({
       }
     }
 
-    console.log(hashList.current, mentionList.current);
+    console.log(hashList?.current, mentionList?.current);
 
     // 멘션
     if (value[value.length - 1] == " ") {
@@ -65,7 +66,9 @@ export const MentionTextarea = ({
       setHashValue(hash);
     }
 
-    hashList.current = hashList.current.filter((item) => value.includes(item));
+    hashList.current = hashList?.current?.filter((item) =>
+      value.includes(item)
+    );
 
     if (!value.includes("#")) {
       setOnHash(false);

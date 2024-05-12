@@ -12,7 +12,7 @@ export const SearchUser = ({ onMentionClick, metionValue }) => {
   const fetchData = async () => {
     try {
       let data = await apiClient.get(
-        `/api/v1/member/search-by-nickname?param=${metionValue}`
+        `/api/v1/member/search?nickname=${metionValue}`
       );
       setUsers(
         data.data.map((item) => ({

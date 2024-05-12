@@ -24,6 +24,10 @@ export const getFeedCommentReply = async (postId, commentId) => {
   return apiClient.get(`/api/v1/post/${postId}/comment/${commentId}/list`);
 };
 
+export const getUpdateFeed = async (postId) => {
+  return apiClient.get(`/api/v1/post/${postId}`);
+};
+
 // 게시글 작성 api
 export const postFeed = async (data) => {
   try {

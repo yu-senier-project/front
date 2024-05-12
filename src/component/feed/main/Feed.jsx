@@ -70,6 +70,7 @@ const Feed = ({ feedList }) => {
     <div className="Feed">
       {isUpdate ? (
         <UpdateFeed
+          setIsUpdate={setIsUpdate}
           hanldUpdateCloseButtonClick={hanldUpdateCloseButtonClick}
           feedList={feedList}
           imgList={imgList}
