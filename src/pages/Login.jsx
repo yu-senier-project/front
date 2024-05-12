@@ -62,7 +62,7 @@ export default function Login() {
             <Button text={'회원가입'} color={'registration'} onClick={handleOpen}></Button>
             <div style={{ width: '50%' }}>
                 <Button size={'text'} text={'아이디 찾기'} onClick={() => navigate('/Id')} />
-                <Button size={'text'} text={'비밀번호 찾기'} onClick={() => navigate('/Password')} />
+                <Button size={'text'} text={'비밀번호 초기화'} onClick={() => navigate('/Password')} />
             </div>
         </div>
     );

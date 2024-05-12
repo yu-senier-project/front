@@ -49,6 +49,7 @@ export default function PwInitCheckId() {
             return;
         }
         console.log(firstName, secondName, id, formData.email);
+        navigate('/PasswordInit', { state: { email: formData.email } });
     };
 
     const sendAuthCode = () => {

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import IdFind from './pages/Auth/IdFind';
 import PwInitCheckId from './pages/Auth/PwInitCheckId';
+import PwInit from './pages/Auth/PwInit';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import SmallNav from './component/nav/SmallNav';
@@ -29,7 +30,7 @@ function App() {
                 <Route path="/Id" element={<IdFind />} />
                 <Route path="/CheckId" element={<IdCheck />} />
                 <Route path="/Password" element={<PwInitCheckId />} />
-                <Route path="/PasswordInit" element={<PwInitCheckId />} />
+                <Route path="/PasswordInit" element={<PwInit />} />
 
                 <Route path="/Home" element={<Home />} />
                 <Route path="/Search" element={<Search />} />
