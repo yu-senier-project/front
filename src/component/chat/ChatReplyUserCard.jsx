@@ -2,6 +2,7 @@ import React from "react";
 import "../../styles/chat/chatUserCard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { postCommentReply } from "../../apis/feedApis";
 
 export const ChatReplyUserCard = ({
   userName,
@@ -11,6 +12,8 @@ export const ChatReplyUserCard = ({
   commentWidth,
   loveNum,
   onClickReply,
+  postId,
+  commentId,
 }) => {
   const imgClassName = `width-${imgWidth}`;
   const textClassName = `ChatUserCard-text width-${commentWidth}`;
@@ -34,7 +37,7 @@ export const ChatReplyUserCard = ({
             className="ChatUserCard-chat-grey"
             style={{ marginRight: "10px" }}
             onClick={() => {
-              onClickReply(userName);
+              onClickReply(userName, commentId);
             }}
           >
             답글 달기

@@ -17,10 +17,12 @@ const Chat = ({ id, data }) => {
     setReplyUser(value);
   };
 
+  console.log(data);
+
   return (
     <div className="Chat width-400">
       <div className="chat-userCard">
-        {data.length !== 0 ? (
+        {data?.length !== 0 ? (
           <div>
             {data?.map((item) => (
               <ChatUserCard

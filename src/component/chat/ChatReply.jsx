@@ -49,6 +49,8 @@ export const ChatReply = ({ replyNum, onClickReply, postId, commentId }) => {
               userName={item.postMember.nickname}
               comment={item.content}
               loveNum={item.likeCnt}
+              postId={postId}
+              commentId={commentId}
             ></ChatReplyUserCard>
           ))}
 

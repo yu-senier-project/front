@@ -1,8 +1,8 @@
 import apiClient from "../util/BaseUrl";
 
 // 모든 게시물 가져오는 api
-export const getAllFeed = async () => {
-  return apiClient.get("/api/v1/post/home");
+export const getAllFeed = async (cursorValue) => {
+  return apiClient.get(`/api/v1/post/home?cursorValue=${cursorValue}`);
 };
 
 // 게시물 이미지 가져오는 api

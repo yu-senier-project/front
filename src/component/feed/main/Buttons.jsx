@@ -5,6 +5,7 @@ import {
   faPaperPlane,
   faBookmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { postFeedLike } from "../../../apis/feedApis";
 
 import "../../../styles/feed/main/buttons.scss";
 

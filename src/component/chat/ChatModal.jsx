@@ -24,7 +24,7 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  // console.log(data);
+  console.log(data);
 
   const backgroundRef = useRef();
 
@@ -103,11 +103,7 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
           )}
 
           <div>
-            {isLoading ? (
-              <div>loading...</div>
-            ) : (
-              <Chat id={feedList.id} data={data?.data}></Chat>
-            )}
+            <Chat id={feedList.id} data={data?.data}></Chat>
           </div>
         </div>
       </div>
