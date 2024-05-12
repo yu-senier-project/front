@@ -89,11 +89,9 @@ export const postCommentLike = async (data) => {
 };
 
 // 게시물 삭제 api
-export const deleteFeed = async (data) => {
+export const deleteFeed = async (postId) => {
   try {
-    const response = await apiClient.delete(`/api/v1/post/${postId}`, {
-      data: data,
-    });
+    const response = await apiClient.delete(`/api/v1/post/${postId}`);
     return response.data;
   } catch (error) {
     console.log(error);

@@ -48,6 +48,7 @@ const Home = () => {
   }
 
   let list = data?.pages.map((item) => item.data);
+  console.log(list);
   list = list.map((item1) => {
     return item1.map((item) => ({
       id: item.id,

@@ -31,6 +31,17 @@ export const MentionInput = ({
   }, []);
 
   useEffect(() => {
+    // 없는 해시태그 입력시
+    if (hashValue !== "") {
+      if (value[value.length - 1] == " ") {
+        hashList.current.push(`#${hashValue}`);
+        setHashValue("");
+        setOnHash(false);
+      }
+    }
+
+    console.log(hashList.current, mentionList.current);
+
     // 멘션
     if (value[value.length - 1] == " ") {
       setOnMention(false);
@@ -40,14 +51,9 @@ export const MentionInput = ({
       return;
     }
 
-    if (!value.includes("@")) {
-      setOnMention(false);
-      setMentionValue("");
-      return;
-    }
-
     if (onMention) {
-      let mention = value.substring(currentCusor + 1);
+      let mention = value.substring(currentCusor);
+
       setMentionValue(mention);
     }
 
@@ -57,7 +63,7 @@ export const MentionInput = ({
 
     // 해시태그
     if (onHash) {
-      let hash = value.substring(currentCusor + 1);
+      let hash = value.substring(currentCusor);
       setHashValue(hash);
     }
 
@@ -66,6 +72,12 @@ export const MentionInput = ({
     if (!value.includes("#")) {
       setOnHash(false);
       setHashValue("");
+      return;
+    }
+
+    if (!value.includes("@")) {
+      setOnMention(false);
+      setMentionValue("");
       return;
     }
   }, [value, onMention, currentCusor, onHash]);
@@ -109,6 +121,7 @@ export const MentionInput = ({
   const onHashClick = (hash) => {
     hashList.current.push(`#${hash}`);
     let newValue = value.substring(0, currentCusor) + hash + " ";
+    setHashValue("");
     setOnHash(false);
     onChange(newValue);
 
@@ -118,10 +131,16 @@ export const MentionInput = ({
   return (
     <div className="MentionInput">
       {onMention ? (
-        <SearchUser onMentionClick={onMentionClick}></SearchUser>
+        <SearchUser
+          onMentionClick={onMentionClick}
+          metionValue={metionValue}
+        ></SearchUser>
       ) : null}
       {onHash ? (
-        <SearchHashTag onHashClick={onHashClick}></SearchHashTag>
+        <SearchHashTag
+          onHashClick={onHashClick}
+          hashValue={hashValue}
+        ></SearchHashTag>
       ) : null}
       <input
         onKeyDown={onKeyDown}

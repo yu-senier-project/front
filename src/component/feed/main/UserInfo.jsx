@@ -12,6 +12,8 @@ const UserInfo = ({ username, img, clock, handleSettingButtonClick }) => {
   // 시간 저장
   time = getTime(diffTime);
 
+  const myName = localStorage.getItem("userNickName");
+
   return (
     <div className="UserInfo" style={{ height: "50px" }}>
       <UserCard
@@ -20,12 +22,14 @@ const UserInfo = ({ username, img, clock, handleSettingButtonClick }) => {
         img="public/image/dp.jpg"
       ></UserCard>
       <p className="UserInfo-clock">{time}</p>
-      <button
-        className="UserInfo-setting-btn"
-        onClick={handleSettingButtonClick}
-      >
-        <FontAwesomeIcon icon={faEllipsis} />
-      </button>
+      {myName == username ? (
+        <button
+          className="UserInfo-setting-btn"
+          onClick={handleSettingButtonClick}
+        >
+          <FontAwesomeIcon icon={faEllipsis} />
+        </button>
+      ) : null}
     </div>
   );
 };

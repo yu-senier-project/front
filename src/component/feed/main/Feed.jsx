@@ -9,9 +9,8 @@ import ChatModal from "../../chat/ChatModal";
 import { Setting } from "../../basic/Setting";
 import { UpdateFeed } from "../delete/UpdateFeed";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useQuery } from "@tanstack/react-query";
-import { getFeedImg } from "../../../apis/feedApis";
-import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -51,6 +50,22 @@ const Feed = ({ feedList }) => {
     setIsUpdate(false);
   };
 
+  const queryClient = useQueryClient();
+  const { status, mutate } = useMutation({
+    mutationFn: deleteFeed,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["feeds"]);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  const handleOnDelete = () => {
+    mutate(feedList.id);
+    setIsSettingOpen(false);
+  };
+
   return (
     <div className="Feed">
       {isUpdate ? (
@@ -63,7 +78,16 @@ const Feed = ({ feedList }) => {
       {isSettingOpen ? (
         <Setting
           width={150}
-          handleUpdateButtonClick={handleUpdateButtonClick}
+          settingTitleList={[
+            {
+              title: "삭제하기",
+              onClick: handleOnDelete,
+            },
+            {
+              title: "수정하기",
+              onClick: handleUpdateButtonClick,
+            },
+          ]}
         ></Setting>
       ) : null}
       <UserInfo
