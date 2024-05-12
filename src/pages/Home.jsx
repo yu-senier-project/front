@@ -25,7 +25,7 @@ const Home = () => {
   const feedList = list?.map((item) => ({
     id: item.id,
     content: item.content,
-    isChatOpen: item.isCommentEnabled,
+    isCommentEnabled: item.isCommentEnabled,
     fileCnt: item.fileCnt,
     createdAt: item.createdAt,
     loveNum: item.likeCnt,

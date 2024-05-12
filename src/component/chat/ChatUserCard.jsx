@@ -1,6 +1,7 @@
 import "../../styles/chat/chatUserCard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { ChatReply } from "./ChatReply";
 
 const ChatUserCard = ({
@@ -12,7 +13,10 @@ const ChatUserCard = ({
   loveNum,
   replyNum,
   onClickReply,
+  commentId,
+  postId,
 }) => {
+  const myName = localStorage.getItem("userNickName");
   const imgClassName = `width-${imgWidth}`;
   const textClassName = `ChatUserCard-text width-${commentWidth}`;
   return (
@@ -36,11 +40,16 @@ const ChatUserCard = ({
               className="ChatUserCard-chat-grey"
               style={{ marginRight: "10px" }}
               onClick={() => {
-                onClickReply(userName);
+                onClickReply(userName, commentId);
               }}
             >
               답글 달기
             </span>
+            {myName == userName ? (
+              <span className="ChatUserCard-setting-btn">
+                <FontAwesomeIcon icon={faEllipsis} />{" "}
+              </span>
+            ) : null}
             {loveNum == 0 ? null : (
               <span className="ChatUserCard-chat-grey">좋아요 {loveNum}개</span>
             )}
@@ -53,7 +62,14 @@ const ChatUserCard = ({
         </div>
       </div>
       <div className="ChatUserCard-reply">
-        <ChatReply replyNum={replyNum} onClickReply={onClickReply}></ChatReply>
+        <div>
+          <ChatReply
+            postId={postId}
+            commentId={commentId}
+            replyNum={replyNum}
+            onClickReply={onClickReply}
+          ></ChatReply>
+        </div>
       </div>
     </div>
   );

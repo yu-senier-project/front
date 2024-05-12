@@ -30,6 +30,7 @@
 }
 
 .ChatUserCard-reply {
+  display: flex;
   margin-left: 55px;
 }
 
@@ -37,4 +38,13 @@
   font-size: 12px;
   color: rgb(160, 160, 160);
   cursor: pointer;
+}
+
+.ChatUserCard-setting-btn {
+  cursor: pointer;
+  display: none;
+}
+
+.ChatUserCard:hover .ChatUserCard-setting-btn {
+  display: inline; /* 마우스가 ChatUserCard 위에 있을 때 버튼을 보여줍니다 */
 }

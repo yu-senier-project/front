@@ -82,10 +82,12 @@ const Feed = ({ feedList }) => {
                 loveNum={feedList.loveNum}
                 nickname={feedList.nickname}
               ></Texts>
-              <ChatButton
-                onClick={handleChatButtonClick}
-                chatNum={feedList.commentCnt}
-              ></ChatButton>
+              {feedList.isCommentEnabled ? (
+                <ChatButton
+                  onClick={handleChatButtonClick}
+                  chatNum={feedList.commentCnt}
+                ></ChatButton>
+              ) : null}
             </div>
             <div>
               {isChatOpen ? (
@@ -110,10 +112,12 @@ const Feed = ({ feedList }) => {
               loveNum={feedList.loveNum}
               nicknamse={""}
             ></Texts>
-            <ChatButton
-              onClick={handleChatButtonClick}
-              chatNum={feedList.commentCnt}
-            ></ChatButton>
+            {feedList.isCommentEnabled ? (
+              <ChatButton
+                onClick={handleChatButtonClick}
+                chatNum={feedList.commentCnt}
+              ></ChatButton>
+            ) : null}
           </div>
           <div>
             {isChatOpen ? (

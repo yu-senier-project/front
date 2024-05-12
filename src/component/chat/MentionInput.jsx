@@ -9,6 +9,7 @@ export const MentionInput = ({
   inputRef,
   mentionList,
   hashList,
+  onKeyDown,
 }) => {
   // @ 입력시 검색 창
   const [onMention, setOnMention] = useState(false);
@@ -123,6 +124,7 @@ export const MentionInput = ({
         <SearchHashTag onHashClick={onHashClick}></SearchHashTag>
       ) : null}
       <input
+        onKeyDown={onKeyDown}
         type="text"
         value={value}
         onChange={onChangeInput}

@@ -6,10 +6,26 @@ import Texts from "../feed/main/Texts";
 import "../../styles/chat/chatModal.scss";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import CloseButton from "../basic/CloseButton";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
+import { getFeedComment } from "../../apis/feedApis";
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../../util/BaseUrl";
 
 const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["feedComment", feedList.id],
+    queryFn: () => {
+      return getFeedComment(feedList.id);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
+  // console.log(data);
+
   const backgroundRef = useRef();
 
   // 모달 바깥 클릭했을 때 닫는 코드
@@ -18,6 +34,8 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
       handleChatButtonClick();
     }
   };
+
+  // if (isError) return <div>Error fetching comments</div>;
 
   return (
     <div
@@ -84,7 +102,13 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
             </div>
           )}
 
-          <div>{<Chat id={feedList.id}></Chat>}</div>
+          <div>
+            {isLoading ? (
+              <div>loading...</div>
+            ) : (
+              <Chat id={feedList.id} data={data?.data}></Chat>
+            )}
+          </div>
         </div>
       </div>
     </div>
