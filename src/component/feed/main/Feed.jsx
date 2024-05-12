@@ -17,7 +17,7 @@ const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
     queryKey: ["feedImg", feedList.id],
     queryFn: () => getFeedImg(feedList.id),
-    refetchOnWindowFocus: true, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
+    refetchOnWindowFocus: false, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
     staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
   });
 
@@ -28,6 +28,8 @@ const Feed = ({ feedList }) => {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
 
   const [isUpdate, setIsUpdate] = useState(false);
+
+  const [falseLoveNum, setFalseLoveNum] = useState(feedList.loveNum);
 
   const handleChatButtonClick = () => {
     setIsChatOpen(!isChatOpen);
@@ -76,11 +78,17 @@ const Feed = ({ feedList }) => {
           <div className="Feed-texts">
             <div className="main-img">
               <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
-              <Buttons></Buttons>
+              <Buttons
+                postId={feedList.id}
+                like={feedList.liked}
+                setFalseLoveNum={setFalseLoveNum}
+                falseLoveNum={falseLoveNum}
+              ></Buttons>
               <Texts
                 comment={feedList.content}
                 loveNum={feedList.loveNum}
                 nickname={feedList.nickname}
+                falseLoveNum={falseLoveNum}
               ></Texts>
               {feedList.isCommentEnabled ? (
                 <ChatButton
@@ -106,11 +114,17 @@ const Feed = ({ feedList }) => {
             <p style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}>
               {feedList.content}
             </p>
-            <Buttons></Buttons>
+            <Buttons
+              postId={feedList.id}
+              like={feedList.liked}
+              setFalseLoveNum={setFalseLoveNum}
+              falseLoveNum={falseLoveNum}
+            ></Buttons>
             <Texts
               comment={""}
               loveNum={feedList.loveNum}
               nicknamse={""}
+              falseLoveNum={falseLoveNum}
             ></Texts>
             {feedList.isCommentEnabled ? (
               <ChatButton

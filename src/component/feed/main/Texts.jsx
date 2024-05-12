@@ -1,8 +1,8 @@
 import "../../../styles/feed/main/texts.scss";
-const Texts = ({ loveNum, nickname, comment }) => {
+const Texts = ({ loveNum, nickname, comment, falseLoveNum }) => {
   return (
     <div className="Texts">
-      <p className="Texts-good">좋아요 {loveNum}개</p>
+      <p className="Texts-good">좋아요 {falseLoveNum}개</p>
       {nickname !== "" && (
         <div>
           <span className="Texts-id">{nickname}</span>

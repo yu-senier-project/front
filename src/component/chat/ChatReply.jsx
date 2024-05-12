@@ -42,6 +42,7 @@ export const ChatReply = ({ replyNum, onClickReply, postId, commentId }) => {
         >
           {data?.data?.map((item) => (
             <ChatReplyUserCard
+              liked={item.liked}
               onClickReply={onClickReply}
               img="public/image/dp.jpg"
               imgWidth={30}
@@ -51,27 +52,9 @@ export const ChatReply = ({ replyNum, onClickReply, postId, commentId }) => {
               loveNum={item.likeCnt}
               postId={postId}
               commentId={commentId}
+              replyId={item.commentId}
             ></ChatReplyUserCard>
           ))}
-
-          {/* <ChatReplyUserCard
-            onClickReply={onClickReply}
-            img="public/image/dp.jpg"
-            imgWidth={30}
-            commentWidth={235}
-            userName={"yeosdfngi"}
-            comment={"안녕하세요"}
-            loveNum={5}
-          ></ChatReplyUserCard>
-          <ChatReplyUserCard
-            onClickReply={onClickReply}
-            img="public/image/dp.jpg"
-            imgWidth={30}
-            commentWidth={235}
-            userName={"yeagi"}
-            comment={"안녕하세요"}
-            loveNum={5}
-          ></ChatReplyUserCard> */}
         </div>
       ) : null}
     </div>

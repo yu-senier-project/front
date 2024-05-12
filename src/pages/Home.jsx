@@ -46,7 +46,6 @@ const Home = () => {
       </div>
     );
   }
-  console.log(data);
 
   let list = data?.pages.map((item) => item.data);
   list = list.map((item1) => {

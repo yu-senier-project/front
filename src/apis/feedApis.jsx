@@ -2,7 +2,11 @@ import apiClient from "../util/BaseUrl";
 
 // 모든 게시물 가져오는 api
 export const getAllFeed = async (cursorValue) => {
-  return apiClient.get(`/api/v1/post/home?cursorValue=${cursorValue}`);
+  let data = await apiClient.get(
+    `/api/v1/post/home?cursorValue=${cursorValue}`
+  );
+  console.log(data);
+  return data;
 };
 
 // 게시물 이미지 가져오는 api
@@ -85,9 +89,11 @@ export const postCommentLike = async (data) => {
 };
 
 // 게시물 삭제 api
-export const deleteFeed = async (postId) => {
+export const deleteFeed = async (data) => {
   try {
-    const response = await apiClient.delete(`/api/v1/post/${postId}`, data);
+    const response = await apiClient.delete(`/api/v1/post/${postId}`, {
+      data: data,
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -97,7 +103,9 @@ export const deleteFeed = async (postId) => {
 // 게시물 좋아요 취소 api
 export const deleteFeedLike = async (data) => {
   try {
-    const response = await apiClient.delete(`/api/v1/post/like`, data);
+    const response = await apiClient.delete(`/api/v1/post/like`, {
+      data: data,
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -107,7 +115,9 @@ export const deleteFeedLike = async (data) => {
 // 댓글 삭제 api
 export const deleteComment = async (data) => {
   try {
-    const response = await apiClient.delete(`/api/v1/post/comment`, data);
+    const response = await apiClient.delete(`/api/v1/post/comment`, {
+      data: data,
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -117,7 +127,9 @@ export const deleteComment = async (data) => {
 // 댓글 좋아요 취소 api
 export const deleteCommentLike = async (data) => {
   try {
-    const response = await apiClient.delete(`/api/v1/post/comment/like`, data);
+    const response = await apiClient.delete(`/api/v1/post/comment/like`, {
+      data: data,
+    });
     return response.data;
   } catch (error) {
     console.log(error);

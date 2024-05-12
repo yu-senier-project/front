@@ -26,6 +26,7 @@ const Chat = ({ id, data }) => {
           <div>
             {data?.map((item) => (
               <ChatUserCard
+                liked={item.liked}
                 img="public/image/dp.jpg"
                 commentId={item.commentId}
                 postId={id}
