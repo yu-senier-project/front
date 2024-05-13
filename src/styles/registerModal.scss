@@ -13,27 +13,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  // h1 {
+  //   float: left;
+  //   margin-right: 100px;
+  //   margin-bottom: 10px;
+  // }
+  .title{
+    // position: fixed;
+    text-align: start;
+    width: 70%;
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
   .header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    h1 {
-      float: left;
-      padding-left: 27px;
-      margin-bottom: 10px;
-    }
+    height: 50px;
     .close-button {
       background-color: transparent;
       border: none;
       padding-right: 10px;
-      cursor: pointer;
+      cursor: pointer; 
     }
   }
   .company-list {
     background-color: rgb(216, 216, 216);
     height: 300px;
-    width: 90%;
+    width: 70%;
     margin-bottom: 20px;
     margin-top: 10px;
     border-radius: 8px;
@@ -72,4 +79,29 @@
       }
     }
   }
+  .birthday-selecter{
+    width: 70%;
+    
+    .birthday{
+      text-align: start;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    }
+  }
+  .name-space{
+    width: 100%;   
+    Input{
+        margin: 10px 33px 20px 33px;
+    }
+}
+.password-space{
+    width: 100%;
+    Input{
+      margin: 10px 33px 20px 33px;
+
+    }
+}
+}
+#input-error{
+  border: 2px solid red;
 }
