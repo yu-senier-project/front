@@ -1,0 +1,16 @@
+.Loading {
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  position: fixed;
+  z-index: 10000;
+  text-align: center;
+
+  .Loading-icon {
+    display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+    justify-content: center; /* 가로 방향 가운데 정렬 */
+    align-items: center; /* 세로 방향 가운데 정렬 */
+    height: 100vh; /* 화면의 전체 높이만큼 요소를 차지하도록 설정 */
+  }
+}

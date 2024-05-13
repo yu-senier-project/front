@@ -13,23 +13,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../basic/Button";
 
-const Image = ({ formData }) => {
+const Image = ({ formData, setImageList }) => {
   const [showImages, setShowImages] = useState([]);
 
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    formData.delete("file");
-    if (images.length !== 0) {
-      for (let i = 0; i < images.length; i++) {
-        formData.append("file", images[i]);
-      }
-    }
-
-    let values = formData.values();
-    for (const pair of values) {
-      console.log(pair);
-    }
+    setImageList(images);
+    // formData.delete("files");
+    // if (images.length !== 0) {
+    //   for (let i = 0; i < images.length; i++) {
+    //     formData.append("files", images[i]);
+    //   }
+    // }
   }, [images]);
 
   const handleAddImages = (event) => {

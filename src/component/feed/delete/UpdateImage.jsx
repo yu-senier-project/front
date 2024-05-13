@@ -12,28 +12,27 @@ import "../../../styles/feed/create/image.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-const Image = ({ formData, imgList }) => {
-  const [showImages, setShowImages] = useState(imgList);
+const UpdateImage = ({ formData, imgList, setImageList }) => {
+  let imageList = imgList.map((item) => item);
+  console.log(imageList);
+  const [showImages, setShowImages] = useState(
+    imageList.map((item) => item.uploadFileURL)
+  );
 
   const [images, setImages] = useState(imgList);
 
   useEffect(() => {
+    setImageList(images);
     formData.delete("file");
-    if (images.length !== 0) {
-      for (let i = 0; i < images.length; i++) {
-        formData.append("file", images[i]);
-      }
-    }
   }, [images]);
 
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
-    if (imageLists.length + showImages.length > 10) {
+    let imageUrlLists = [...showImages];
+    if (imageUrlLists.length == 10) {
       alert("이미지는 10장만 넣을 수 있습니다!");
       return;
     }
-
-    let imageUrlLists = [...showImages];
 
     let list = [];
     for (let i = 0; i < imageLists.length; i++) {
@@ -67,7 +66,7 @@ const Image = ({ formData, imgList }) => {
         style={{ display: "none" }}
       />
       {showImages.length >= 1 && (
-        <div className="images">
+        <div className="images updateImage">
           <Swiper
             pagination={{
               type: "fraction",
@@ -104,4 +103,4 @@ const Image = ({ formData, imgList }) => {
   );
 };
 
-export default Image;
+export default UpdateImage;

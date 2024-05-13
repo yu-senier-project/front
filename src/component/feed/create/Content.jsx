@@ -3,7 +3,16 @@ import { useEffect, useState } from "react";
 import UserCard from "../../UserCard";
 import CreateFeedFindUser from "./CreateFeedFindUser";
 import HashMentionInput from "../../basic/HashMentionInput";
-const Content = ({ appendHash, appendMention, onChangeContent, content }) => {
+import { MentionTextarea } from "../../basic/MentionTextarea";
+import { SearchUser } from "../../chat/SearchUser";
+import { SearchHashTag } from "../../chat/SearchHashTag";
+const Content = ({
+  onChangeContent,
+  content,
+  hashList,
+  mentionList,
+  inputRef,
+}) => {
   // 멘션하는지 확인하는 부분
 
   return (
@@ -13,17 +22,14 @@ const Content = ({ appendHash, appendMention, onChangeContent, content }) => {
         width="width-40"
         img="public/image/dp.jpg"
       ></UserCard>
-      <HashMentionInput
-        placeholder={"문구를 입력하세요..."}
-        width={100}
-        height={200}
-        backgroundColor="white"
+      <MentionTextarea
+        inputRef={inputRef}
+        hashList={hashList}
+        mentionList={mentionList}
         value={content}
         onChange={onChangeContent}
-        appendHash={appendHash}
-        appendMention={appendMention}
-        fontSize={16}
-      ></HashMentionInput>
+      ></MentionTextarea>
+      <p> {content.length} / 250</p>
     </div>
   );
 };

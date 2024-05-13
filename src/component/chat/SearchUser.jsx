@@ -1,19 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/chat/searchUser.scss";
 import UserCard from "../UserCard";
+import apiClient from "../../util/BaseUrl";
+import axios from "axios";
 
-export const SearchUser = ({ onMentionClick }) => {
+export const SearchUser = ({ onMentionClick, metionValue }) => {
   const [selectedIndex, setSelectedIndex] = useState(0); // 현재 선택된 항목의 인덱스
-  const [users, setUsers] = useState([
-    { userName: "user1", img: "image/dp.jpg" },
-    { userName: "user2", img: "image/dp.jpg" },
-    { userName: "user3", img: "image/dp.jpg" },
-    { userName: "user3", img: "image/dp.jpg" },
-    { userName: "user3", img: "image/dp.jpg" },
-    { userName: "user3", img: "image/dp.jpg" },
-    { userName: "user3", img: "image/dp.jpg" },
-    // 나머지 유저 데이터
-  ]);
+
+  const [users, setUsers] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      let data = await apiClient.get(
+        `/api/v1/member/search?nickname=${metionValue}`
+      );
+      setUsers(
+        data.data.map((item) => ({
+          userName: item.nickname,
+          memberId: item.memberId,
+          img: "image/dp.jpg",
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const timeoutExecute = setTimeout(() => fetchData(), 1000);
+    return () => clearTimeout(timeoutExecute);
+  }, [metionValue]);
 
   const selectedIndexRef = useRef(selectedIndex);
   selectedIndexRef.current = selectedIndex;
@@ -43,10 +59,10 @@ export const SearchUser = ({ onMentionClick }) => {
           e.stopPropagation();
           return newIndex;
         });
-      } else if (e.key === "Enter") {
+      } else if (e.key === " ") {
+        e.stopPropagation();
         const selectedUser = users[selectedIndexRef.current];
         onMentionClick(selectedUser.userName);
-        e.stopPropagation();
       }
     };
 
@@ -54,7 +70,7 @@ export const SearchUser = ({ onMentionClick }) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [users]);
 
   return (
     <div className="SearchUser">
