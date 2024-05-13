@@ -17,7 +17,7 @@ function RegistrationModal({ open, handleClose }) {
     email: "",
     authCode: "",
   });
-  const [modalStep, setModalStep] = useState(false);
+  const [modalStep, setModalStep] = useState(true);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companys, setCompanys] = useState([]);
@@ -69,14 +69,13 @@ function RegistrationModal({ open, handleClose }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <div className="register-modal">
+     {modalStep? <div className="register-modal">
         <div className="header">
           <h1>가입하기</h1>
           <button className="close-button" onClick={handleClose}>
             <h1>X</h1>
           </button>
         </div>
-
         <Input size="Big" name="companyName" onChange={handleCompanyName} />
         <div className="company-list">
           {companys.length > 0 ? (
@@ -97,8 +96,35 @@ function RegistrationModal({ open, handleClose }) {
           )}
         </div>
         <p>선택된 회사:{selectedCompany}</p>
+        <Button text={"다음"} size={"Big"} onClick={() =>{
+          if(selectedCompany){
+            setModalStep(false);
+            console.log(modalStep);
+          }else{
+            alert("회사를 선택해 주세요");
+          }
+        }} />
+        </div>:
+        
+        <div className="register-modal">
+        <div className="header">
+          <button className="close-button" onClick={() =>{setModalStep(true);}}><h1>←</h1></button>
+          <h1>가입하기</h1>
+          <button className="close-button" onClick={handleClose}>
+            <h1>X</h1>
+          </button>
+        </div>
+       <div className="name-space">
+        <Input size="Small"/>
+        <Input size="Large"/>
+        </div>
+        
+        
+
+
         <Button text={"다음"} size={"Big"} />
-      </div>
+        </div>
+      }
     </Modal>
   );
 }
