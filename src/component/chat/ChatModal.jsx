@@ -6,13 +6,20 @@ import Texts from "../feed/main/Texts";
 import "../../styles/chat/chatModal.scss";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import CloseButton from "../basic/CloseButton";
-import { useEffect, useRef } from "react";
-import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
+import { useEffect, useRef, useState } from "react";
+
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../../util/BaseUrl";
 
-const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
+const ChatModal = ({
+  feedList,
+  handleChatButtonClick,
+  imgList,
+  falseLoveNum,
+  setFalseLoveNum,
+  falseLike,
+  setFalseLike,
+}) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["feedComment", feedList.id],
     queryFn: () => {
@@ -23,8 +30,6 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
     },
     staleTime: 1000 * 60 * 5,
   });
-
-  console.log(data);
 
   const backgroundRef = useRef();
 
@@ -61,12 +66,19 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
           {imgList?.length !== 0 ? (
             <div className="main-img">
               <Imgs imgList={imgList}></Imgs>
-              <Buttons></Buttons>
+              <Buttons
+                postId={feedList.id}
+                like={feedList.liked}
+                setFalseLoveNum={setFalseLoveNum}
+                falseLoveNum={falseLoveNum}
+                falseLike={falseLike}
+                setFalseLike={setFalseLike}
+              ></Buttons>
               <div
                 className="Texts"
                 style={{ height: "100px", overflow: "scroll" }}
               >
-                <p className="Texts-good">좋아요 {feedList.loveNum}개</p>
+                <p className="Texts-good">좋아요 {falseLoveNum}개</p>
                 {feedList.nickname !== "" && (
                   <div>
                     <span className="Texts-id">{feedList.nickname}</span>
@@ -93,17 +105,29 @@ const ChatModal = ({ feedList, handleChatButtonClick, imgList }) => {
               >
                 {feedList.content}
               </p>
-              <Buttons></Buttons>
+              <Buttons
+                postId={feedList.id}
+                like={feedList.liked}
+                setFalseLoveNum={setFalseLoveNum}
+                falseLoveNum={falseLoveNum}
+                falseLike={falseLike}
+                setFalseLike={setFalseLike}
+              ></Buttons>
               <Texts
                 comment={""}
                 loveNum={feedList.loveNum}
                 nicknamse={""}
+                falseLoveNum={falseLoveNum}
               ></Texts>
             </div>
           )}
 
           <div>
-            <Chat id={feedList.id} data={data?.data}></Chat>
+            <Chat
+              id={feedList.id}
+              data={data?.data}
+              isLoading={isLoading}
+            ></Chat>
           </div>
         </div>
       </div>

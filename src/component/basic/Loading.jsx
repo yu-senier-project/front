@@ -14,7 +14,7 @@ export const Loading = ({ text }) => {
             margin={2}
             size={44}
           />
-          <h1>{text}</h1>
+          <p>{text}</p>
         </div>
       </div>
     </div>

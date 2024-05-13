@@ -11,13 +11,13 @@ import { Loading } from "../component/basic/Loading";
 const Home = () => {
   const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
   const {
+    isLoading,
     data,
     error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     status,
-    isLoading,
   } = useInfiniteQuery({
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
@@ -27,29 +27,29 @@ const Home = () => {
         : false;
     },
     staleTime: 1000 * 60 * 5,
+    retry: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
+
+  if (isLoading) {
+    return <Loading text={"게시물 불러오는중..."}></Loading>;
+  }
 
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (scrollHeight - scrollTop === clientHeight) {
-      if (hasNextPage && !isLoading) {
+      if (hasNextPage && !isFetchingNextPage) {
         console.log("게시물 불러오기");
         fetchNextPage();
       }
     }
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <Loading text={"게시물 불러오는중 ..."}></Loading>
-      </div>
-    );
-  }
-
   let list = data?.pages.map((item) => item.data);
-  console.log(list);
-  list = list.map((item1) => {
+
+  list = list?.map((item1) => {
     return item1.map((item) => ({
       id: item.id,
       content: item.content,
@@ -83,8 +83,6 @@ const Home = () => {
     liked: item.liked,
   }));
 
-  console.log(feedList);
-
   return (
     <div
       className="Home"
@@ -94,7 +92,7 @@ const Home = () => {
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}
-      {!isLoading && isFetchingNextPage && (
+      {isFetchingNextPage && (
         <div style={{ textAlign: "center" }}>게시글 불러오는중 ...</div>
       )}
     </div>

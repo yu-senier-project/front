@@ -30,6 +30,8 @@ const Feed = ({ feedList }) => {
 
   const [falseLoveNum, setFalseLoveNum] = useState(feedList.loveNum);
 
+  const [falseLike, setFalseLike] = useState(feedList.liked);
+
   const handleChatButtonClick = () => {
     setIsChatOpen(!isChatOpen);
   };
@@ -108,6 +110,8 @@ const Feed = ({ feedList }) => {
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
                 falseLoveNum={falseLoveNum}
+                falseLike={falseLike}
+                setFalseLike={setFalseLike}
               ></Buttons>
               <Texts
                 comment={feedList.content}
@@ -128,6 +132,9 @@ const Feed = ({ feedList }) => {
                   imgList={imgList}
                   feedList={feedList}
                   handleChatButtonClick={handleChatButtonClick}
+                  falseLoveNum={falseLoveNum}
+                  falseLike={falseLike}
+                  setFalseLike={setFalseLike}
                 ></ChatModal>
               ) : null}
             </div>
@@ -144,6 +151,8 @@ const Feed = ({ feedList }) => {
               like={feedList.liked}
               setFalseLoveNum={setFalseLoveNum}
               falseLoveNum={falseLoveNum}
+              falseLike={falseLike}
+              setFalseLike={setFalseLike}
             ></Buttons>
             <Texts
               comment={""}
@@ -164,6 +173,10 @@ const Feed = ({ feedList }) => {
                 imgList={imgList}
                 feedList={feedList}
                 handleChatButtonClick={handleChatButtonClick}
+                falseLoveNum={falseLoveNum}
+                setFalseLoveNum={setFalseLoveNum}
+                falseLike={falseLike}
+                setFalseLike={setFalseLike}
               ></ChatModal>
             ) : null}
           </div>

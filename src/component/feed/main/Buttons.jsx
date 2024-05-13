@@ -12,9 +12,13 @@ import "../../../styles/feed/main/buttons.scss";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
-const Buttons = ({ postId, like, setFalseLoveNum, falseLoveNum }) => {
-  const [falseLike, setFalseLike] = useState(like);
-
+const Buttons = ({
+  postId,
+  setFalseLoveNum,
+  falseLoveNum,
+  setFalseLike,
+  falseLike,
+}) => {
   const queryClient = useQueryClient();
 
   const likeClassName = `buttons ${falseLike ? "like-red" : null}`;
@@ -33,63 +37,8 @@ const Buttons = ({ postId, like, setFalseLoveNum, falseLoveNum }) => {
       console.log(data);
       queryClient.invalidateQueries(["feeds"]);
     },
-    // onMutate: (newData) => {
-    //   console.log(newData);
-    //   const previousComments = queryClient.getQueryData(["feeds"]);
-
-    //   queryClient.setQueryData(["feeds"], (old) => {
-    //     console.log(old);
-    //     let list = old.pages;
-    //     list = list.map((item1) => {
-    //       let a = item1.data.map((item) => {
-    //         if (newData.postId == item.id) {
-    //           return {
-    //             id: item.id,
-    //             content: item.content,
-    //             isCommentEnabled: item.isCommentEnabled,
-    //             fileCnt: item.fileCnt,
-    //             createdAt: item.createdAt,
-    //             likeCnt: item.likeCnt + 1,
-    //             postMember: item.postMember,
-    //             commentCnt: item.commentCnt,
-    //             liked: true,
-    //           };
-    //         } else {
-    //           return {
-    //             id: item.id,
-    //             content: item.content,
-    //             isCommentEnabled: item.isCommentEnabled,
-    //             fileCnt: item.fileCnt,
-    //             createdAt: item.createdAt,
-    //             likeCnt: item.likeCnt,
-    //             postMember: item.postMember,
-    //             commentCnt: item.commentCnt,
-    //             liked: item.liked,
-    //           };
-    //         }
-    //       });
-
-    //       return { data: a };
-    //     });
-
-    //     console.log(list);
-
-    //     queryClient.setQueryData(["feedComment", postId], (old) => {
-    //       console.log({ pages: list, pageParams: [0] });
-    //       return { pages: list, pageParams: [0] };
-    //     });
-
-    //     return () => {
-    //       queryClient.setQueryData(["feeds"], (old) => {
-    //         // 이전 데이터로 복원
-    //         return previousComments;
-    //       });
-    //     };
-    //   });
-    // },
-    onError: (err, newComment, rollback) => {
+    onError: (e) => {
       console.log(e);
-      rollback();
     },
   });
 
