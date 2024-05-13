@@ -17,6 +17,9 @@ const Feed = ({ feedList }) => {
     queryKey: ["feedImg", feedList.id],
     queryFn: () => getFeedImg(feedList.id),
     refetchOnWindowFocus: false, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
   });
 

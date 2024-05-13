@@ -44,7 +44,11 @@ const ChatInput = ({ replyUser, postId, commentId }) => {
         content: newComment.content,
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
-        postMember: { id: 0, nickname: localStorage.getItem("userNickName") },
+        postMember: {
+          id: 0,
+          nickname: localStorage.getItem("userNickName"),
+          profile: null,
+        },
       };
 
       // 새 댓글을 캐시에 추가합니다.

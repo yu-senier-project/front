@@ -118,7 +118,7 @@ const ChatUserCard = ({
           if (item.commentId == newData.commentId) {
             return {
               commentId: item.commentId,
-              commentReply: item.commentReply,
+              commentReplyCnt: item.commentReplyCnt,
               content: item.content,
               createAt: [2024, 1, 1, 1, 1, 1, 1],
               likeCnt: item.likeCnt + 1,
@@ -126,7 +126,6 @@ const ChatUserCard = ({
               postMember: {
                 id: 0,
                 nickname: localStorage.getItem("userNickName"),
-                profile: null,
               },
             };
           } else {
