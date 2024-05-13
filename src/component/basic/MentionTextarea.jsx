@@ -132,9 +132,11 @@ export const MentionTextarea = ({
   // shift enter 눌렀을때 줄바꿈 코드
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
+      e.stopPropagation();
       e.preventDefault(); // 기본 Enter 동작 방지
     }
     if (e.key === "Enter" && e.shiftKey) {
+      e.stopPropagation();
       e.preventDefault();
       onChange(value + "\n");
     }

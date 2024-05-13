@@ -18,7 +18,7 @@ const CreateFeed = () => {
   const inputRef = useRef(null);
 
   const [content, setContent] = useState("");
-  const [isChat, setIsChat] = useState(true);
+  const [isChat, setIsChat] = useState(null);
   const [imageList, setImageList] = useState([]);
 
   const onRemove = () => {
@@ -62,10 +62,25 @@ const CreateFeed = () => {
   });
 
   const onSubmit = async () => {
-    let removeContent = onRemove();
+    if (content.length < 1) {
+      inputRef.current.focus();
+      alert("문구를 작성해주세요!");
+      return;
+    }
+
+    if (isChat === null) {
+      alert("글 설정을 해주세요!");
+      return;
+    }
+
+    if (content.trim().length == 0) {
+      inputRef.current.focus();
+      alert("문구를 작성해주세요!");
+      return;
+    }
     mutate({
       imageList,
-      removeContent,
+      content,
       hashList,
       mentionList,
       isChat,

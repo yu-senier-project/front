@@ -98,6 +98,11 @@ export const UpdateFeed = ({
   });
 
   const onCLick = () => {
+    if (content.length < 1) {
+      inputRef.current.focus();
+      alert("문구를 작성해주세요!");
+      return;
+    }
     mutate();
   };
 

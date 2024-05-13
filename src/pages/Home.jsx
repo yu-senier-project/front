@@ -88,6 +88,7 @@ const Home = () => {
     commentCnt: item.commentCnt,
     liked: item.liked,
     profile: item.profile,
+    hashList: ["#하이요"],
   }));
 
   return (

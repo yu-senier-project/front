@@ -40,8 +40,6 @@ export const MentionInput = ({
       }
     }
 
-    console.log(hashList.current, mentionList.current);
-
     // 멘션
     if (value[value.length - 1] == " ") {
       setOnMention(false);

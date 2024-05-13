@@ -161,7 +161,10 @@ const Feed = ({ feedList }) => {
       ) : (
         <div>
           <div>
-            <p style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}>
+            <p
+              style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
+              className="Feed-content"
+            >
               {feedList.content}
             </p>
             <Buttons
