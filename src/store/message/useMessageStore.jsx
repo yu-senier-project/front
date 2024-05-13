@@ -21,6 +21,7 @@ function connectStompClient() {
         Authorization: `Bearer ${token}`,
     };
 
+
     stompClient.connect(
         headers,
         (frame) => {
@@ -98,15 +99,17 @@ const useMessageStore = create((set, get) => ({
 
     isSubscribedToRoom: (roomId) => (get().subscribedRooms || []).includes(roomId),
 
-    addRoom: async (roomName, memberId) => {
+    addRoom: async (roomName, inviteList) => {
         try {
-            const response = await apiClient.post('/api/v1/chat-room/create', {
-                memberId,
-                roomName,
-            });
-            set((state) => ({
-                rooms: [...state.rooms, response.data.room],
-            }));
+            const memberId = localStorage.getItem("memberId");
+            const data = {
+                "roomName":roomName,
+                "inviteList": inviteList,
+            }
+          
+            console.log(roomName,inviteList )
+            const response = await apiClient.post(`/api/v1/chat-room/create?memberId=${memberId}`, data);
+        
         } catch (error) {
             console.error('Error adding chat room:', error);
         }
@@ -116,6 +119,7 @@ const useMessageStore = create((set, get) => ({
         try {
             connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
             const response = await apiClient.get(`/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`);
+            console.log(response)
             set({ rooms: response.data });
         } catch (error) {
             console.error('Error fetching chat rooms:', error);
@@ -175,7 +179,7 @@ const useMessageStore = create((set, get) => ({
                 }));
             } else {
                 console.error('WebSocket is not connected');
-                connectStompClient(); // 연결 다시 시도
+                // connectStompClient(); // 연결 다시 시도
             }
         } catch (error) {
             console.error('Error sending message:', error);

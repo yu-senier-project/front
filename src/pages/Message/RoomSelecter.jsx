@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import '../../styles/message/roomselecter.scss';
 import apiClient from '../../util/BaseUrl';
 
-function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom }) {
+function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom,open,close }) {
     const [newRoomName, setNewRoomName] = useState('');
 
     const handleAddRoom = (e) => {
@@ -17,9 +17,9 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom }) {
     return (
         <div className="chat_nav">
             {/* 수정해야함 */}
-            <form className="add_room_form" onSubmit={handleAddRoom}>
-                <p className="add_room_input">새로운 채팅</p>
-            </form>
+            <button className="add_room_button" onClick={open}>
+               새로운 채팅
+            </button>
             <ul>
                 {/* 수정 */}
                 {rooms.length > 0 ? (

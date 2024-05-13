@@ -4,11 +4,10 @@ import { IoIosSend } from 'react-icons/io';
 import { CgAddR } from 'react-icons/cg';
 import RoomSelecter from './RoomSelecter';
 import useMessageStore, { connectStompClient } from '../../store/message/useMessageStore';
-
 import useLoginStore from '../../store/login/useLoginStore';
 import '../../styles/message/roomselecter.scss';
 import '../../styles/message/message.scss';
-
+import MessageInviteModal from "../../modal/MessageInviteModal"
 export default function Message() {
     const { isLogin } = useLoginStore();
     const {
@@ -29,7 +28,9 @@ export default function Message() {
     } = useMessageStore();
     const lastMessageRef = useRef(null);
     const [message, setMessage] = useState('');
-
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const memberId = localStorage.getItem('memberId');
     const UserId = localStorage.getItem('userNickName');
 
@@ -111,7 +112,8 @@ export default function Message() {
         }
     };
 
-    const selectedRoomData = rooms.find((room) => room.roomId === selectedRoom);
+    const selectedRoomData = rooms && Array.isArray(rooms) && rooms.find((room) => room?.roomId === selectedRoom);
+
     function renderMessageContent(data) {
         switch (data.messageType) {
             case 'IMAGE':
@@ -140,13 +142,13 @@ export default function Message() {
                             parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'
                         }
                     >
-                        <span
+                        <a
                             onClick={() => {
                                 console.log(data);
                             }}
                         >
                             {data.content}
-                        </span>
+                        </a>
                     </div>
                 );
         }
@@ -159,9 +161,12 @@ export default function Message() {
                 rooms={rooms}
                 onSelectRoom={handleSelectRoom}
                 onAddRoom={handleAddRoom}
+                open={handleOpen}
+                close={handleClose}
             />
 
             <div className="message_container">
+            <MessageInviteModal open={open} handleClose={handleClose} />
                 <div className="message_header">
                     {selectedRoomData && (
                         <>
