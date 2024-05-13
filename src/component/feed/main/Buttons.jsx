@@ -18,6 +18,7 @@ const Buttons = ({
   falseLoveNum,
   setFalseLike,
   falseLike,
+  handleChatButtonClick,
 }) => {
   const queryClient = useQueryClient();
 
@@ -70,7 +71,7 @@ const Buttons = ({
       <div className={likeClassName} onClick={onLikeButton}>
         {falseLike ? <BiSolidLike></BiSolidLike> : <BiLike />}
       </div>
-      <div className="buttons">
+      <div className="buttons" onClick={handleChatButtonClick}>
         <AiOutlineMessage></AiOutlineMessage>
       </div>
       <div className="buttons">

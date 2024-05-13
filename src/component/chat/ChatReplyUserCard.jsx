@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../../styles/chat/chatUserCard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
@@ -174,10 +174,22 @@ export const ChatReplyUserCard = ({
     setOnSetting(false);
   };
 
+  const backgroundRef = useRef(null);
+  const onClick = (e) => {
+    console.log(e.target, backgroundRef.current);
+    if (e.target !== backgroundRef.current && onSetting) {
+      setOnSetting(false);
+    }
+  };
+
   let likeClassName = `${liked ? "like-red" : null}`;
 
   return (
-    <div className="ChatUserCard" style={{ marginBottom: "10px" }}>
+    <div
+      className="ChatUserCard"
+      style={{ marginBottom: "10px" }}
+      onClick={onClick}
+    >
       <img
         id="ChatUserCard-img"
         height={`${imgWidth}px`}
@@ -222,10 +234,12 @@ export const ChatReplyUserCard = ({
         </button>
       </div>
       {onSetting ? (
-        <Setting
-          width={150}
-          settingTitleList={[{ title: "삭제하기", onClick: onDeleteClick }]}
-        ></Setting>
+        <div className="ChatReplyUserCard-Setting" ref={backgroundRef}>
+          <Setting
+            width={150}
+            settingTitleList={[{ title: "삭제하기", onClick: onDeleteClick }]}
+          ></Setting>
+        </div>
       ) : null}
     </div>
   );

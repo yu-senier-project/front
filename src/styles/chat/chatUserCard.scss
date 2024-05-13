@@ -48,3 +48,14 @@
 .ChatUserCard:hover .ChatUserCard-setting-btn {
   display: inline; /* 마우스가 ChatUserCard 위에 있을 때 버튼을 보여줍니다 */
 }
+
+.ChatUserCard-Setting {
+  position: absolute;
+}
+
+.ChatReplyUserCard-Setting {
+  position: absolute;
+  left: 140px;
+  top: 30px;
+  z-index: 100;
+}

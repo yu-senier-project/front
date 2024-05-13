@@ -41,3 +41,10 @@
     transform: scale(1);
   }
 }
+
+.ChatModal-Setting {
+  position: absolute;
+  z-index: 100;
+  top: 90px;
+  left: 620px;
+}

@@ -16,3 +16,10 @@
 .Feed-texts {
   display: flex;
 }
+
+.Feed-setting {
+  position: absolute;
+  top: 30px;
+  z-index: 1000;
+  right: 0px;
+}

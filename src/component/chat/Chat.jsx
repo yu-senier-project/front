@@ -60,6 +60,7 @@ const Chat = ({ id, data, isLoading }) => {
         postId={id}
         replyUser={replyUser}
         commentId={commentId}
+        setReplyUser={setReplyUser}
       ></ChatInput>
     </div>
   );

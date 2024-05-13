@@ -5,7 +5,6 @@ export const getAllFeed = async (cursorValue) => {
   let data = await apiClient.get(
     `/api/v1/post/home?cursorValue=${cursorValue}`
   );
-  console.log(data);
   return data;
 };
 

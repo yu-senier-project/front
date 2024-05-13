@@ -4,13 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { getTime } from "./getTime";
 
-const UserInfo = ({
-  username,
-
-  clock,
-  handleSettingButtonClick,
-  profile,
-}) => {
+const UserInfo = ({ username, clock, handleSettingButtonClick, profile }) => {
   let time = `${clock[0]}-${clock[1]}-${clock[2]} ${clock[3]}:${clock[4]}:${clock[5]}`;
   time = new Date(time).getTime();
   let currentTime = new Date().getTime();

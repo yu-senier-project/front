@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../../../styles/feed/main/feed.scss";
 import Buttons from "./Buttons";
 import Imgs from "./Imgs";
@@ -34,6 +34,8 @@ const Feed = ({ feedList }) => {
   const [falseLoveNum, setFalseLoveNum] = useState(feedList.loveNum);
 
   const [falseLike, setFalseLike] = useState(feedList.liked);
+
+  const backgroundRef = useRef();
 
   const handleChatButtonClick = () => {
     setIsChatOpen(!isChatOpen);
@@ -71,8 +73,14 @@ const Feed = ({ feedList }) => {
     setIsSettingOpen(false);
   };
 
+  const handleClickBackground = (e) => {
+    if (e.target !== backgroundRef.current && isSettingOpen) {
+      setIsSettingOpen(false);
+    }
+  };
+
   return (
-    <div className="Feed">
+    <div className="Feed" onClick={handleClickBackground}>
       {isUpdate ? (
         <UpdateFeed
           setIsUpdate={setIsUpdate}
@@ -82,19 +90,21 @@ const Feed = ({ feedList }) => {
         ></UpdateFeed>
       ) : null}
       {isSettingOpen ? (
-        <Setting
-          width={150}
-          settingTitleList={[
-            {
-              title: "삭제하기",
-              onClick: handleOnDelete,
-            },
-            {
-              title: "수정하기",
-              onClick: handleUpdateButtonClick,
-            },
-          ]}
-        ></Setting>
+        <div ref={backgroundRef} className="Feed-setting">
+          <Setting
+            width={150}
+            settingTitleList={[
+              {
+                title: "삭제하기",
+                onClick: handleOnDelete,
+              },
+              {
+                title: "수정하기",
+                onClick: handleUpdateButtonClick,
+              },
+            ]}
+          ></Setting>
+        </div>
       ) : null}
       <UserInfo
         profile={feedList.profile}
@@ -110,6 +120,7 @@ const Feed = ({ feedList }) => {
             <div className="main-img">
               <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
               <Buttons
+                handleChatButtonClick={handleChatButtonClick}
                 postId={feedList.id}
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
@@ -133,6 +144,8 @@ const Feed = ({ feedList }) => {
             <div>
               {isChatOpen ? (
                 <ChatModal
+                  handleUpdateButtonClick={handleUpdateButtonClick}
+                  handleOnDelete={handleOnDelete}
                   imgList={imgList}
                   feedList={feedList}
                   handleChatButtonClick={handleChatButtonClick}
@@ -175,6 +188,8 @@ const Feed = ({ feedList }) => {
           <div>
             {isChatOpen ? (
               <ChatModal
+                handleUpdateButtonClick={handleUpdateButtonClick}
+                handleOnDelete={handleOnDelete}
                 imgList={imgList}
                 feedList={feedList}
                 handleChatButtonClick={handleChatButtonClick}

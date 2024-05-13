@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Loading } from "../basic/Loading";
 import { useQueryClient } from "@tanstack/react-query";
 
-const ChatInput = ({ replyUser, postId, commentId }) => {
+const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
   const [value, setValue] = useState(replyUser);
   const mentionList = useRef([]);
   const hashList = useRef([]);
@@ -137,6 +137,7 @@ const ChatInput = ({ replyUser, postId, commentId }) => {
       replyMutate(data);
     }
     setValue("");
+    setReplyUser("");
   };
 
   const onKeyDown = (e) => {

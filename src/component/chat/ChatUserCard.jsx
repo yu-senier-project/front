@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
-import { useState } from "react";
+import { useState, useRef } from "react";
 const ChatUserCard = ({
   liked,
   userName,
@@ -30,6 +30,8 @@ const ChatUserCard = ({
   const textClassName = `ChatUserCard-text width-${commentWidth}`;
   const queryClient = useQueryClient();
   const [onSetting, setOnSetting] = useState(false);
+
+  const backgroundRef = useRef(null);
 
   const onSettingBtn = () => {
     setOnSetting(!onSetting);
@@ -79,7 +81,7 @@ const ChatUserCard = ({
           if (item.commentId == newData.commentId) {
             return {
               commentId: item.commentId,
-              commentReply: item.commentReply,
+              commentReplyCnt: item.commentReplyCnt,
               content: item.content,
               createAt: [2024, 1, 1, 1, 1, 1, 1],
               likeCnt: item.likeCnt - 1,
@@ -113,6 +115,7 @@ const ChatUserCard = ({
     },
     onMutate: (newData) => {
       const prevData = queryClient.getQueryData(["feedComment", postId]);
+      console.log(prevData);
       const currentData = {
         data: prevData.data.map((item) => {
           if (item.commentId == newData.commentId) {
@@ -126,6 +129,7 @@ const ChatUserCard = ({
               postMember: {
                 id: 0,
                 nickname: localStorage.getItem("userNickName"),
+                profile: null,
               },
             };
           } else {
@@ -151,10 +155,16 @@ const ChatUserCard = ({
     }
   };
 
+  const onClick = (e) => {
+    if (e.target !== backgroundRef.current && onSetting) {
+      setOnSetting(false);
+    }
+  };
+
   let likeClassName = `${liked ? "like-red" : null}`;
 
   return (
-    <div style={{ marginBottom: "15px" }}>
+    <div style={{ marginBottom: "15px" }} onClick={onClick}>
       <div className="ChatUserCard">
         <img
           id="ChatUserCard-img"
@@ -194,12 +204,14 @@ const ChatUserCard = ({
               </span>
             ) : null}
             {onSetting ? (
-              <Setting
-                width={150}
-                settingTitleList={[
-                  { title: "삭제하기", onClick: onDeleteClick },
-                ]}
-              ></Setting>
+              <div className="ChatUserCard-Setting" ref={backgroundRef}>
+                <Setting
+                  width={150}
+                  settingTitleList={[
+                    { title: "삭제하기", onClick: onDeleteClick },
+                  ]}
+                ></Setting>
+              </div>
             ) : null}
           </div>
         </div>

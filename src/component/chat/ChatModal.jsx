@@ -7,11 +7,13 @@ import "../../styles/chat/chatModal.scss";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import CloseButton from "../basic/CloseButton";
 import { useEffect, useRef, useState } from "react";
-
+import { Setting } from "../basic/Setting";
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
 
 const ChatModal = ({
+  handleUpdateButtonClick,
+  handleOnDelete,
   feedList,
   handleChatButtonClick,
   imgList,
@@ -30,13 +32,29 @@ const ChatModal = ({
     staleTime: 1000 * 60 * 5,
   });
 
+  const onDelete = () => {
+    handleChatButtonClick(); // 모달창 닫기
+    handleOnDelete(); // 삭제 수행
+  };
+
+  const onUpdate = () => {
+    handleChatButtonClick(); // 모달창 닫기
+    handleUpdateButtonClick();
+  };
+
+  const [onSetting, setOnSetting] = useState(false);
+
+  const handleSettingButtonClick = () => {
+    setOnSetting(!onSetting);
+  };
+
   // 바깥 확인한는 ref
   const backgroundRef = useRef();
 
   // 모달 바깥 클릭했을 때 닫는 코드
   const handleClickBackground = (e) => {
-    if (e.target === backgroundRef.current) {
-      handleChatButtonClick();
+    if (e.target !== backgroundRef.current && onSetting) {
+      setOnSetting(false);
     }
   };
 
@@ -45,15 +63,32 @@ const ChatModal = ({
   return (
     <div
       className="ChatModal ChatModal-animation"
-      ref={backgroundRef}
       onClick={handleClickBackground}
     >
       <div className="ChatModal-wrap">
         <div className="Feed-userInfo ChatModalUser">
+          {onSetting ? (
+            <div className="ChatModal-Setting" ref={backgroundRef}>
+              <Setting
+                width={150}
+                settingTitleList={[
+                  {
+                    title: "삭제하기",
+                    onClick: onDelete,
+                  },
+                  {
+                    title: "수정하기",
+                    onClick: onUpdate,
+                  },
+                ]}
+              ></Setting>
+            </div>
+          ) : null}
           <UserInfo
             clock={feedList.createdAt}
             username={feedList.nickname}
             Icon={faX}
+            handleSettingButtonClick={handleSettingButtonClick}
           ></UserInfo>
           <div className="ChatModalCloseButton">
             <CloseButton
@@ -67,6 +102,7 @@ const ChatModal = ({
             <div className="main-img">
               <Imgs imgList={imgList}></Imgs>
               <Buttons
+                handleChatButtonClick={handleChatButtonClick}
                 postId={feedList.id}
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
