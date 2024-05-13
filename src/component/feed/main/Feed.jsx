@@ -94,6 +94,7 @@ const Feed = ({ feedList }) => {
         ></Setting>
       ) : null}
       <UserInfo
+        profile={feedList.profile}
         clock={feedList.createdAt}
         username={feedList.nickname}
         Icon={faEllipsis}
@@ -135,6 +136,7 @@ const Feed = ({ feedList }) => {
                   falseLoveNum={falseLoveNum}
                   falseLike={falseLike}
                   setFalseLike={setFalseLike}
+                  setFalseLoveNum={setFalseLoveNum}
                 ></ChatModal>
               ) : null}
             </div>

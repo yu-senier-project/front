@@ -51,6 +51,7 @@ const Buttons = ({
       }
       deleteMutate(data);
       setFalseLike(false);
+      console.log(falseLoveNum);
       setFalseLoveNum(falseLoveNum - 1);
     } else {
       if (deleteStatus == "pending" || status == "pending") {
@@ -59,6 +60,7 @@ const Buttons = ({
       }
       mutate(data);
       setFalseLike(true);
+      console.log(falseLoveNum);
       setFalseLoveNum(falseLoveNum + 1);
     }
   };

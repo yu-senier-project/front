@@ -18,8 +18,6 @@ const Chat = ({ id, data, isLoading }) => {
     setReplyUser(value);
   };
 
-  console.log(data);
-
   return (
     <div className="Chat width-400">
       <div className="chat-userCard">
@@ -37,7 +35,11 @@ const Chat = ({ id, data, isLoading }) => {
             {data?.map((item) => (
               <ChatUserCard
                 liked={item.liked}
-                img="public/image/dp.jpg"
+                img={
+                  item.postMember.profile !== null
+                    ? item.postMember.profile
+                    : "public/image/dp.jpg"
+                }
                 commentId={item.commentId}
                 postId={id}
                 userName={item.postMember.nickname}

@@ -44,20 +44,65 @@ const ChatUserCard = ({
     setOnSetting(false);
   };
 
+  // 댓글 삭제
   const { mutate: deleteChatMutate } = useMutation({
     mutationFn: deleteComment,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
+    onMutate: (newData) => {
+      console.log(newData);
+      const prevData = queryClient.getQueryData(["feedComment", postId]);
+      const currentData = {
+        data: prevData.data.filter(
+          (item) => item.commentId !== newData.commentId
+        ),
+      };
+
+      queryClient.setQueryData(["feedComment", postId], () => {
+        return currentData;
+      });
+      return () => queryClient.setQueryData(["feedComment", postId], prevData);
+    },
   });
 
+  // 댓글 좋아요 삭제
   const { mutate: deleteMutate } = useMutation({
     mutationFn: deleteCommentLike,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
+    onMutate: (newData) => {
+      const prevData = queryClient.getQueryData(["feedComment", postId]);
+      const currentData = {
+        data: prevData.data.map((item) => {
+          if (item.commentId == newData.commentId) {
+            return {
+              commentId: item.commentId,
+              commentReply: item.commentReply,
+              content: item.content,
+              createAt: [2024, 1, 1, 1, 1, 1, 1],
+              likeCnt: item.likeCnt - 1,
+              liked: false,
+              postMember: {
+                id: 0,
+                nickname: localStorage.getItem("userNickName"),
+                profile: null,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+      queryClient.setQueryData(["feedComment", postId], () => {
+        return currentData;
+      });
+      return () => queryClient.setQueryData(["feedComment", postId], prevData);
+    },
   });
 
+  // 댓글 좋아요
   const { mutate: likeMutate } = useMutation({
     mutationFn: postCommentLike,
     onSuccess: () => {
@@ -65,6 +110,34 @@ const ChatUserCard = ({
     },
     onError: (e) => {
       console.log(e);
+    },
+    onMutate: (newData) => {
+      const prevData = queryClient.getQueryData(["feedComment", postId]);
+      const currentData = {
+        data: prevData.data.map((item) => {
+          if (item.commentId == newData.commentId) {
+            return {
+              commentId: item.commentId,
+              commentReply: item.commentReply,
+              content: item.content,
+              createAt: [2024, 1, 1, 1, 1, 1, 1],
+              likeCnt: item.likeCnt + 1,
+              liked: true,
+              postMember: {
+                id: 0,
+                nickname: localStorage.getItem("userNickName"),
+                profile: null,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+      queryClient.setQueryData(["feedComment", postId], () => {
+        return currentData;
+      });
+      return () => queryClient.setQueryData(["feedComment", postId], prevData);
     },
   });
 
@@ -107,15 +180,20 @@ const ChatUserCard = ({
             >
               답글 달기
             </span>
+
+            {loveNum == 0 ? null : (
+              <span
+                className="ChatUserCard-chat-grey"
+                style={{ marginRight: "10px" }}
+              >
+                좋아요 {loveNum}개
+              </span>
+            )}
             {myName == userName ? (
               <span className="ChatUserCard-setting-btn" onClick={onSettingBtn}>
                 <FontAwesomeIcon icon={faEllipsis} />
               </span>
             ) : null}
-
-            {loveNum == 0 ? null : (
-              <span className="ChatUserCard-chat-grey">좋아요 {loveNum}개</span>
-            )}
             {onSetting ? (
               <Setting
                 width={150}

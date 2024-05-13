@@ -35,27 +35,122 @@ export const ChatReplyUserCard = ({
     setOnSetting(!onSetting);
   };
 
+  // 대댓글 삭제
   const { mutate: deleteChatMutate } = useMutation({
     mutationFn: deleteComment,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
+    onMutate: (newData) => {
+      console.log(newData);
+      const prevData = queryClient.getQueryData([
+        "feedReplys",
+        postId,
+        commentId,
+      ]);
+      const currentData = {
+        data: prevData.data.filter(
+          (item) => item.commentId !== newData.commentId
+        ),
+      };
+
+      queryClient.setQueryData(["feedReplys", postId, commentId], () => {
+        return currentData;
+      });
+      return () =>
+        queryClient.setQueryData(["feedReplys", postId, commentId], prevData);
+    },
   });
 
+  // 대댓글 좋아요 삭제
   const { mutate: deleteMutate } = useMutation({
     mutationFn: deleteCommentLike,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["feedComment", postId]);
+      queryClient.invalidateQueries(["feedComment", postId], { exact: true });
+    },
+    onMutate: (newData) => {
+      console.log(newData);
+      const prevData = queryClient.getQueryData([
+        "feedReplys",
+        postId,
+        commentId,
+      ]);
+      console.log(prevData);
+      const currentData = {
+        data: prevData.data.map((item) => {
+          if (item.commentId == newData.commentId) {
+            return {
+              commentId: item.commentId,
+              commentReplyCnt: item.commentReplyCnt,
+              content: item.content,
+              createAt: [2024, 1, 1, 1, 1, 1, 1],
+              likeCnt: item.likeCnt - 1,
+              liked: false,
+              postMember: {
+                id: 0,
+                nickname: localStorage.getItem("userNickName"),
+                profile: null,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+
+      console.log(currentData);
+      queryClient.setQueryData(["feedReplys", postId, commentId], () => {
+        return currentData;
+      });
+      return () =>
+        queryClient.setQueryData(["feedReplys", postId, commentId], prevData);
     },
   });
 
+  // 대댓글 좋아요
   const { mutate: likeMutate } = useMutation({
     mutationFn: postCommentLike,
     onSuccess: () => {
-      queryClient.invalidateQueries(["feedComment", postId]);
+      queryClient.invalidateQueries(["feedComment", postId], { exact: true });
     },
     onError: (e) => {
       console.log(e);
+    },
+    onMutate: (newData) => {
+      const prevData = queryClient.getQueryData([
+        "feedReplys",
+        postId,
+        commentId,
+      ]);
+      console.log(prevData);
+      const currentData = {
+        data: prevData.data.map((item) => {
+          if (item.commentId == newData.commentId) {
+            return {
+              commentId: item.commentId,
+              commentReplyCnt: item.commentReplyCnt,
+              content: item.content,
+              createAt: [2024, 1, 1, 1, 1, 1, 1],
+              likeCnt: item.likeCnt + 1,
+              liked: true,
+              postMember: {
+                id: 0,
+                nickname: localStorage.getItem("userNickName"),
+                profile: null,
+              },
+            };
+          } else {
+            return item;
+          }
+        }),
+      };
+      console.log(currentData);
+
+      queryClient.setQueryData(["feedReplys", postId, commentId], () => {
+        return currentData;
+      });
+      return () =>
+        queryClient.setQueryData(["feedReplys", postId, commentId], prevData);
     },
   });
 
@@ -106,14 +201,19 @@ export const ChatReplyUserCard = ({
           >
             답글 달기
           </span>
+          {loveNum == 0 ? null : (
+            <span
+              className="ChatUserCard-chat-grey"
+              style={{ marginRight: "10px" }}
+            >
+              좋아요 {loveNum}개
+            </span>
+          )}
           {myName == userName ? (
             <span className="ChatUserCard-setting-btn" onClick={onSettingBtn}>
-              <FontAwesomeIcon icon={faEllipsis} />{" "}
+              <FontAwesomeIcon icon={faEllipsis} />
             </span>
           ) : null}
-          {loveNum == 0 ? null : (
-            <span className="ChatUserCard-chat-grey">좋아요 {loveNum}개</span>
-          )}
         </div>
       </div>
       <div className="ChatUserCard-HeartBtn ">

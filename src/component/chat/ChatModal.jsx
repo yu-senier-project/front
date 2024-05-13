@@ -20,17 +20,17 @@ const ChatModal = ({
   falseLike,
   setFalseLike,
 }) => {
+  // 댓글 정보 가져오는 쿼리
   const { data, isLoading, isError } = useQuery({
     queryKey: ["feedComment", feedList.id],
     queryFn: () => {
       return getFeedComment(feedList.id);
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
     staleTime: 1000 * 60 * 5,
   });
 
+  // 바깥 확인한는 ref
   const backgroundRef = useRef();
 
   // 모달 바깥 클릭했을 때 닫는 코드
@@ -74,6 +74,7 @@ const ChatModal = ({
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
               ></Buttons>
+
               <div
                 className="Texts"
                 style={{ height: "100px", overflow: "scroll" }}

@@ -9,7 +9,10 @@ import { getAllFeed } from "../apis/feedApis";
 import { useState } from "react";
 import { Loading } from "../component/basic/Loading";
 const Home = () => {
+  // 게시물 받아오는 함수
   const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
+
+  // 무한 스크롤 구현 부분
   const {
     isLoading,
     data,
@@ -28,7 +31,7 @@ const Home = () => {
     },
     staleTime: 1000 * 60 * 5,
     retry: 0,
-    refetchOnMount: true,
+    refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
@@ -37,6 +40,7 @@ const Home = () => {
     return <Loading text={"게시물 불러오는중..."}></Loading>;
   }
 
+  // 화면 끝에 도달했는지 확인하는 함수
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (scrollHeight - scrollTop === clientHeight) {
@@ -47,6 +51,7 @@ const Home = () => {
     }
   };
 
+  // 서버에서 받아온 데이터 저장
   let list = data?.pages.map((item) => item.data);
 
   list = list?.map((item1) => {
@@ -60,6 +65,7 @@ const Home = () => {
       nickname: item.postMember?.nickname,
       commentCnt: item.commentCnt,
       liked: item.liked,
+      profile: item.postMember?.profile,
     }));
   });
 
@@ -81,6 +87,7 @@ const Home = () => {
     nickname: item.nickname,
     commentCnt: item.commentCnt,
     liked: item.liked,
+    profile: item.profile,
   }));
 
   return (
