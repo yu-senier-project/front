@@ -1,8 +1,11 @@
 import React from "react";
 import "../../../styles/profile/profileUser.scss";
-import { LuPencil } from "react-icons/lu";
 
-export const ProfileUser = () => {
+export const ProfileUser = ({ setOnEdit }) => {
+  const handleEditBtn = () => {
+    setOnEdit(true);
+  };
+
   return (
     <div className="ProfileUser">
       <div className="ProfileUser-info">
@@ -16,16 +19,16 @@ export const ProfileUser = () => {
           <span>yeongib</span>
 
           {/* 프로필,이력서 수정 부분 */}
-          <button style={{ backgroundColor: "#71C9CE" }}>프로필 수정</button>
+          <button
+            onClick={handleEditBtn}
+            style={{ backgroundColor: "#71C9CE" }}
+          >
+            프로필 수정
+          </button>
           <button style={{ backgroundColor: "#B3DCB2" }}>이력서 조회</button>
 
           {/* 한줄 소개 부분 */}
-          <p>
-            여기는 한줄 소개{" "}
-            <spanc className="ProfileUser-info-text-pen">
-              <LuPencil />
-            </spanc>
-          </p>
+          <p>여기는 한줄 소개 </p>
         </div>
       </div>
 

@@ -1,0 +1,32 @@
+.ProfileUpdateUser {
+  display: flex;
+  align-items: center;
+}
+
+.ProfileUpdateUser-img {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+  }
+}
+
+.ProfileUpdateUser-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.ProfileUpdateUser-profile {
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.ProfileUpdateUser-resume {
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
