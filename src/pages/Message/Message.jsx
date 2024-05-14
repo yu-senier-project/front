@@ -1,4 +1,3 @@
-// Message.js
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { CgAddR } from 'react-icons/cg';
@@ -7,7 +6,12 @@ import useMessageStore, { connectStompClient } from '../../store/message/useMess
 import useLoginStore from '../../store/login/useLoginStore';
 import '../../styles/message/roomselecter.scss';
 import '../../styles/message/message.scss';
-import MessageInviteModal from "../../modal/MessageInviteModal"
+import MessageInviteModal from "../../modal/MessageInviteModal";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 export default function Message() {
     const { isLogin } = useLoginStore();
     const {
@@ -21,10 +25,10 @@ export default function Message() {
         messages,
         fetchMessages,
         sendMessage,
+        sendImageMessage,
         sendFileMessage,
-        addSubscribedRoom,
-        saveFileMessage,
         isConnected,
+        leaveRoom,
     } = useMessageStore();
     const lastMessageRef = useRef(null);
     const [message, setMessage] = useState('');
@@ -32,19 +36,22 @@ export default function Message() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const memberId = localStorage.getItem('memberId');
-    const UserId = localStorage.getItem('userNickName');
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const menuOpen = Boolean(anchorEl);
 
     useEffect(() => {
+        console.log(isLogin, memberId);
         if (isLogin && memberId) {
             fetchRooms(memberId, roomNumber);
         }
-    }, [isLogin, memberId, roomNumber]);
+    }, [isLogin, memberId, roomNumber, fetchRooms]);
 
     useEffect(() => {
         if (selectedRoom && memberId) {
             fetchMessages(selectedRoom);
         }
-    }, [selectedRoom, memberId]);
+    }, [selectedRoom, memberId, fetchMessages]);
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -55,6 +62,7 @@ export default function Message() {
             connectStompClient();
         }
     };
+
     const handleSelectRoom = (roomId) => {
         setSelectedRoom(roomId);
     };
@@ -92,23 +100,48 @@ export default function Message() {
         if (file && selectedRoom) {
             const reader = new FileReader();
 
-            // 파일 읽기가 완료되면 실행될 이벤트 핸들러
             reader.onload = () => {
                 const memberId = localStorage.getItem('memberId');
                 let base64Data = reader.result;
-                // console.log("Base64 data before modification:", base64Data); // 수정 전 데이터 로깅
-                saveFileMessage(base64Data, selectedRoom);
 
-                base64Data = base64Data.replace(/^data:image\/\w+;base64,/, ''); // 이미지 데이터의 Base64 인코딩 헤더 제거
-                // console.log("Base64 data after modification:", base64Data); // 수정 후 데이터 로깅
-                // 파일 메시지 전송
-                sendFileMessage(file, selectedRoom, memberId, base64Data);
-
-                // 파일 메시지 저장
+                if (file.type.startsWith('image/')) {
+                    console.log("이미지 파일");
+                    base64Data = base64Data.replace(/^data:.*;base64,/, ''); // Base64 인코딩 헤더 제거
+                    sendImageMessage(file, selectedRoom, memberId, base64Data);
+                } else {
+                    console.log("다른 파일");
+                    base64Data = base64Data.replace(/^data:.*;base64,/, ''); // Base64 인코딩 헤더 제거
+                    sendFileMessage(file, selectedRoom, memberId, base64Data);
+                }
             };
 
-            // 파일을 데이터 URL 형식으로 읽기 시작
             reader.readAsDataURL(file);
+        }
+    };
+
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleMenuItemClick = (action) => {
+        handleMenuClose();
+        switch (action) {
+            case 'fileImage':
+                document.getElementById('file_input').click();
+                break;
+            case 'invite':
+                handleOpen();
+                break;
+            case 'leave':
+                console.log('채팅방 나가기');
+                leaveRoom(memberId,selectedRoom);
+                break;
+            default:
+                break;
         }
     };
 
@@ -118,37 +151,24 @@ export default function Message() {
         switch (data.messageType) {
             case 'IMAGE':
                 return (
-                    <div
-                        className={
-                            parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'
-                        }
-                    >
+                    <div className={parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'}>
                         <img
                             src={data.content}
                             alt="Message Content"
-                            onClick={() => {
-                                console.log(data);
-                            }}
+                            onClick={() => { console.log(data); }}
                         />
                     </div>
                 );
             case 'FILE':
-                // 파일 메시지의 경우 특별한 렌더링이 필요하다면 여기에 로직을 추가
-                return <></>; // 현재는 비어 있는 JSX를 반환
+                return (
+                    <div className={parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'}>
+                        <a href={data.content} download>다운로드</a>
+                    </div>
+                );
             default:
                 return (
-                    <div
-                        className={
-                            parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'
-                        }
-                    >
-                        <a
-                            onClick={() => {
-                                console.log(data);
-                            }}
-                        >
-                            {data.content}
-                        </a>
+                    <div className={parseInt(data.memberId, 10) === parseInt(memberId, 10) ? 'message_self' : 'message_other'}>
+                        <a onClick={() => { console.log(data); }}>{data.content}</a>
                     </div>
                 );
         }
@@ -163,29 +183,50 @@ export default function Message() {
                 onAddRoom={handleAddRoom}
                 open={handleOpen}
                 close={handleClose}
+                onLoadMore={handleLoadMore}
             />
 
             <div className="message_container">
-            <MessageInviteModal open={open} handleClose={handleClose} />
+                <MessageInviteModal open={open} handleClose={handleClose} />
                 <div className="message_header">
                     {selectedRoomData && (
                         <>
-                            <img
-                                src={selectedRoomData.image || 'https://via.placeholder.com/40'}
-                                alt={selectedRoomData.roomName}
-                                className="message_profile_image"
-                            />
-                            <span className="message_profile_name">{selectedRoomData.roomName}</span>
+                            <div className="header_left">
+                                <img
+                                    src={selectedRoomData.image || 'https://via.placeholder.com/40'}
+                                    alt={selectedRoomData.roomName}
+                                    className="message_profile_image"
+                                />
+                                <span className="message_profile_name">{selectedRoomData.roomName}</span>
+                            </div>
+                            <IconButton
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                onClick={handleMenuOpen}
+                                className="kebab_button"
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                            <Menu
+                                id="long-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={menuOpen}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem onClick={() => handleMenuItemClick('fileImage')}>파일/이미지</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('invite')}>채팅 초대</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('leave')}>채팅방 나가기</MenuItem>
+                            </Menu>
                         </>
                     )}
                 </div>
+
                 <div id="messages">
                     <ul id="pre_messages">
                         {(messages[selectedRoom] || []).map((data, index) => (
-                            <li
-                                className={data.memberId === parseInt(memberId) ? 'message_self' : 'message_other'}
-                                key={index + 1}
-                            >
+                            <li className={data.memberId === parseInt(memberId) ? 'message_self' : 'message_other'} key={index + 1}>
                                 {renderMessageContent(data)}
                             </li>
                         ))}
@@ -194,11 +235,7 @@ export default function Message() {
                 </div>
                 <div className="form_container">
                     <input type="file" id="file_input" style={{ display: 'none' }} onChange={handleFileSend} />
-                    <button
-                        type="button"
-                        id="send_file_button"
-                        onClick={() => document.getElementById('file_input').click()}
-                    >
+                    <button type="button" id="send_file_button" onClick={() => document.getElementById('file_input').click()}>
                         <CgAddR />
                     </button>
                     <input
@@ -214,13 +251,7 @@ export default function Message() {
                         <IoIosSend />
                     </button>
                 </div>
-                <button
-                    onClick={() => {
-                        console.log(messages);
-                    }}
-                >
-                    test
-                </button>
+                <button onClick={() => { console.log(messages); }}>test</button>
             </div>
         </div>
     );

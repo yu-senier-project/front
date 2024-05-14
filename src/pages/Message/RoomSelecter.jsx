@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import '../../styles/message/roomselecter.scss';
 import apiClient from '../../util/BaseUrl';
 
-function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom,open,close }) {
+function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom,open,close,onLoadMore }) {
     const [newRoomName, setNewRoomName] = useState('');
 
     const handleAddRoom = (e) => {
@@ -61,6 +61,7 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom,open,c
                     </li>
                 )}
             </ul>
+            <button onClick={onLoadMore}>방 불러오기</button>
         </div>
     );
 }
