@@ -1,0 +1,67 @@
+.ProfileUpdateImage {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+
+  label {
+    cursor: pointer;
+  }
+}
+
+.ProfileUpdateImage-wrap {
+  width: 35%;
+  padding: 20px 0px 0px 0px;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.ProfileUpdateImage-image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 50px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+  }
+}
+
+.ProfileUpdateImage-wrap-closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.ProfileUpdateImage-menu {
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 0px;
+
+  &:nth-child(3) {
+    border-top: 1px solid lightgrey;
+    color: #71c9ce;
+  }
+
+  &:nth-child(4) {
+    border-top: 1px solid lightgrey;
+    color: rgb(254, 101, 101);
+  }
+
+  &:last-child {
+    border-top: 1px solid lightgrey;
+  }
+}

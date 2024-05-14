@@ -52,6 +52,16 @@
   img {
     width: 100%;
     border-radius: 100px;
+    &:hover {
+      border: 2px solid black;
+    }
+  }
+  // 프로필 사진 변경 버튼
+  button {
+    background-color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 100px;
   }
 }
 

@@ -19,26 +19,12 @@ export const ProfileUpdateUser = ({ setProfileImage }) => {
         <img src={showImage} alt="Profile" />
       </div>
       <div className="ProfileUpdateUser-btn">
-        <label htmlFor="profileImageUpload">
-          <div
-            style={{ backgroundColor: "#71C9CE" }}
-            className="ProfileUpdateUser-profile"
-          >
-            프로필 사진 변경
-          </div>
-        </label>
-        <input
-          type="file"
-          hidden
-          id="profileImageUpload"
-          onChange={handleImageChange}
-        />
         <label htmlFor="resumeUpload">
           <div
             className="ProfileUpdateUser-resume"
-            style={{ backgroundColor: "#B3DCB2" }}
+            style={{ backgroundColor: "#71c9ce" }}
           >
-            이력서 수정
+            이력서 변경
           </div>
         </label>
         <input

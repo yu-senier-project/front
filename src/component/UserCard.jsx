@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import "../styles/userCard.css";
 
-export default function UserCard({ userName, comment, width, img }) {
-  const className = `${width}`;
+export default function UserCard({ userName, comment, width, img, height }) {
+  const className = `${width} ${height}`;
   return (
     <div id="usercard">
       <img id="userImg" className={className} src={img} alt="프로필사진" />

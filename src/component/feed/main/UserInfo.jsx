@@ -19,7 +19,12 @@ const UserInfo = ({ username, clock, handleSettingButtonClick, profile }) => {
 
   return (
     <div className="UserInfo" style={{ height: "50px" }}>
-      <UserCard userName={username} width={"width-40"} img={img}></UserCard>
+      <UserCard
+        userName={username}
+        width={"width-40"}
+        height={"height-40"}
+        img={img}
+      ></UserCard>
       <p className="UserInfo-clock">{time}</p>
       {myName == username ? (
         <button

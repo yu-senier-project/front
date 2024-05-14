@@ -4,6 +4,7 @@ import { ProfileUpdateUser } from "./ProfileUpdateUser";
 import CloseButton from "../../basic/CloseButton";
 import { ProfileUpdateInfo } from "./ProfileUpdateInfo";
 import { useRef } from "react";
+import { ProfileUpdateImage } from "./ProfileUpdateImage";
 export const ProfileUpdate = ({ setOnEdit }) => {
   // 프로필 사진
   const [profileImage, setProfileImage] = useState("public/image/dp.jpg");

@@ -120,6 +120,7 @@ const Feed = ({ feedList }) => {
             <div className="main-img">
               <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
               <Buttons
+                isCommentEnabled={feedList.isCommentEnabled}
                 handleChatButtonClick={handleChatButtonClick}
                 postId={feedList.id}
                 like={feedList.liked}
@@ -144,6 +145,7 @@ const Feed = ({ feedList }) => {
             <div>
               {isChatOpen ? (
                 <ChatModal
+                  profile={feedList.profile}
                   handleUpdateButtonClick={handleUpdateButtonClick}
                   handleOnDelete={handleOnDelete}
                   imgList={imgList}
@@ -168,6 +170,8 @@ const Feed = ({ feedList }) => {
               {feedList.content}
             </p>
             <Buttons
+              isCommentEnabled={feedList.isCommentEnabled}
+              handleChatButtonClick={handleChatButtonClick}
               postId={feedList.id}
               like={feedList.liked}
               setFalseLoveNum={setFalseLoveNum}
@@ -191,6 +195,7 @@ const Feed = ({ feedList }) => {
           <div>
             {isChatOpen ? (
               <ChatModal
+                profile={feedList.profile}
                 handleUpdateButtonClick={handleUpdateButtonClick}
                 handleOnDelete={handleOnDelete}
                 imgList={imgList}

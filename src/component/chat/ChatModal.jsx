@@ -12,6 +12,7 @@ import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
 
 const ChatModal = ({
+  profile,
   handleUpdateButtonClick,
   handleOnDelete,
   feedList,
@@ -53,7 +54,8 @@ const ChatModal = ({
 
   // 모달 바깥 클릭했을 때 닫는 코드
   const handleClickBackground = (e) => {
-    if (e.target !== backgroundRef.current && onSetting) {
+    if (e.target == backgroundRef.current) {
+      handleChatButtonClick();
       setOnSetting(false);
     }
   };
@@ -64,11 +66,12 @@ const ChatModal = ({
     <div
       className="ChatModal ChatModal-animation"
       onClick={handleClickBackground}
+      ref={backgroundRef}
     >
       <div className="ChatModal-wrap">
         <div className="Feed-userInfo ChatModalUser">
           {onSetting ? (
-            <div className="ChatModal-Setting" ref={backgroundRef}>
+            <div className="ChatModal-Setting">
               <Setting
                 width={150}
                 settingTitleList={[
@@ -85,6 +88,7 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
+            profile={profile}
             clock={feedList.createdAt}
             username={feedList.nickname}
             Icon={faX}
