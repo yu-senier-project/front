@@ -14,7 +14,7 @@ function MessageInviteModal({ open, handleClose }) {
     const [selectedPeople, setSelectedPeople] = useState([]);
     const [search, setSearch] = useState('');
     const [newRoomName, setNewRoomName] = useState(localStorage.getItem("userNickName") || '');
-    const { addRoom, fetchRooms } = useMessageStore();
+    const { addRoom, fetchRooms,roomNumber } = useMessageStore();
 
     const debouncedFetchPeople = useCallback(debounce(async (value) => {
         if (value.trim()) {
@@ -53,7 +53,7 @@ function MessageInviteModal({ open, handleClose }) {
 
     const handleRoomCreation = () => {
         addRoom(newRoomName, selectedPeople);
-        fetchRooms(localStorage.getItem("memberId"), 1);
+        fetchRooms(localStorage.getItem("memberId"), roomNumber);
         setModalStep(0);
         setPeople([]);
         setSelectedPeople([]);
