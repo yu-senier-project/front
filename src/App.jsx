@@ -14,6 +14,7 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Profile } from "./pages/Profile";
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -33,6 +34,8 @@ function App() {
         <Route path="/Password" element={<PasswordFind />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Search" element={<Search />} />
+        <Route path="/Profile" element={<Profile />} />
+
         {/* <Route path="/Message" element={<Message />} /> */}
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

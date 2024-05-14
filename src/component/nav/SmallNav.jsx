@@ -45,10 +45,12 @@ const SmallNav = () => {
           <FontAwesomeIcon icon={faCalendarDays} className="icon" />
           <p>프로젝트</p>
         </div>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faUser} className="icon" />
-          <p>프로필</p>
-        </div>{" "}
+        <Link to={"/Profile"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faUser} className="icon" />
+            <p>프로필</p>
+          </div>
+        </Link>
         <div className="SmallNav-menu" onClick={onCreate}>
           <FontAwesomeIcon icon={faSquarePlus} className="icon" />
           <p>만들기</p>

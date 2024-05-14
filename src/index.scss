@@ -86,3 +86,8 @@ input[type="radio"]:checked {
     font-size: #{$i}px;
   }
 }
+
+.react-datepicker__day--outside-month {
+  cursor: default;
+  visibility: hidden;
+}

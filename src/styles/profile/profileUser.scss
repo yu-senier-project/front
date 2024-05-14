@@ -1,0 +1,64 @@
+.ProfileUser {
+  width: 70%;
+
+  margin: auto;
+  margin-top: 20px;
+}
+
+// 전체 틀
+.ProfileUser-info {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+//사진이랑 아이디, 한줄소개 부분
+.ProfileUser-info-text {
+  padding: 30px;
+  margin-left: 20px;
+
+  // 아이디
+  span {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  // 한줄소개
+  p {
+    margin-top: 20px;
+  }
+
+  // 프로필, 이력서 수정 버튼
+  button {
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    color: white;
+  }
+}
+
+// 한줄 소개 수정 연필
+.ProfileUser-info-text-pen {
+  cursor: pointer;
+}
+
+// 프로필 이미지
+.ProfileUser-info-img {
+  width: 20%;
+
+  img {
+    width: 100%;
+    border-radius: 100px;
+  }
+}
+
+// 소속 변경 버튼
+.ProfileUser-belong-changeBtn {
+  cursor: pointer;
+  &:hover {
+    border-bottom: 1px solid grey;
+  }
+}

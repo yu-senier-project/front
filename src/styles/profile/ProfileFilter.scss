@@ -1,0 +1,25 @@
+.ProfileFilter {
+  margin-left: 15%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.ProfileFilter-icon {
+  cursor: pointer;
+}
+
+.ProfileFilter-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 0px 10px;
+
+  &:hover {
+    background-color: lightgray;
+  }
+
+  &:active {
+    background-color: grey;
+  }
+}
