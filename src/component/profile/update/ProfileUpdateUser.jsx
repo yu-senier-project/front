@@ -18,7 +18,7 @@ export const ProfileUpdateUser = ({ setProfileImage }) => {
       <div className="ProfileUpdateUser-img">
         <img src={showImage} alt="Profile" />
       </div>
-      <div className="ProfileUpdateUser-btn">
+      {/* <div className="ProfileUpdateUser-btn">
         <label htmlFor="resumeUpload">
           <div
             className="ProfileUpdateUser-resume"
@@ -33,7 +33,7 @@ export const ProfileUpdateUser = ({ setProfileImage }) => {
           id="resumeUpload"
           // 이력서 수정에 대한 onChange 핸들러는 필요 시 추가
         />
-      </div>
+      </div> */}
     </div>
   );
 };

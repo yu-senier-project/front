@@ -1,15 +1,20 @@
 import React from "react";
 import "../../../styles/profile/profileUser.scss";
 
-export const ProfileUser = ({ setOnEdit, setImageEdit }) => {
-  // 수정 버튼 눌렀는지
+export const ProfileUser = ({ setOnEdit, setImageEdit, setOnResume }) => {
+  // 수정 버튼
   const handleEditBtn = () => {
     setOnEdit(true);
   };
 
+  // 프로필 사진 변경 함수
   const handleImageEditBtn = () => {
-    console.log(true);
     setImageEdit(true);
+  };
+
+  // 이력서 조회 버튼 눌렀을때
+  const handleResumeCheckBtn = () => {
+    setOnResume(true);
   };
 
   return (
@@ -35,7 +40,12 @@ export const ProfileUser = ({ setOnEdit, setImageEdit }) => {
           >
             프로필 수정
           </button>
-          <button style={{ backgroundColor: "#B3DCB2" }}>이력서 조회</button>
+          <button
+            style={{ backgroundColor: "#B3DCB2" }}
+            onClick={handleResumeCheckBtn}
+          >
+            이력서 조회
+          </button>
 
           {/* 한줄 소개 부분 */}
           <p>여기는 한줄 소개 </p>
