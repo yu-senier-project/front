@@ -1,7 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../../styles/profile/resume/ProfileResume.scss";
 import CloseButton from "../../basic/CloseButton";
-export const ProfileResume = ({ setOnResume }) => {
+import {
+  useGetResume,
+  useDeleteResume,
+  usePostResume,
+} from "../../../react-query/useProfile";
+export const ProfileResume = ({ setOnResume, memberId }) => {
+  const { data, isLoading, isFetching } = useGetResume(memberId);
+
+  let pdfUrl = data?.data?.uploadFileURL ?? "없음";
+
+  // 이력서 삭제 mutate
+  const mutate = useDeleteResume(memberId);
+
+  // 이력서 등록 mutate
+  const { mutate: postMutate, status } = usePostResume(memberId);
+
   // 이력서 저장할 state
   const [resume, setResume] = useState("");
   const [showResume, SetShowResume] = useState("파일을 선택해주세요!");
@@ -10,7 +25,6 @@ export const ProfileResume = ({ setOnResume }) => {
   const [onEdit, setOnEdit] = useState(false);
 
   // pdf 주소 저장할 변수 (서버에서 null 값주면 등록된 이력서 없다고 띄우기)
-  const pdfUrl = "http://example.com/sample.pdf";
 
   const backgroundRef = useRef(null);
 
@@ -39,6 +53,27 @@ export const ProfileResume = ({ setOnResume }) => {
     setResume(file);
   };
 
+  // 삭제하기 버튼 눌렀을 때
+  const handleOnDelete = () => {
+    if (pdfUrl === "없음") {
+      alert("등록된 이력서가 없습니다!");
+      return;
+    }
+    mutate();
+  };
+
+  // 등록하기 버튼 눌렀을 때
+  const handleOnPost = () => {
+    if (showResume === "파일을 선택해주세요!") {
+      alert("파일을 선택해주세요!");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", resume);
+    setOnEdit(false);
+    postMutate(formData);
+  };
+
   // 파일 등록시 state에 파일 등록
   return (
     <div
@@ -57,19 +92,30 @@ export const ProfileResume = ({ setOnResume }) => {
             </div>
             <p className="ProfileResume-title">이력서 조회</p>
             <div className="ProfileResume-main">
-              <a href={"#"} onClick={handleLinkClick}>
-                이력서 보러가기
-              </a>
+              {isLoading || status === "pending" || isFetching ? (
+                "로딩중..."
+              ) : pdfUrl !== "없음" ? (
+                <a href={"#"} onClick={handleLinkClick}>
+                  이력서 보러가기
+                </a>
+              ) : (
+                "등록된 이력서가 없습니다!"
+              )}
             </div>
             <div className="ProfileResume-btn">
-              <button style={{ backgroundColor: "#CE7171" }}>삭제하기</button>
+              <button
+                style={{ backgroundColor: "#CE7171" }}
+                onClick={handleOnDelete}
+              >
+                삭제하기
+              </button>
               <button
                 style={{ backgroundColor: "#71c9ce" }}
                 onClick={() => {
                   setOnEdit(true);
                 }}
               >
-                수정하기
+                {pdfUrl === "없음" ? "등록하기" : "수정하기"}
               </button>
             </div>
           </div>
@@ -81,9 +127,15 @@ export const ProfileResume = ({ setOnResume }) => {
             <p className="ProfileResume-title">이력서 등록</p>
             <div className="ProfileResume-main">
               <p>현재 등록된 이력서</p>
-              <a href={"#"} onClick={handleLinkClick}>
-                이력서 보러가기
-              </a>
+              {isLoading || status === "pending" ? (
+                "로딩중..."
+              ) : pdfUrl !== "없음" ? (
+                <a href={"#"} onClick={handleLinkClick}>
+                  이력서 보러가기
+                </a>
+              ) : (
+                "등록된 이력서가 없습니다!"
+              )}
             </div>
             <div className="ProfileResume-update">
               <p>등록할 이력서</p>
@@ -110,9 +162,7 @@ export const ProfileResume = ({ setOnResume }) => {
               </button>
               <button
                 style={{ backgroundColor: "#71c9ce" }}
-                onClick={() => {
-                  setOnEdit(true);
-                }}
+                onClick={handleOnPost}
               >
                 등록하기
               </button>

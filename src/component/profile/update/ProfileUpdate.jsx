@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "../../../styles/profile/update/ProfileUpdate.scss";
-import { ProfileUpdateUser } from "./ProfileUpdateUser";
+
 import CloseButton from "../../basic/CloseButton";
 import { ProfileUpdateInfo } from "./ProfileUpdateInfo";
 import { useRef } from "react";
 import { ProfileUpdateImage } from "./ProfileUpdateImage";
-export const ProfileUpdate = ({ setOnEdit }) => {
+export const ProfileUpdate = ({ setOnEdit, intro, date, memberId, img }) => {
   // 프로필 사진
-  const [profileImage, setProfileImage] = useState("public/image/dp.jpg");
+  const [profileImage, setProfileImage] = useState({ img });
 
   //한줄 소개
-  const [oneIntro, setOneIntro] = useState("기본 한줄 소개값");
+  const [oneIntro, setOneIntro] = useState(intro ?? "");
 
   // X버튼 누르면 닫김
   const handleCloseBtn = () => {
@@ -37,8 +37,18 @@ export const ProfileUpdate = ({ setOnEdit }) => {
         <div className="ProfileUpdate-closeBtn">
           <CloseButton size={18} onCloseButton={handleCloseBtn}></CloseButton>
         </div>
-        <ProfileUpdateUser setProfileImage={setProfileImage} />
-        <ProfileUpdateInfo oneIntro={oneIntro} setOneIntro={setOneIntro} />
+        <div className="ProfileUpdate-img">
+          <div>
+            <img src={img} alt="Profile" />
+          </div>
+        </div>
+        <ProfileUpdateInfo
+          memberId={memberId}
+          oneIntro={oneIntro}
+          date={date}
+          setOneIntro={setOneIntro}
+          handleCloseBtn={handleCloseBtn}
+        />
       </div>
     </div>
   );

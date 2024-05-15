@@ -1,7 +1,82 @@
 import apiClient from "../util/BaseUrl";
 
-export const getMemberPost = () => {
+// 회원 피드 가져오기
+export const getMemberFeed = ({}) => {
   return apiClient.get(
     "/api/v1/member/{memberId}/post?filter={filterType}&start={startDate}&end={endDate}"
   );
+};
+
+// 회원 정보 가져오는 api
+export const getMemberData = async (memberId) => {
+  return apiClient.get(`/api/v1/member/${memberId}`);
+};
+
+// 회원 이력서 가져오는 api
+export const getMemberResume = async (memberId) => {
+  return apiClient.get(`/api/v1/member/${memberId}/resume`);
+};
+
+// 회원 좋아요한 게시물 가져오는 api
+export const getMemberLikeFeed = async (memberId) => {
+  return apiClient.get(`/api/v1/member/${memberId}/post/liked`);
+};
+
+// 회원 정보 수정 api
+export const patchMemberData = async (data) => {
+  try {
+    const response = await apiClient.patch(`/api/v1/member`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 회원 이력서 업로드 api
+export const postResume = async (data) => {
+  try {
+    const response = await apiClient.post(`/api/v1/member/resume`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 회원 프로필 사진 업로드 api
+export const postProfileImage = async (data) => {
+  try {
+    const response = await apiClient.post(`/api/v1/member/profile`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 회원 이력서 삭제 api
+export const deleteResume = async () => {
+  try {
+    const response = await apiClient.delete(`/api/v1/member/resume`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 회원 프로필 삭제
+export const deleteProfileImage = async (data) => {
+  try {
+    const response = await apiClient.delete(`/api/v1/member/profile`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

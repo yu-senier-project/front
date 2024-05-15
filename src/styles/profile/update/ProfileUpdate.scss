@@ -27,3 +27,20 @@
   position: absolute;
   right: 20px;
 }
+
+.ProfileUpdate-img {
+  display: flex;
+
+  justify-content: center;
+
+  div {
+    width: 150px;
+    height: 150px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 100px;
+    }
+  }
+}

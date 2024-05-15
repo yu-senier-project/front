@@ -1,19 +1,32 @@
 import React, { useRef, useState } from "react";
 import "../../../styles/profile/update/ProfileUpdateImage.scss";
 import CloseButton from "../../basic/CloseButton";
-export const ProfileUpdateImage = ({ setImageEdit }) => {
+import { usePostProfileImage } from "../../../react-query/useProfile";
+export const ProfileUpdateImage = ({ setImageEdit, img, setProfileImg }) => {
+  const memberId = localStorage.getItem("memberId");
+  const { mutate, status } = usePostProfileImage(memberId);
+
   // 검은 배경 눌렀는지
   const backgroundRef = useRef(null);
 
   // 미리보기 해줄 이미지
-  const [showImage, setShowImage] = useState("public/image/dp.jpg");
+  const [showImage, setShowImage] = useState(img);
 
   // 사진 업로드 눌렀을 때
   const handleImageChange = (event) => {
+    const formData = new FormData();
     const file = event.target.files[0];
-    //setProfileImage(file);
+    const fileUrl = URL.createObjectURL(file);
+    // 낙관적 업데이트
+    setProfileImg(fileUrl);
+
+    setShowImage(file);
+
+    formData.append("file", file);
+
+    mutate(formData);
+
     handleCloseBtn();
-    // 서버로 보내는 로직 추가, 낙관적 업데이트 추가
   };
 
   // 기본 프로필로 설정 눌렀을 때

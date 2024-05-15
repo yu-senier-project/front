@@ -12,6 +12,7 @@ import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
 export const ChatReplyUserCard = ({
+  id,
   userName,
   comment,
   imgWidth,

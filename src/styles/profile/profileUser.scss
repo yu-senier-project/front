@@ -1,6 +1,6 @@
 .ProfileUser {
-  width: 70%;
-
+  width: 700px;
+  // border: 1px solid black;
   margin: auto;
   margin-top: 20px;
 }
@@ -47,21 +47,15 @@
 
 // 프로필 이미지
 .ProfileUser-info-img {
-  width: 20%;
-
+  width: 150px;
+  height: 150px;
   img {
     width: 100%;
+    height: 100%;
     border-radius: 100px;
     &:hover {
       border: 2px solid black;
     }
-  }
-  // 프로필 사진 변경 버튼
-  button {
-    background-color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 100px;
   }
 }
 

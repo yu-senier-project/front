@@ -8,8 +8,30 @@ import { ProfileFeedList } from "../component/profile/main/ProfileFeedList";
 import { ProfileUpdate } from "../component/profile/update/ProfileUpdate";
 import { ProfileUpdateImage } from "../component/profile/update/ProfileUpdateImage";
 import { ProfileResume } from "../component/profile/resume/ProfileResume";
+import { ProfileUpdateCompanyJob } from "../component/profile/CompanyAndJob/ProfileUpdateCompanyJob";
+import { useMemberData } from "../react-query/useProfile";
+import { Loading } from "../component/basic/Loading";
 
 export const Profile = () => {
+  // 맴버 아이디 가져오기
+  const memberId = localStorage.getItem("memberId") ?? "가져온값";
+
+  const { data: memberData, isLoading: memberDataIsLoading } =
+    useMemberData(memberId);
+
+  console.log(memberData?.data?.profile);
+
+  useEffect(() => {
+    setProfileImg(memberData?.data?.profile ?? "public/image/dp.jpg");
+  }, [memberData]);
+
+  const [profileImg, setProfileImg] = useState(
+    memberData?.data?.profile ?? "public/image/dp.jpg"
+  );
+
+  // 소속 변경 버튼 눌렀을 떄
+  const [onChangeCompany, setOnChangeCompany] = useState(false);
+
   // 프로필 수정 버튼 눌렀는지
   const [onEdit, setOnEdit] = useState(false);
 
@@ -35,9 +57,16 @@ export const Profile = () => {
     setEndDate(new Date());
   }, [selectMenu]);
 
+  if (memberDataIsLoading) {
+    return <Loading></Loading>;
+  }
+
   return (
     <div className="Profile">
       <ProfileUser
+        profileImg={profileImg}
+        data={memberData}
+        setOnChangeCompany={setOnChangeCompany}
         setOnEdit={setOnEdit}
         setImageEdit={setImageEdit}
         setOnResume={setOnResume}
@@ -54,13 +83,36 @@ export const Profile = () => {
       <ProfileFeedList />
 
       {/* 프로필 수정 버튼 누르면 모달창 */}
-      {onEdit ? <ProfileUpdate setOnEdit={setOnEdit} /> : null}
+      {onEdit ? (
+        <ProfileUpdate
+          img={profileImg}
+          setOnEdit={setOnEdit}
+          date={memberData?.data?.birth}
+          intro={memberData?.data?.introduction}
+          memberId={memberId}
+        />
+      ) : null}
 
       {/* 프로필 사진 수정창 */}
-      {onImageEdit ? <ProfileUpdateImage setImageEdit={setImageEdit} /> : null}
+      {onImageEdit ? (
+        <ProfileUpdateImage
+          setImageEdit={setImageEdit}
+          img={profileImg}
+          setProfileImg={setProfileImg}
+        />
+      ) : null}
 
       {/* 이력서 조회 눌렀는지 */}
-      {onResume ? <ProfileResume setOnResume={setOnResume} /> : null}
+      {onResume ? (
+        <ProfileResume setOnResume={setOnResume} memberId={memberId} />
+      ) : null}
+
+      {/* 소속 변경 버튼 눌렀는지 */}
+      {onChangeCompany ? (
+        <ProfileUpdateCompanyJob
+          setOnChangeCompany={setOnChangeCompany}
+        ></ProfileUpdateCompanyJob>
+      ) : null}
     </div>
   );
 };
