@@ -1,13 +1,20 @@
 import { useState, useRef } from "react";
 import "../styles/userCard.css";
 
-export default function UserCard({ userName, comment, width, img, height }) {
+export default function UserCard({
+  userName,
+  comment,
+  width,
+  img,
+  height,
+  onClick,
+}) {
   const className = `${width} ${height}`;
   return (
     <div id="usercard">
       <img id="userImg" className={className} src={img} alt="프로필사진" />
 
-      <div className="usercard-comment">
+      <div className="usercard-comment" onClick={onClick}>
         <span>
           <b>{userName}</b>
         </span>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/pages/Profile.scss";
+import { useParams } from "react-router-dom";
 
 import { ProfileUser } from "../component/profile/main/ProfileUser";
 import { ProfileNav } from "../component/profile/main/ProfileNav";
@@ -14,20 +15,25 @@ import { Loading } from "../component/basic/Loading";
 
 export const Profile = () => {
   // 맴버 아이디 가져오기
-  const memberId = localStorage.getItem("memberId") ?? "가져온값";
+  const myMembrId = localStorage.getItem("memberId");
+  const params = useParams();
+  const memberId = params.id ?? myMembrId;
+  // 내 프로필인지 확인
+  const myProfile = params.id == myMembrId;
 
+  // 회원 정보 가져오는 함수
   const { data: memberData, isLoading: memberDataIsLoading } =
     useMemberData(memberId);
 
-  console.log(memberData?.data?.profile);
+  const [profileImg, setProfileImg] = useState(
+    memberData?.data?.profile ?? "/public/image/dp.jpg"
+  );
+
+  console.log(profileImg);
 
   useEffect(() => {
-    setProfileImg(memberData?.data?.profile ?? "public/image/dp.jpg");
+    setProfileImg(memberData?.data?.profile ?? "/public/image/dp.jpg");
   }, [memberData]);
-
-  const [profileImg, setProfileImg] = useState(
-    memberData?.data?.profile ?? "public/image/dp.jpg"
-  );
 
   // 소속 변경 버튼 눌렀을 떄
   const [onChangeCompany, setOnChangeCompany] = useState(false);
@@ -64,6 +70,7 @@ export const Profile = () => {
   return (
     <div className="Profile">
       <ProfileUser
+        myProfile={myProfile}
         profileImg={profileImg}
         data={memberData}
         setOnChangeCompany={setOnChangeCompany}
@@ -80,7 +87,13 @@ export const Profile = () => {
         setStartDate={setStartDate}
         setEndDate={setEndDate}
       />
-      <ProfileFeedList />
+      <ProfileFeedList
+        memberId={memberId}
+        selectMenu={selectMenu}
+        filterType={value}
+        startDate={startDate}
+        endDate={endDate}
+      />
 
       {/* 프로필 수정 버튼 누르면 모달창 */}
       {onEdit ? (
@@ -104,7 +117,11 @@ export const Profile = () => {
 
       {/* 이력서 조회 눌렀는지 */}
       {onResume ? (
-        <ProfileResume setOnResume={setOnResume} memberId={memberId} />
+        <ProfileResume
+          setOnResume={setOnResume}
+          memberId={memberId}
+          myProfile={myProfile}
+        />
       ) : null}
 
       {/* 소속 변경 버튼 눌렀는지 */}

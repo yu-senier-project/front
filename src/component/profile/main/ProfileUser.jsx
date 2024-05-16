@@ -3,6 +3,7 @@ import "../../../styles/profile/profileUser.scss";
 import { useMemberData } from "../../../react-query/useProfile";
 
 export const ProfileUser = ({
+  myProfile,
   profileImg,
   data,
   setOnEdit,
@@ -45,12 +46,14 @@ export const ProfileUser = ({
           <span>{data?.data?.nickname}</span>
 
           {/* 프로필,이력서 수정 부분 */}
-          <button
-            onClick={handleEditBtn}
-            style={{ backgroundColor: "#71C9CE" }}
-          >
-            프로필 수정
-          </button>
+          {myProfile ? (
+            <button
+              onClick={handleEditBtn}
+              style={{ backgroundColor: "#71C9CE" }}
+            >
+              프로필 수정
+            </button>
+          ) : null}
           <button
             style={{ backgroundColor: "#B3DCB2" }}
             onClick={handleResumeCheckBtn}
@@ -79,13 +82,15 @@ export const ProfileUser = ({
         </span>
 
         {/* 소속 변경 버튼 */}
-        <span
-          className="ProfileUser-belong-changeBtn"
-          style={{ marginRight: "10px", fontSize: "14px", color: "grey" }}
-          onClick={handleCompanyChange}
-        >
-          소속 변경
-        </span>
+        {myProfile ? (
+          <span
+            className="ProfileUser-belong-changeBtn"
+            style={{ marginRight: "10px", fontSize: "14px", color: "grey" }}
+            onClick={handleCompanyChange}
+          >
+            소속 변경
+          </span>
+        ) : null}
       </div>
     </div>
   );

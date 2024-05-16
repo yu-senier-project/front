@@ -12,6 +12,9 @@ import {
   deleteResume,
   postResume,
   postProfileImage,
+  deleteProfileImage,
+  getMemberLikeFeed,
+  getMemberFeed,
 } from "../apis/profileApis";
 
 // 회원 정보 받아 오기
@@ -109,6 +112,23 @@ export const usePostProfileImage = (memberId) => {
       console.log(e);
       queryClient.invalidateQueries(["memberData", memberId]);
     },
+  });
+
+  return { mutate, status };
+};
+
+// 회원 프로필 사진 삭제
+export const useDeleteProfileImage = (memberId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: deleteProfileImage,
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (e) => {
+      console.log(e);
+      queryClient.invalidateQueries(["memberData", memberId]);
+    },
     onMutate: (data) => {
       console.log(data);
     },
@@ -117,7 +137,72 @@ export const usePostProfileImage = (memberId) => {
   return { mutate, status };
 };
 
+// 회원 게시물 가져오기
+export const useGetMemberFeed = (memberId, filterType, startDate, endDate) => {
+  const {
+    isLoading,
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["MemberFeeds", memberId, filterType, startDate, endDate],
+    queryFn: ({ pageParam = 0 }) => {
+      return getMemberFeed(memberId, filterType, startDate, endDate, pageParam);
+    },
+    getNextPageParam: (lastPage, pages) => {
+      console.log(lastPage);
+      return lastPage && lastPage.data.length > 0
+        ? lastPage.data[lastPage.data.length - 1].id
+        : false;
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: 0,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
+
+  return {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  };
+};
+
 // 회원 좋아요한 게시물 가져오기
+export const useGetLikeFeed = (memberId) => {
+  const {
+    isLoading,
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["likeFeed", memberId],
+    queryFn: ({ pageParam = 0 }) => getMemberLikeFeed(memberId, pageParam),
+    getNextPageParam: (lastPage) => {
+      if (lastPage && lastPage.data.length > 0) {
+        return lastPage.data[lastPage.data.length - 1].id;
+      } else {
+        return false;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: 0,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
+
+  return { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage };
+};
 
 // 회원 정보 변경 함수
 export const useMemberDataUpdate = (memberId) => {

@@ -35,7 +35,7 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/Search" element={<Search />} />
         <Route path="/Profile" element={<Profile />} />
-
+        <Route path="/Profile/:id" element={<Profile />} />
         {/* <Route path="/Message" element={<Message />} /> */}
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

@@ -1,9 +1,15 @@
 import apiClient from "../util/BaseUrl";
 
 // 회원 피드 가져오기
-export const getMemberFeed = ({}) => {
+export const getMemberFeed = async (
+  memberId,
+  filterType,
+  startDate,
+  endDate,
+  cursorValue
+) => {
   return apiClient.get(
-    "/api/v1/member/{memberId}/post?filter={filterType}&start={startDate}&end={endDate}"
+    `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
   );
 };
 
@@ -18,8 +24,13 @@ export const getMemberResume = async (memberId) => {
 };
 
 // 회원 좋아요한 게시물 가져오는 api
-export const getMemberLikeFeed = async (memberId) => {
-  return apiClient.get(`/api/v1/member/${memberId}/post/liked`);
+export const getMemberLikeFeed = async (memberId, cursorValue) => {
+  if (cursorValue === false) {
+    return { data: [] };
+  }
+  return apiClient.get(
+    `/api/v1/member/${memberId}/post/liked?cursorValue=${cursorValue}`
+  );
 };
 
 // 회원 정보 수정 api
@@ -72,9 +83,9 @@ export const deleteResume = async () => {
 };
 
 // 회원 프로필 삭제
-export const deleteProfileImage = async (data) => {
+export const deleteProfileImage = async () => {
   try {
-    const response = await apiClient.delete(`/api/v1/member/profile`, data);
+    const response = await apiClient.delete(`/api/v1/member/profile`);
     return response.data;
   } catch (error) {
     console.log(error);

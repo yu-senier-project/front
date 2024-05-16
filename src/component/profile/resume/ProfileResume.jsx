@@ -6,7 +6,7 @@ import {
   useDeleteResume,
   usePostResume,
 } from "../../../react-query/useProfile";
-export const ProfileResume = ({ setOnResume, memberId }) => {
+export const ProfileResume = ({ setOnResume, memberId, myProfile }) => {
   const { data, isLoading, isFetching } = useGetResume(memberId);
 
   let pdfUrl = data?.data?.uploadFileURL ?? "없음";
@@ -50,6 +50,11 @@ export const ProfileResume = ({ setOnResume, memberId }) => {
   const handleResumeUpdate = (e) => {
     SetShowResume(e.target.value);
     const file = e.target.files[0];
+    const fileType = file.type;
+    if (!fileType.includes("pdf")) {
+      alert("pdf 파일만 가능합니다!");
+      return;
+    }
     setResume(file);
   };
 
@@ -102,22 +107,24 @@ export const ProfileResume = ({ setOnResume, memberId }) => {
                 "등록된 이력서가 없습니다!"
               )}
             </div>
-            <div className="ProfileResume-btn">
-              <button
-                style={{ backgroundColor: "#CE7171" }}
-                onClick={handleOnDelete}
-              >
-                삭제하기
-              </button>
-              <button
-                style={{ backgroundColor: "#71c9ce" }}
-                onClick={() => {
-                  setOnEdit(true);
-                }}
-              >
-                {pdfUrl === "없음" ? "등록하기" : "수정하기"}
-              </button>
-            </div>
+            {myProfile ? (
+              <div className="ProfileResume-btn">
+                <button
+                  style={{ backgroundColor: "#CE7171" }}
+                  onClick={handleOnDelete}
+                >
+                  삭제하기
+                </button>
+                <button
+                  style={{ backgroundColor: "#71c9ce" }}
+                  onClick={() => {
+                    setOnEdit(true);
+                  }}
+                >
+                  {pdfUrl === "없음" ? "등록하기" : "수정하기"}
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div>

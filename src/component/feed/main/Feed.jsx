@@ -107,6 +107,7 @@ const Feed = ({ feedList }) => {
         </div>
       ) : null}
       <UserInfo
+        id={feedList.memberId}
         profile={feedList.profile}
         clock={feedList.createdAt}
         username={feedList.nickname}
