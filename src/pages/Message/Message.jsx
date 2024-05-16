@@ -197,7 +197,7 @@ export default function Message() {
             }
           >
             <a href={data.content} download>
-              다운로드
+             파일 다운로드
             </a>
             </div>
           </div>

@@ -68,6 +68,12 @@
         margin-left: auto;
         white-space: normal;
         overflow-wrap: break-word;
+        a{
+          color: rgb(101, 101, 255);
+        }
+        a:hover{
+          color: rgb(0, 0, 255);
+        }
       }
     }
 
@@ -83,6 +89,12 @@
         max-width: 40%;
         margin-right: auto;
         white-space: normal;
+        a{
+          color: rgb(101, 101, 255);
+        }
+        a:hover{
+          color: rgb(0, 0, 255);
+        }
       }
     }
   }
