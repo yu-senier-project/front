@@ -8,7 +8,7 @@ import CloseButton from "../component/basic/CloseButton";
 import useMessageStore from "../store/message/useMessageStore";
 import "../styles/message/addroom.scss";
 
-function RoomCreateModal({ open, handleClose }) {
+function RoomCreateModal({ open, close }) {
   const [modalStep, setModalStep] = useState(0);
   const [people, setPeople] = useState([]);
   const [selectedPeople, setSelectedPeople] = useState([]);
@@ -64,7 +64,7 @@ function RoomCreateModal({ open, handleClose }) {
     setModalStep(0);
     setPeople([]);
     setSelectedPeople([]);
-    handleClose();
+    close();
   };
 
   const renderPeopleList = () => {
@@ -103,9 +103,9 @@ function RoomCreateModal({ open, handleClose }) {
       return (
         <div className="addroom-modal">
           <div className="header">
-            <button className="close-button" onClick={handleClose}>
-              <CloseButton />
-            </button>
+            {/* <button className="close-button" onClick={close}> */}
+              <CloseButton onCloseButton={close} />
+            {/* </button> */}
           </div>
           <Input
             size="Large"
@@ -151,7 +151,7 @@ function RoomCreateModal({ open, handleClose }) {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={close}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

@@ -8,7 +8,7 @@ import CloseButton from "../component/basic/CloseButton";
 import useMessageStore from "../store/message/useMessageStore";
 import "../styles/message/addroom.scss";
 
-function MessageInviteModal({ open, handleClose }) {
+function MessageInviteModal({ open, handleClose,selectedRoom }) {
   const [modalStep, setModalStep] = useState(0);
   const [people, setPeople] = useState([]);
   const [selectedPeople, setSelectedPeople] = useState([]);
@@ -24,7 +24,7 @@ function MessageInviteModal({ open, handleClose }) {
         const memberId = localStorage.getItem("memberId");
         try {
           const { data } = await apiClient.get(
-            `/api/v1/member/only-company/search?memberId=${memberId}&nickname=${value}`
+            `/api/v1/member/for-invite/search?memberId=${memberId}&nickname=${value}&roomId${selectedRoom}`
           );
           setPeople(data);
         } catch (error) {
@@ -120,27 +120,7 @@ function MessageInviteModal({ open, handleClose }) {
     } else if (modalStep === 1) {
       return (
         <div className="addroom-modal">
-          <div className="header">
-            <button className="close-button" onClick={() => setModalStep(0)}>
-              <h1>←</h1>
-            </button>
-            <button className="close-button" onClick={handleClose}>
-              <CloseButton />
-            </button>
-          </div>
-          <p>사용하실 채팅방의 이름을 적어주세요</p>
-          <p>미 작성시 채팅방 회원의 이름으로 작성됩니다</p>
-          <Input
-            size="Large"
-            name="newRoomName"
-            value={newRoomName}
-            onChange={handleNewRoomNameChange}
-          />
-          <Button
-            text="채팅방 생성"
-            size="Large"
-            onClick={handleRoomCreation}
-          />
+         
         </div>
       );
     } else {

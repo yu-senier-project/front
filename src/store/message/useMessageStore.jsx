@@ -216,6 +216,8 @@ const useMessageStore = create((set, get) => ({
 
   sendImageMessage: async (file, roomId, memberId, base64Data) => {
     try {
+      const day = new Date();
+
       const fileName = file.name;
       const lastDotIndex = fileName.lastIndexOf(".");
       const originalFileName = fileName;
@@ -225,9 +227,13 @@ const useMessageStore = create((set, get) => ({
         originalFileName,
         extension,
         messageType: "IMAGE",
+        createdAt: day,
+        memberId,
         roomId,
         from: localStorage.getItem("userNickName"),
-        memberId,
+
+        // subjectId: "",
+
       };
       console.log(`Sending image to room ${roomId}:`, fileMessage);
       if (!get().isSubscribedToRoom(roomId)) {
@@ -235,7 +241,7 @@ const useMessageStore = create((set, get) => ({
       }
       if (useConnectionStore.getState().isConnected) {
         stompClient.send(
-          `/pub/chat-room/image/${roomId}`,
+          `/pub/chat-room/file/${roomId}`,
           {},
           JSON.stringify(fileMessage)
         );
@@ -251,18 +257,21 @@ const useMessageStore = create((set, get) => ({
 
   sendFileMessage: async (file, roomId, memberId, base64Data) => {
     try {
+      const day = new Date();
       const fileName = file.name;
       const lastDotIndex = fileName.lastIndexOf(".");
       const originalFileName = fileName;
       const extension = fileName.substring(lastDotIndex + 1);
       const fileMessage = {
-        content: base64Data,
+        createdAt: day,
         originalFileName,
         extension,
-        messageType: "FILE",
+        content: base64Data,
         roomId,
         from: localStorage.getItem("userNickName"),
         memberId,
+        // subjectId: "",
+        messageType: "FILE",
       };
       console.log(`Sending file to room ${roomId}:`, fileMessage);
       if (!get().isSubscribedToRoom(roomId)) {

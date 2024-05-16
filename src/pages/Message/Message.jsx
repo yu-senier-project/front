@@ -38,7 +38,10 @@ export default function Message() {
 
   const [createOpen, setCreateOpen] = useState(false);
   const handleCreateOpen = () => setCreateOpen(true);
-  const handleCreateClose = () => setCreateOpen(false);
+  const handleCreateClose = () => {
+    console.log("close");
+    setCreateOpen(false)
+  };
 
   const [inviteOpen, setInviteOpen] = useState(false);
   const handleInviteOpen = () => setInviteOpen(true);
@@ -163,6 +166,8 @@ export default function Message() {
     switch (data.messageType) {
       case "IMAGE":
         return (
+          <div>
+            <p>{data.from}</p>
           <div
             className={
               parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -177,10 +182,13 @@ export default function Message() {
                 console.log(data);
               }}
             />
+            </div>
           </div>
         );
       case "FILE":
         return (
+          <div>
+            <p>{data.from}</p>
           <div
             className={
               parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -191,10 +199,13 @@ export default function Message() {
             <a href={data.content} download>
               다운로드
             </a>
+            </div>
           </div>
         );
       default:
         return (
+          <div>
+            <p>{data.from}</p>
           <div
             className={
               parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -202,13 +213,10 @@ export default function Message() {
                 : "message_other"
             }
           >
-            <a
-              onClick={() => {
-                console.log(data);
-              }}
-            >
-              {data.content}
-            </a>
+          
+             <span>{data.content}</span>
+            
+          </div>
           </div>
         );
     }
@@ -229,11 +237,13 @@ export default function Message() {
       <div className="message_container">
         <RoomCreateModal
           open={createOpen}
-          handleCreateClose={handleCreateClose}
+          close={handleCreateClose}
+          // handleCreateClose={}
         />
         <MessageInviteModal
           open={inviteOpen}
-          handleCreateClose={handleInviteClose}
+          handleClose={handleInviteClose}
+          selectedRoom={selectedRoom}
         />
         <div className="message_header">
           {selectedRoomData && (
