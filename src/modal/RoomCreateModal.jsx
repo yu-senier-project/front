@@ -104,7 +104,7 @@ function RoomCreateModal({ open, close }) {
         <div className="addroom-modal">
           <div className="header">
             {/* <button className="close-button" onClick={close}> */}
-              <CloseButton onCloseButton={close} />
+            <CloseButton onCloseButton={close} />
             {/* </button> */}
           </div>
           <Input
@@ -124,7 +124,7 @@ function RoomCreateModal({ open, close }) {
             <button className="close-button" onClick={() => setModalStep(0)}>
               <h1>←</h1>
             </button>
-            <button className="close-button" onClick={handleClose}>
+            <button className="close-button" onClick={close}>
               <CloseButton />
             </button>
           </div>

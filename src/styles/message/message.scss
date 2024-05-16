@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   height: 100vh;
-  width: 80vw;
+  // width: 80vw;
 }
 
 .message_container {
@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     padding: 20px;
-    justify-content: space-between; /* 추가: 자식 요소들을 양쪽 끝으로 배치 */
+    justify-content: space-between;
 
     .header_left {
       display: flex;
@@ -56,10 +56,13 @@
 
     .message_self {
       text-align: right;
-
-      .message_self {
-        display: flex;
+      span {
+        padding: 10px;
         background-color: #71c9ce;
+      }
+      .message_self {
+        // display: flex;
+        display: inline-block;
         color: white;
         padding: 10px;
         border-radius: 10px;
@@ -68,10 +71,10 @@
         margin-left: auto;
         white-space: normal;
         overflow-wrap: break-word;
-        a{
+        a {
           color: rgb(101, 101, 255);
         }
-        a:hover{
+        a:hover {
           color: rgb(0, 0, 255);
         }
       }
@@ -89,13 +92,30 @@
         max-width: 40%;
         margin-right: auto;
         white-space: normal;
-        a{
+        overflow-wrap: break-word;
+
+        a {
           color: rgb(101, 101, 255);
         }
-        a:hover{
+        a:hover {
           color: rgb(0, 0, 255);
         }
       }
+    }
+    .message_system {
+      // display: flex;
+
+      width: 100%;
+      text-align: center;
+      display: flex;
+      background-color: #e0e0e0;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+      max-width: 40%;
+      margin-right: auto;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
   }
 

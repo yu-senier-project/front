@@ -40,7 +40,7 @@ export default function Message() {
   const handleCreateOpen = () => setCreateOpen(true);
   const handleCreateClose = () => {
     console.log("close");
-    setCreateOpen(false)
+    setCreateOpen(false);
   };
 
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -168,55 +168,50 @@ export default function Message() {
         return (
           <div>
             <p>{data.from}</p>
-          <div
-            className={
-              parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                ? "message_self"
-                : "message_other"
-            }
-          >
             <img
+              className={
+                parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                  ? "message_self"
+                  : "message_other"
+              }
               src={data.content}
               alt="Message Content"
               onClick={() => {
                 console.log(data);
               }}
             />
-            </div>
           </div>
         );
       case "FILE":
         return (
           <div>
             <p>{data.from}</p>
-          <div
-            className={
-              parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                ? "message_self"
-                : "message_other"
-            }
-          >
             <a href={data.content} download>
-             파일 다운로드
+              <span
+                className={
+                  parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                    ? "message_self"
+                    : "message_other"
+                }
+              >
+                파일 다운로드
+              </span>
             </a>
-            </div>
           </div>
         );
       default:
         return (
           <div>
             <p>{data.from}</p>
-          <div
-            className={
-              parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                ? "message_self"
-                : "message_other"
-            }
-          >
-          
-             <span>{data.content}</span>
-            
-          </div>
+            <span
+              className={
+                parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                  ? "message_self"
+                  : "message_other"
+              }
+            >
+              {data.content}
+            </span>
           </div>
         );
     }
@@ -297,6 +292,8 @@ export default function Message() {
                 className={
                   data.memberId === parseInt(memberId)
                     ? "message_self"
+                    : data.messageType === "STATUS"
+                    ? "message_system"
                     : "message_other"
                 }
                 key={index + 1}

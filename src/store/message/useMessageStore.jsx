@@ -142,10 +142,11 @@ const useMessageStore = create((set, get) => ({
         roomName: roomName,
         inviteList: inviteList,
       };
-      await apiClient.post(
+      const response = await apiClient.post(
         `/api/v1/chat-room/create?memberId=${memberId}`,
         data
       );
+      console.log(response);
     } catch (error) {
       console.error("Error adding chat room:", error);
     }
@@ -173,6 +174,7 @@ const useMessageStore = create((set, get) => ({
     try {
       console.log("메시지 받아오는중...");
       const response = await apiClient.get(`/api/v1/chat-room/${roomId}`);
+      console.log(response);
       const sortedMessages = response.data.sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
@@ -233,7 +235,6 @@ const useMessageStore = create((set, get) => ({
         from: localStorage.getItem("userNickName"),
 
         // subjectId: "",
-
       };
       console.log(`Sending image to room ${roomId}:`, fileMessage);
       if (!get().isSubscribedToRoom(roomId)) {
