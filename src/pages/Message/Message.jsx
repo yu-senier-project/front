@@ -331,13 +331,13 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
-        <button
+        {/* <button
           onClick={() => {
             console.log(messages);
           }}
         >
           test
-        </button>
+        </button> */}
       </div>
     </div>
   );

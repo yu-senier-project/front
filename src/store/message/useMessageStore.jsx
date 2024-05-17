@@ -154,21 +154,30 @@ const useMessageStore = create((set, get) => ({
 
   fetchRooms: async (memberId, pageNumber) => {
     try {
-      connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
-      const response = await apiClient.get(
-        `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
-      );
-      set((state) => {
-        const existingRoomIds = new Set(state.rooms.map((room) => room.roomId));
-        const newRooms = response.data.filter(
-          (room) => !existingRoomIds.has(room.roomId)
+        connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
+        const response = await apiClient.get(
+            `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
         );
-        return { rooms: [...state.rooms, ...newRooms] };
-      });
+        set((state) => {
+            // 기존 방 ID를 Set으로 저장
+            const existingRoomIds = new Set(state.rooms.map((room) => room.roomId));
+
+            // 새로 받아온 방 정보에서 기존 방 ID를 제외한 새 방 정보만 필터링
+            const newRooms = response.data.filter(
+                (room) => !existingRoomIds.has(room.roomId)
+            );
+
+            // 기존 방 정보와 새 방 정보를 합치고 time 값을 기준으로 내림차순 정렬
+            const allRooms = [...state.rooms, ...newRooms].sort((a, b) => b.lastChatSendAt - a.lastChatSendAt);
+
+            // 상태 업데이트
+            return { rooms: allRooms };
+        });
     } catch (error) {
-      console.error("Error fetching chat rooms:", error);
+        console.error("Error fetching chat rooms:", error);
     }
-  },
+},
+
 
   fetchMessages: async (roomId) => {
     try {
