@@ -61,8 +61,7 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom, open,
                 )}
             </ul>
 
-            <button onClick={onLoadMore}>방 불러오기</button>
-            <button onClick={() => { console.log(rooms) }}>asdf</button>
+            <button className="load_more_button" onClick={onLoadMore}>방 불러오기</button>
         </div>
     );
 }

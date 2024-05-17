@@ -104,7 +104,6 @@
     }
     .message_system {
       // display: flex;
-
       width: 100%;
       text-align: center;
       display: flex;
@@ -164,11 +163,17 @@
 }
 
 .load_more_button {
-  background-color: #71c9ce;
-  color: white;
+  background-color: transparent;
+  color: rgb(114, 114, 114);
   padding: 10px;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
   margin: 10px auto;
+
+  &:hover{
+    color: #464646;
+  }
+  &:active{
+    color: #bebebe;
+  }
 }

@@ -63,7 +63,7 @@ export default function Message() {
     if (selectedRoom && memberId) {
       fetchMessages(selectedRoom);
     }
-  }, [selectedRoom, memberId, fetchMessages]);
+  }, [selectedRoom, fetchMessages]);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });

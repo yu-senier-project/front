@@ -155,6 +155,7 @@ const useMessageStore = create((set, get) => ({
   fetchRooms: async (memberId, pageNumber) => {
     try {
         connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
+        console.log('방 받아오는중');
         const response = await apiClient.get(
             `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
         );
@@ -171,6 +172,7 @@ const useMessageStore = create((set, get) => ({
             const allRooms = [...state.rooms, ...newRooms].sort((a, b) => b.lastChatSendAt - a.lastChatSendAt);
 
             // 상태 업데이트
+            console.log("방 다받아옴");
             return { rooms: allRooms };
         });
     } catch (error) {
