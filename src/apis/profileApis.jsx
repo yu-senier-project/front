@@ -8,6 +8,14 @@ export const getMemberFeed = async (
   endDate,
   cursorValue
 ) => {
+  if (cursorValue === false) {
+    return { data: [] };
+  }
+  if (startDate == 0 || endDate == 0) {
+    return apiClient.get(
+      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`
+    );
+  }
   return apiClient.get(
     `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
   );

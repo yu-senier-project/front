@@ -34,9 +34,11 @@ export const ProfileUser = ({
   return (
     <div className="ProfileUser">
       <div className="ProfileUser-info">
-        <div className="ProfileUser-info-img" onClick={handleImageEditBtn}>
+        <div
+          className="ProfileUser-info-img"
+          onClick={myProfile ? handleImageEditBtn : null}
+        >
           {/* 자기 프로필이면 버튼 클릭해서 프로필 사진 바꿀 수 있게 disabled 사용하기 */}
-
           <img src={profileImg} alt="프로필 사진" />
         </div>
 

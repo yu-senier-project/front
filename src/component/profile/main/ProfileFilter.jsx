@@ -11,6 +11,8 @@ export const ProfileFilter = ({
   endDate,
   startDate,
   setStartDate,
+  setStart,
+  setEnd,
 }) => {
   const [onFilter, setOnFilter] = useState(false);
 
@@ -21,6 +23,17 @@ export const ProfileFilter = ({
       setOnDaySelect(false);
     }
   }, [value]);
+
+  const applyDateFilter = () => {
+    const startYear = startDate.getFullYear();
+    const startMonth = String(startDate.getMonth() + 1).padStart(2, "0");
+    const startDays = String(startDate.getDate()).padStart(2, "0");
+    const endYear = endDate.getFullYear();
+    const endMonth = String(endDate.getMonth() + 1).padStart(2, "0");
+    const endDays = String(endDate.getDate()).padStart(2, "0");
+    setStart(`${startYear}-${startMonth}-${startDays}`);
+    setEnd(`${endYear}-${endMonth}-${endDays}`);
+  };
 
   return (
     <div className="ProfileFilter">
@@ -42,7 +55,14 @@ export const ProfileFilter = ({
         ></ProfileFilterMenu>
       ) : null}
       {onDaySelect ? (
-        <div style={{ display: "flex", marginLeft: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "10px",
+            position: "relative",
+            zIndex: "100000",
+          }}
+        >
           <div style={{ marginRight: "10px" }}>
             <ProfileDayFilter
               startDate={startDate}
@@ -51,7 +71,9 @@ export const ProfileFilter = ({
               setEndDate={setEndDate}
             ></ProfileDayFilter>
           </div>
-          <button className="ProfileFilter-btn">조회</button>
+          <button className="ProfileFilter-btn" onClick={applyDateFilter}>
+            조회
+          </button>
         </div>
       ) : null}
     </div>

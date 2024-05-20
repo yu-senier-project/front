@@ -53,14 +53,33 @@ export const Profile = () => {
   // 필터 기준
   const [value, setValue] = useState("최신순");
 
+  // 현재 날짜
+  const today = new Date();
+
+  // 한 달 전 날짜 계산
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(today.getMonth() - 1);
+
   // 날짜 필터
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(oneMonthAgo);
+  const [endDate, setEndDate] = useState(today);
+  const [start, setStart] = useState(
+    `${oneMonthAgo.getFullYear()}-${String(oneMonthAgo.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(oneMonthAgo.getDate()).padStart(2, "0")}`
+  );
+  const [end, setEnd] = useState(
+    `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(today.getDate()).padStart(2, "0")}`
+  );
 
   useEffect(() => {
     setValue("최신순");
-    setStartDate(new Date());
-    setEndDate(new Date());
+    // setStartDate(new Date());
+    // setEndDate(new Date());
   }, [selectMenu]);
 
   if (memberDataIsLoading) {
@@ -79,15 +98,22 @@ export const Profile = () => {
         setOnResume={setOnResume}
       />
       <ProfileNav selectMenu={selectMenu} setSelectMenu={setSelectMenu} />
-      <ProfileFilter
-        value={value}
-        setValue={setValue}
-        startDate={startDate}
-        endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-      />
+      {/* 내 게시물에만 필터 넣기  */}
+      {selectMenu == 1 ? (
+        <ProfileFilter
+          value={value}
+          setValue={setValue}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          setStart={setStart}
+          setEnd={setEnd}
+        />
+      ) : null}
       <ProfileFeedList
+        start={start}
+        end={end}
         memberId={memberId}
         selectMenu={selectMenu}
         filterType={value}

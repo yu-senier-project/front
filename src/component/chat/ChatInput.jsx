@@ -80,40 +80,41 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
         commentId,
       ]);
 
-      let newData = {
-        commentId: 0,
-        commentReply: 0,
-        content: newComment.content,
-        createAt: [2024, 1, 1, 1, 1, 1, 752664000],
-        likeCnt: 0,
-        postMember: {
-          id: previousCommentsReply.data[0].postMember.id,
-          nickname: localStorage.getItem("userNickName"),
-          profile: previousCommentsReply.data[0].postMember.profile,
-        },
-      };
+      console.log(previousCommentsReply);
+      // let newData = {
+      //   commentId: 0,
+      //   commentReply: 0,
+      //   content: newComment.content,
+      //   createAt: [2024, 1, 1, 1, 1, 1, 752664000],
+      //   likeCnt: 0,
+      //   postMember: {
+      //     id: previousCommentsReply.data[0].postMember.id,
+      //     nickname: localStorage.getItem("userNickName"),
+      //     profile: previousCommentsReply.data[0].postMember.profile,
+      //   },
+      // };
 
-      // 새 댓글을 캐시에 추가합니다.
-      queryClient.setQueryData(["feedReplys", postId, commentId], (old) => {
-        if (old) {
-          return { data: [...old.data, newData] };
-        } else {
-          return { data: [newData] };
-        }
-      });
+      // // 새 댓글을 캐시에 추가합니다.
+      // queryClient.setQueryData(["feedReplys", postId, commentId], (old) => {
+      //   if (old) {
+      //     return { data: [...old.data, newData] };
+      //   } else {
+      //     return { data: [newData] };
+      //   }
+      // });
 
-      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
-      return () =>
-        queryClient.setQueryData(
-          ["feedReplys", postId, commentId],
-          previousCommentsReply
-        );
+      // // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
+      // return () =>
+      //   queryClient.setQueryData(
+      //     ["feedReplys", postId, commentId],
+      //     previousCommentsReply
+      //   );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
     onError: (err, newComment, rollback) => {
-      console.log(e);
+      console.log(err);
       rollback();
     },
   });

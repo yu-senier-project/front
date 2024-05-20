@@ -4,6 +4,8 @@ import { ProfileLikeFeedList } from "./ProfileLikeFeedList";
 import { ProfileMyFeedList } from "./ProfileMyFeedList";
 
 export const ProfileFeedList = ({
+  start,
+  end,
   memberId,
   selectMenu,
   filterType,
@@ -14,6 +16,8 @@ export const ProfileFeedList = ({
     <div className="ProfileFeedList">
       {selectMenu === 1 ? (
         <ProfileMyFeedList
+          start={start}
+          end={end}
           memberId={memberId}
           filterType={filterType}
           startDate={startDate}

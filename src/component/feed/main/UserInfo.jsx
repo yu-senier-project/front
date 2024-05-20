@@ -22,7 +22,7 @@ const UserInfo = ({
   // 로그인한 정보 가져와서 게시물 아이디랑 같은지 확인해서 설정창 보여줄지 말지 결정
   const myName = localStorage.getItem("userNickName");
 
-  let img = profile ? profile : "public/image/dp.jpg";
+  let img = profile ? profile : "/public/image/dp.jpg";
 
   const nav = useNavigate();
 

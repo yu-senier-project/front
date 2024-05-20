@@ -153,7 +153,6 @@ export const useGetMemberFeed = (memberId, filterType, startDate, endDate) => {
       return getMemberFeed(memberId, filterType, startDate, endDate, pageParam);
     },
     getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage);
       return lastPage && lastPage.data.length > 0
         ? lastPage.data[lastPage.data.length - 1].id
         : false;
