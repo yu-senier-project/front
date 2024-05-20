@@ -50,16 +50,26 @@
       padding: 0;
       margin: 0;
     }
+
     img {
       max-width: 100%;
     }
 
     .message_self {
       text-align: right;
+
       span {
         padding: 10px;
         background-color: #71c9ce;
       }
+      // span:hover{
+      //   background-color: red;
+      // }
+
+      .file:hover{
+        color: rgb(90, 90, 90);
+      }
+
       .message_self {
         // display: flex;
         display: inline-block;
@@ -71,12 +81,6 @@
         margin-left: auto;
         white-space: normal;
         overflow-wrap: break-word;
-        a {
-          color: rgb(101, 101, 255);
-        }
-        a:hover {
-          color: rgb(0, 0, 255);
-        }
       }
     }
 
@@ -84,7 +88,8 @@
       text-align: left;
 
       .message_other {
-        display: flex;
+        // display: flex;
+        display: inline-block;
         background-color: #e0e0e0;
         padding: 10px;
         border-radius: 10px;
@@ -94,14 +99,9 @@
         white-space: normal;
         overflow-wrap: break-word;
 
-        a {
-          color: rgb(101, 101, 255);
-        }
-        a:hover {
-          color: rgb(0, 0, 255);
-        }
       }
     }
+
     .message_system {
       // display: flex;
       width: 100%;
@@ -131,6 +131,7 @@
       border: none;
       cursor: pointer;
       margin-right: 10px;
+
       svg {
         width: 25px;
         height: 25px;
@@ -153,6 +154,7 @@
       background-color: transparent;
       border: none;
       cursor: pointer;
+
       svg {
         width: 25px;
         height: 25px;
@@ -170,10 +172,11 @@
   cursor: pointer;
   margin: 10px auto;
 
-  &:hover{
+  &:hover {
     color: #464646;
   }
-  &:active{
+
+  &:active {
     color: #bebebe;
   }
 }

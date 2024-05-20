@@ -2,21 +2,19 @@ import React, { useState, useCallback, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import Input from "../component/basic/Input";
 import apiClient from "../util/BaseUrl";
+import axios from "axios";
 import { debounce } from "lodash";
 import Button from "../component/basic/Button";
 import CloseButton from "../component/basic/CloseButton";
 import useMessageStore from "../store/message/useMessageStore";
 import "../styles/message/addroom.scss";
 
-function MessageInviteModal({ open, handleClose,selectedRoom }) {
-  const [modalStep, setModalStep] = useState(0);
+function MessageInviteModal({ open, handleClose, selectedRoom, memberId }) {
   const [people, setPeople] = useState([]);
-  const [selectedPeople, setSelectedPeople] = useState([]);
   const [search, setSearch] = useState("");
-  const [newRoomName, setNewRoomName] = useState(
-    localStorage.getItem("userNickName") || ""
-  );
   const { addRoom, fetchRooms, roomNumber } = useMessageStore();
+  const [existsPeople, setExistsPeople] = useState([]);
+  const [selectedPeople, setSelectedPeople] = useState([]);
 
   const debouncedFetchPeople = useCallback(
     debounce(async (value) => {
@@ -24,9 +22,12 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
         const memberId = localStorage.getItem("memberId");
         try {
           const { data } = await apiClient.get(
-            `/api/v1/member/for-invite/search?memberId=${memberId}&nickname=${value}&roomId${selectedRoom}`
+            `/api/v1/member/for-invite/search?memberId=${memberId}&nickname=${value}&roomId=${selectedRoom}`
           );
-          setPeople(data);
+          const filteredPeople = data.filter(
+            (person) => !existsPeople.some((existing) => existing.memberId === person.memberId)
+          );
+          setPeople(filteredPeople);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -34,7 +35,7 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
         setPeople([]);
       }
     }, 300),
-    []
+    [selectedRoom, existsPeople]
   );
 
   const handleSearchChange = (e) => {
@@ -44,7 +45,7 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
   };
 
   const handleSelectPerson = (nickname, memberId) => {
-    setSelectedPeople((prev) => {
+    setExistsPeople((prev) => {
       const isSelected = prev.some((person) => person.memberId === memberId);
       if (isSelected) {
         return prev.filter((person) => person.memberId !== memberId);
@@ -54,15 +55,35 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
     });
   };
 
-  const handleNewRoomNameChange = (e) => {
-    setNewRoomName(e.target.value);
+  const getExistsPeople = async () => {
+    try {
+      console.log('qwer');
+      const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/participant?memberId=${memberId}`);
+      console.log(response.data);
+      setExistsPeople(response.data);
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+    }
   };
 
-  const handleRoomCreation = () => {
-    addRoom(newRoomName, selectedPeople);
-    fetchRooms(localStorage.getItem("memberId"), roomNumber);
-    setModalStep(0);
+  useEffect(() => {
+    if (open) {
+      getExistsPeople();
+    }
+  }, [open]);
+
+  const handleInvitePeople = () => {
+    // axios.post(`http://13.51.99.142:8080/api/v1/chat-room/1/invite?memberId=1&inviteList[nickname]=string&inviteList[memberId]=0`,).then().catch()
+
+
     setPeople([]);
+    handleClose();
+  };
+
+  const handleModalClose = () => {
+    setPeople([]);
+    setSearch("");
+    setExistsPeople([]);
     setSelectedPeople([]);
     handleClose();
   };
@@ -72,21 +93,22 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
       return (
         <ul>
           {people.map((person) => (
-            <li key={person.memberId}>
-              {person.nickname}
+            <li key={person.memberId} className="person-item">
+              <img src={person.avatar || "https://via.placeholder.com/40"} alt={person.nickname} className="avatar" />
+              <span>{person.nickname}</span>
               <button
                 onClick={() =>
                   handleSelectPerson(person.nickname, person.memberId)
                 }
                 className={
-                  selectedPeople.some(
+                  existsPeople.some(
                     (selected) => selected.memberId === person.memberId
                   )
                     ? "button-selected"
                     : ""
                 }
               >
-                선택
+                추가
               </button>
             </li>
           ))}
@@ -98,44 +120,55 @@ function MessageInviteModal({ open, handleClose,selectedRoom }) {
     return null;
   };
 
-  const renderModalContent = () => {
-    if (modalStep === 0) {
+  const renderSelectedPeople = () => {
+    if (existsPeople.length > 0) {
       return (
-        <div className="addroom-modal">
-          <div className="header">
-            <button className="close-button" onClick={handleClose}>
-              <CloseButton />
-            </button>
-          </div>
-          <Input
-            size="Large"
-            name="invite"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <div className="people-list">{renderPeopleList()}</div>
-          <Button text="다음" size="Large" onClick={() => setModalStep(1)} />
-        </div>
+        <ul className="selected-people-list">
+          {existsPeople.map((person) => (
+            <li key={person.memberId} className="selected-person-item">
+              <img src={person.avatar || "https://via.placeholder.com/40"} alt={person.nickname} className="avatar" />
+              <span>{person.nickname}</span>
+            </li>
+          ))}
+        </ul>
       );
-    } else if (modalStep === 1) {
-      return (
-        <div className="addroom-modal">
-         
-        </div>
-      );
-    } else {
-      return <p>초기화 오류</p>;
     }
+    return <p>추가된 사람이 없습니다.</p>;
   };
 
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={handleModalClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      {renderModalContent()}
+      <div className="addroom-modal">
+        <div className="header">
+          <button className="close-button" onClick={handleModalClose}>
+            <CloseButton />
+          </button>
+        </div>
+        <div className="title">
+          {/* <b>초대하기</b> */}
+        </div>
+        <div className="modal-content">
+          <div className="left-section">
+            <Input
+              size="Large"
+              name="invite"
+              value={search}
+              onChange={handleSearchChange}
+            />
+            <div className="people-list">{renderPeopleList()}</div>
+          </div>
+          <div className="right-section">
+            <b>추가된 사람</b>
+            <div className="selected-people">{renderSelectedPeople()}</div>
+            <Button text="다음" size="Large" onClick={handleInvitePeople} />
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 }

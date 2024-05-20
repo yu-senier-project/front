@@ -107,6 +107,7 @@ function RoomCreateModal({ open, close }) {
             <CloseButton onCloseButton={close} />
             {/* </button> */}
           </div>
+          <b>채팅방 생성</b>
           <Input
             size="Large"
             name="invite"

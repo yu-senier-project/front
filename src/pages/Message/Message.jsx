@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import { CgAddR } from "react-icons/cg";
 import RoomSelecter from "./RoomSelecter";
-import useMessageStore, {
-  connectStompClient,
-} from "../../store/message/useMessageStore";
+import useMessageStore, { connectStompClient } from "../../store/message/useMessageStore";
 import useLoginStore from "../../store/login/useLoginStore";
 import "../../styles/message/roomselecter.scss";
 import "../../styles/message/message.scss";
@@ -14,6 +12,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import apiClient from "../../util/BaseUrl";
 
 export default function Message() {
   const { isLogin } = useLoginStore();
@@ -26,12 +25,16 @@ export default function Message() {
     roomNumber,
     setRoomNumber,
     messages,
+    setMessages,
     fetchMessages,
+    fetchMoreMessages, // 추가 메시지 불러오기 함수
     sendMessage,
     sendImageMessage,
     sendFileMessage,
     isConnected,
     leaveRoom,
+    isLoading, // 로딩 상태
+    setLoading, // 로딩 상태 설정 함수
   } = useMessageStore();
   const lastMessageRef = useRef(null);
   const [message, setMessage] = useState("");
@@ -61,13 +64,15 @@ export default function Message() {
 
   useEffect(() => {
     if (selectedRoom && memberId) {
+      setMessages([]);
+      console.log("my name is ohdohyun");
       fetchMessages(selectedRoom);
     }
   }, [selectedRoom, fetchMessages]);
 
-  useEffect(() => {
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, selectedRoom]);
+  // useEffect(() => {
+  //   lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages, selectedRoom]);
 
   const handleConnect = () => {
     if (!isConnected) {
@@ -157,36 +162,62 @@ export default function Message() {
     }
   };
 
+  const handleScroll = (e) => {
+    if (e.target.scrollTop === 0 && !isLoading && selectedRoom) {
+      const oldestMessage = messages[selectedRoom][0];
+      console.log(oldestMessage)
+      if (oldestMessage) {
+        fetchMoreMessages(selectedRoom, oldestMessage.chatId);
+      }
+    }
+  };
+
   const selectedRoomData =
     rooms &&
     Array.isArray(rooms) &&
     rooms.find((room) => room?.roomId === selectedRoom);
 
-  function renderMessageContent(data) {
-    switch (data.messageType) {
-      case "IMAGE":
-        return (
-          <div>
-            <p>{data.from}</p>
-            <img
-              className={
-                parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                  ? "message_self"
-                  : "message_other"
-              }
-              src={data.content}
-              alt="Message Content"
-              onClick={() => {
-                console.log(data);
-              }}
-            />
-          </div>
-        );
-      case "FILE":
-        return (
-          <div>
-            <p>{data.from}</p>
-            <a href={data.content} download>
+    function renderMessageContent(data) {
+      switch (data.messageType) {
+        case "IMAGE":
+          return (
+            <div>
+              <p>{data.from}</p>
+              <img
+                className={
+                  parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                    ? "message_self"
+                    : "message_other"
+                }
+                src={data.content}
+                alt="Message Content"
+                onClick={() => {
+                  console.log(data);
+                }}
+              />
+            </div>
+          );
+        case "FILE":
+          return (
+            <div>
+              <p>{data.from}</p>
+              <a href={data.content} download>
+                <span
+                  className={
+                    parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                      ? "message_self file"
+                      : "message_other file"
+                  }
+                >
+                  파일 다운로드
+                </span>
+              </a>
+            </div>
+          );
+        default:
+          return (
+            <div>
+              <p>{data.from}</p>
               <span
                 className={
                   parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -194,28 +225,13 @@ export default function Message() {
                     : "message_other"
                 }
               >
-                파일 다운로드
+                {data.content}
               </span>
-            </a>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <p>{data.from}</p>
-            <span
-              className={
-                parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                  ? "message_self"
-                  : "message_other"
-              }
-            >
-              {data.content}
-            </span>
-          </div>
-        );
+            </div>
+          );
+      }
     }
-  }
+    
 
   return (
     <div className="message_page">
@@ -233,12 +249,12 @@ export default function Message() {
         <RoomCreateModal
           open={createOpen}
           close={handleCreateClose}
-          // handleCreateClose={}
         />
         <MessageInviteModal
           open={inviteOpen}
           handleClose={handleInviteClose}
           selectedRoom={selectedRoom}
+          memberId={memberId}
         />
         <div className="message_header">
           {selectedRoomData && (
@@ -285,7 +301,7 @@ export default function Message() {
           )}
         </div>
 
-        <div id="messages">
+        <div id="messages" onScroll={handleScroll}>
           <ul id="pre_messages">
             {(messages[selectedRoom] || []).map((data, index) => (
               <li
@@ -331,13 +347,15 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
-        {/* <button
-          onClick={() => {
-            console.log(messages);
-          }}
-        >
-          test
-        </button> */}
+        <button onClick={async () => {
+    try {
+        const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/image`);
+        console.log(response, selectedRoom);
+    } catch (error) {
+        console.error("Error fetching image:", error);
+    }
+}} >test</button>
+
       </div>
     </div>
   );

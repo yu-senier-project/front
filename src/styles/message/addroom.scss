@@ -1,112 +1,145 @@
 .addroom-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    width: 50%;
-    height: 600px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  width: 60%;
+  height: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    text-align: start;
+    width: 70%;
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+
+  .header {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    // h1 {
-    //   float: left;
-    //   margin-right: 100px;
-    //   margin-bottom: 10px;
-    // }
-    .title{
-      // position: fixed;
-      text-align: start;
-      width: 70%;
-      margin-top: 0px;
-      margin-bottom: 5px;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+
+    .close-button {
+      background-color: transparent;
+      border: none;
+      padding-right: 10px;
+      cursor: pointer;
     }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: 50px;
-      .close-button {
-        background-color: transparent;
-        border: none;
-        padding-right: 10px;
-        cursor: pointer; 
-      }
-    }
+  }
+
+  .modal-content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .left-section, .right-section {
+    flex: 1;
+    padding: 16px;
+  }
+
+  .left-section {
+    border-right: 1px solid #ccc;
     .people-list {
       background-color: rgb(216, 216, 216);
       height: 300px;
-      width: 70%;
+      width: 100%;
       margin-bottom: 20px;
       margin-top: 10px;
       border-radius: 8px;
       overflow-y: auto;
-  
+
       ul {
         list-style: none;
         padding: 0;
         margin: 0;
       }
+
       li {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 10px 20px;
-        border-bottom: 3px solid #ccc; // 아이템 사이의 구분선
-  
+        border-bottom: 3px solid #ccc;
+
         &:last-child {
-          border-bottom: none; // 마지막 항목은 구분선 없음
+          border-bottom: none;
         }
       }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
       button {
         padding: 5px 10px;
-        background-color: #71c9ce; // 버튼 배경색
-        color: white; // 텍스트 색상
+        background-color: #71c9ce;
+        color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        transition: background-color 0.3s; // 버튼 호버 효과
-  
+        transition: background-color 0.3s;
+
         &:hover {
           background-color: darken(#60aeb3, 10%);
         }
+
         &:active {
           background-color: #71c9ce;
         }
       }
+
       .button-selected {
-        background-color: #ccc; /* 회색 톤으로 설정 */
+        background-color: #ccc;
         color: #333;
         cursor: not-allowed;
-    }
-    }
-    .birthday-selecter{
-      width: 70%;
-      
-      .birthday{
-        text-align: start;
-      margin-top: 0px;
-      margin-bottom: 0px;
       }
     }
-    .name-space{
-      width: 100%;   
-      Input{
-          margin: 10px 33px 20px 33px;
-      }
   }
-  .password-space{
-      width: 100%;
-      Input{
-        margin: 10px 33px 20px 33px;
+
+  .right-section {
+    position: relative;
   
+    .selected-people-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .selected-person-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+  
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 8px;
       }
+    }
+  
+    .selected-people {
+      margin-top: 16px;
+    }
+  
+    button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      margin-top: 20px;
+    }
   }
-  }
-  #input-error{
-    border: 2px solid red;
-  }
+  
+}
