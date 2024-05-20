@@ -34,6 +34,7 @@ const Chat = ({ id, data, isLoading }) => {
           <div>
             {data?.map((item) => (
               <ChatUserCard
+                memberId={item.postMember.id}
                 liked={item.liked}
                 img={
                   item.postMember.profile !== null
@@ -57,6 +58,7 @@ const Chat = ({ id, data, isLoading }) => {
         )}
       </div>
       <ChatInput
+        setCommentId={setCommentId}
         postId={id}
         replyUser={replyUser}
         commentId={commentId}

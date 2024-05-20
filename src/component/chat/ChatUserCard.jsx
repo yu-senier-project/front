@@ -12,7 +12,9 @@ import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 const ChatUserCard = ({
+  memberId,
   liked,
   userName,
   comment,
@@ -25,6 +27,7 @@ const ChatUserCard = ({
   commentId,
   postId,
 }) => {
+  const nav = useNavigate();
   const myName = localStorage.getItem("userNickName");
   const imgClassName = `width-${imgWidth}`;
   const textClassName = `ChatUserCard-text width-${commentWidth}`;
@@ -87,9 +90,9 @@ const ChatUserCard = ({
               likeCnt: item.likeCnt - 1,
               liked: false,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {
@@ -127,9 +130,9 @@ const ChatUserCard = ({
               likeCnt: item.likeCnt + 1,
               liked: true,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {
@@ -161,6 +164,10 @@ const ChatUserCard = ({
     }
   };
 
+  const onProfileCilick = () => {
+    nav(`/Profile/${memberId}`);
+  };
+
   let likeClassName = `${liked ? "like-red" : null}`;
 
   return (
@@ -173,11 +180,13 @@ const ChatUserCard = ({
           src={img}
           alt="프로필사진"
           onClick={() => {
-            handleModal();
+            onProfileCilick();
           }}
         />
         <div className={textClassName}>
-          <span className="ChatUserCard-userName">{userName}</span>{" "}
+          <span className="ChatUserCard-userName" onClick={onProfileCilick}>
+            {userName}
+          </span>
           <span className="ChatUserCard-commnet">{comment}</span>
           <div className="ChatUserCard-chat">
             <span

@@ -8,7 +8,13 @@ import { useMutation } from "@tanstack/react-query";
 import { Loading } from "../basic/Loading";
 import { useQueryClient } from "@tanstack/react-query";
 
-const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
+const ChatInput = ({
+  replyUser,
+  postId,
+  commentId,
+  setReplyUser,
+  setCommentId,
+}) => {
   const [value, setValue] = useState(replyUser);
   const mentionList = useRef([]);
   const hashList = useRef([]);
@@ -81,34 +87,34 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
       ]);
 
       console.log(previousCommentsReply);
-      // let newData = {
-      //   commentId: 0,
-      //   commentReply: 0,
-      //   content: newComment.content,
-      //   createAt: [2024, 1, 1, 1, 1, 1, 752664000],
-      //   likeCnt: 0,
-      //   postMember: {
-      //     id: previousCommentsReply.data[0].postMember.id,
-      //     nickname: localStorage.getItem("userNickName"),
-      //     profile: previousCommentsReply.data[0].postMember.profile,
-      //   },
-      // };
+      let newData = {
+        commentId: 0,
+        commentReply: 0,
+        content: newComment.content,
+        createAt: [2024, 1, 1, 1, 1, 1, 752664000],
+        likeCnt: 0,
+        postMember: {
+          id: previousCommentsReply.data[0].postMember.id,
+          nickname: localStorage.getItem("userNickName"),
+          profile: previousCommentsReply.data[0].postMember.profile,
+        },
+      };
 
-      // // 새 댓글을 캐시에 추가합니다.
-      // queryClient.setQueryData(["feedReplys", postId, commentId], (old) => {
-      //   if (old) {
-      //     return { data: [...old.data, newData] };
-      //   } else {
-      //     return { data: [newData] };
-      //   }
-      // });
+      // 새 댓글을 캐시에 추가합니다.
+      queryClient.setQueryData(["feedReplys", postId, commentId], (old) => {
+        if (old) {
+          return { data: [...old.data, newData] };
+        } else {
+          return { data: [newData] };
+        }
+      });
 
-      // // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
-      // return () =>
-      //   queryClient.setQueryData(
-      //     ["feedReplys", postId, commentId],
-      //     previousCommentsReply
-      //   );
+      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
+      return () =>
+        queryClient.setQueryData(
+          ["feedReplys", postId, commentId],
+          previousCommentsReply
+        );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
@@ -142,6 +148,7 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
     } else {
       replyMutate(data);
     }
+    setCommentId(0);
     setValue("");
     setReplyUser("");
   };

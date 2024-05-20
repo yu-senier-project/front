@@ -6,18 +6,19 @@ export const getMemberFeed = async (
   filterType,
   startDate,
   endDate,
-  cursorValue
+  cursorValue,
+  likeCnt
 ) => {
   if (cursorValue === false) {
     return { data: [] };
   }
   if (startDate == 0 || endDate == 0) {
     return apiClient.get(
-      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`
+      `/api/v1/member/${memberId}/post?filter=${filterType}&likeCnt=${likeCnt}&cursorValue=${cursorValue}`
     );
   }
   return apiClient.get(
-    `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
+    `/api/v1/member/${memberId}/post?filter=${filterType}&likeCnt=${likeCnt}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
   );
 };
 

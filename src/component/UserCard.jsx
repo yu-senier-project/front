@@ -11,10 +11,10 @@ export default function UserCard({
 }) {
   const className = `${width} ${height}`;
   return (
-    <div id="usercard">
+    <div id="usercard" onClick={onClick}>
       <img id="userImg" className={className} src={img} alt="프로필사진" />
 
-      <div className="usercard-comment" onClick={onClick}>
+      <div className="usercard-comment">
         <span>
           <b>{userName}</b>
         </span>

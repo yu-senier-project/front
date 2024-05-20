@@ -88,9 +88,9 @@ export const ChatReplyUserCard = ({
               likeCnt: item.likeCnt - 1,
               liked: false,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {
@@ -135,9 +135,9 @@ export const ChatReplyUserCard = ({
               likeCnt: item.likeCnt + 1,
               liked: true,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {

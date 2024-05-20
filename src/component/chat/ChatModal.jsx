@@ -88,6 +88,7 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
+            id={feedList.memberId}
             profile={profile}
             clock={feedList.createdAt}
             username={feedList.nickname}
