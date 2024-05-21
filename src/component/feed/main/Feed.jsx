@@ -11,6 +11,7 @@ import { UpdateFeed } from "../delete/UpdateFeed";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
+import { renderContent } from "../../../util/MentionHashText";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -168,7 +169,7 @@ const Feed = ({ feedList }) => {
               style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
               className="Feed-content"
             >
-              {feedList.content}
+              {renderContent(feedList.content)}
             </p>
             <Buttons
               isCommentEnabled={feedList.isCommentEnabled}

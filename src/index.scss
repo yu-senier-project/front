@@ -91,3 +91,17 @@ input[type="radio"]:checked {
   cursor: default;
   visibility: hidden;
 }
+
+.metionHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #71c9ce;
+}
+
+.hashHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #ce7171;
+}

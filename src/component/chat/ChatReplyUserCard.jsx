@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
+import { renderContent } from "../../util/MentionHashText";
 export const ChatReplyUserCard = ({
   id,
   userName,
@@ -203,7 +204,7 @@ export const ChatReplyUserCard = ({
       />
       <div className={textClassName}>
         <span className="ChatUserCard-userName">{userName}</span>{" "}
-        <span className="ChatUserCard-commnet">{comment}</span>
+        <span className="ChatUserCard-commnet">{renderContent(comment)}</span>
         <div className="ChatUserCard-chat">
           <span
             className="ChatUserCard-chat-grey"

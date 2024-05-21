@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { Setting } from "../basic/Setting";
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
+import { renderContent } from "../../util/MentionHashText";
 
 const ChatModal = ({
   profile,
@@ -128,7 +129,7 @@ const ChatModal = ({
                       className="Texts-content"
                       style={{ whiteSpace: "pre-wrap" }}
                     >
-                      {feedList.content}
+                      {renderContent(feedList.content)}
                     </span>
                   </div>
                 )}
@@ -145,7 +146,7 @@ const ChatModal = ({
                   overflow: "scroll",
                 }}
               >
-                {feedList.content}
+                {renderContent(feedList.content)}
               </p>
               <Buttons
                 postId={feedList.id}

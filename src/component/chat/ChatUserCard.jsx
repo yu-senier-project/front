@@ -13,6 +13,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { renderContent } from "../../util/MentionHashText";
 const ChatUserCard = ({
   memberId,
   liked,
@@ -187,7 +188,7 @@ const ChatUserCard = ({
           <span className="ChatUserCard-userName" onClick={onProfileCilick}>
             {userName}
           </span>
-          <span className="ChatUserCard-commnet">{comment}</span>
+          <span className="ChatUserCard-commnet">{renderContent(comment)}</span>
           <div className="ChatUserCard-chat">
             <span
               className="ChatUserCard-chat-grey"

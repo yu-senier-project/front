@@ -38,12 +38,17 @@ const ChatInput = ({
   // 댓글 달기
   const { mutate: commentMutate, status: commentStatus } = useMutation({
     mutationFn: postComment,
+    onError: (e) => {
+      console.log(e);
+    },
     onMutate: async (newComment) => {
       // 캐시에 있는 이전 댓글을 저장
       const previousComments = queryClient.getQueryData([
         "feedComment",
         postId,
       ]);
+
+      console.log(previousComments);
 
       let newData = {
         commentId: 0,
@@ -52,9 +57,12 @@ const ChatInput = ({
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
         postMember: {
-          id: previousComments.data[0].postMember.id,
+          id: localStorage.getItem("memberId"),
           nickname: localStorage.getItem("userNickName"),
-          profile: previousComments.data[0].postMember.profile,
+          profile:
+            previousComments.data.length !== 0
+              ? previousComments?.data[0].postMember.profile
+              : "/public/image/dp.jpg",
         },
       };
 
@@ -76,6 +84,7 @@ const ChatInput = ({
     },
   });
 
+  // 답글 달기기
   const { mutate: replyMutate, status: replyStatus } = useMutation({
     mutationFn: postCommentReply,
     onMutate: async (newComment) => {
@@ -94,9 +103,12 @@ const ChatInput = ({
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
         postMember: {
-          id: previousCommentsReply.data[0].postMember.id,
+          id: localStorage.getItem("memberId"),
           nickname: localStorage.getItem("userNickName"),
-          profile: previousCommentsReply.data[0].postMember.profile,
+          profile:
+            previousCommentsReply?.data.length !== 0
+              ? previousCommentsReply?.data[0].postMember.profile
+              : "/public/image/dp.jpg",
         },
       };
 
@@ -144,6 +156,7 @@ const ChatInput = ({
       };
     }
     if (reply) {
+      console.log(data);
       commentMutate(data);
     } else {
       replyMutate(data);
