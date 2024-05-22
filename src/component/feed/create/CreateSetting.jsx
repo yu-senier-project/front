@@ -1,19 +1,23 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import "../../../styles/feed/create/setting.scss";
+import "../../../styles/feed/create/createSetting.scss";
 
-const Setting = () => {
-  const [toggle, setToggle] = useState(false);
+const CreateSetting = ({ onSetIsChat }) => {
+  const [toggle, setToggle] = useState(true);
 
+  // 글설정 누르면 글자 나타나도록
   const onClick = () => {
     setToggle(!toggle);
   };
-
   const className = `table-wrap ${toggle ? "up" : "down"}`;
 
+  const onChange = (e) => {
+    onSetIsChat(JSON.parse(e.target.value));
+  };
+
   return (
-    <div className="Setting">
+    <div className="CreateSetting">
       <div className="setting-text">
         <label htmlFor="set-toggle" className="setting-label">
           <span style={{ marginRight: "10px" }}>글 설정</span>
@@ -34,30 +38,33 @@ const Setting = () => {
         <div className={className}>
           <table>
             <tr>
-              <label htmlFor="normal">
-                <td>일반</td>
+              <label htmlFor="open">
+                <td>채팅 열기</td>
               </label>
               <td className="empty"></td>
               <td>
-                <input type="radio" id="normal" name="setting" />
+                <input
+                  type="radio"
+                  id="open"
+                  name="setting"
+                  value={true}
+                  onChange={onChange}
+                />
               </td>
             </tr>
             <tr>
-              <label htmlFor="promotion">
-                <td>홍보</td>
+              <label htmlFor="close">
+                <td>채팅 닫기</td>
               </label>
               <td className="empty"></td>
               <td>
-                <input type="radio" name="setting" id="promotion" />
-              </td>
-            </tr>
-            <tr>
-              <label htmlFor="recruitment">
-                <td>구인구직</td>
-              </label>
-              <td className="empty"></td>
-              <td>
-                <input type="radio" name="setting" id="recruitment" />
+                <input
+                  type="radio"
+                  name="setting"
+                  id="close"
+                  value={false}
+                  onChange={onChange}
+                />
               </td>
             </tr>
           </table>
@@ -67,4 +74,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default CreateSetting;

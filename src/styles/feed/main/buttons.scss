@@ -5,9 +5,9 @@
   .buttons {
     font-size: 20px;
     cursor: pointer;
-
-    &:last-child {
-      margin-left: auto;
-    }
   }
+}
+
+.like-red {
+  color: rgb(255, 70, 70);
 }

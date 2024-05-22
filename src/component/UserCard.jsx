@@ -5,15 +5,7 @@ export default function UserCard({ userName, comment, width, img }) {
   const className = `${width}`;
   return (
     <div id="usercard">
-      <img
-        id="userImg"
-        className={className}
-        src={img}
-        alt="프로필사진"
-        onClick={() => {
-          handleModal();
-        }}
-      />
+      <img id="userImg" className={className} src={img} alt="프로필사진" />
 
       <div className="usercard-comment">
         <span>

@@ -16,10 +16,8 @@ import { logout } from "../../util/auth";
 
 const SmallNav = () => {
   const { setToggle } = useCreateFeed((state) => state);
-
   const onCreate = () => {
     setToggle();
-    console.log(toggle);
   };
   return (
     <div className="SmallNav">
