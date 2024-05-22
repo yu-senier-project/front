@@ -20,6 +20,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 refreshAccessTokenInterceptor();
 
 function App() {
+
   const login = localStorage.getItem("login");
   const { toggle } = useCreateFeed((state) => state);
   const { isLogin } = useLoginStore((state) => state);
@@ -33,10 +34,9 @@ function App() {
         <Route path="/CheckId" element={<IdCheck />} />
         <Route path="/Password" element={<PwInitCheckId />} />
         <Route path="/PasswordInit" element={<PwInit />} />
-
         <Route path="/Home" element={<Home />} />
         <Route path="/Search" element={<Search />} />
-        {/* <Route path="/Message" element={<Message />} /> */}
+        <Route path="/Message" element={<Message />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </BrowserRouter>
