@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import useCreateFeed from "../../store/feed/useCreateFeed";
 import CreateFeed from "../feed/create/CreateFeed";
+import { logout } from "../../util/auth";
 
 const SmallNav = () => {
   const { setToggle } = useCreateFeed((state) => state);
@@ -24,16 +25,18 @@ const SmallNav = () => {
     <div className="SmallNav">
       <h1>CNS</h1>
       <div className="SmallNav-menuWrap">
-        <Link to={"/"}>
+        <Link to={"/Home"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faHouse} className="icon" />
             <p>홈</p>
           </div>
         </Link>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faMessage} className="icon" />
-          <p>메시지</p>
-        </div>
+        <Link to={"/Message"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faMessage} className="icon" />
+            <p>메시지</p>
+          </div>
+        </Link>
         <Link to={"/search"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
@@ -57,6 +60,7 @@ const SmallNav = () => {
         <FontAwesomeIcon icon={faGear} className="icon" />
         <p>설정</p>
       </div>
+      <button onClick={logout}>로그아웃</button>
     </div>
   );
 };
