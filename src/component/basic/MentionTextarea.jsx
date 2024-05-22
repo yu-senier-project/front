@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../styles/chat/MentionInput.scss";
-import { SearchHashTag } from "./SearchHashTag";
-import { SearchUser } from "./SearchUser";
+import { SearchHashTag } from "../chat/SearchHashTag";
+import { SearchUser } from "../chat/SearchUser";
+import "../../styles/basic/MentionTextarea.scss";
 
-export const MentionInput = ({
+export const MentionTextarea = ({
   value,
   onChange,
   inputRef,
   mentionList,
   hashList,
-  onKeyDown,
 }) => {
   // @ 입력시 검색 창
   const [onMention, setOnMention] = useState(false);
@@ -31,7 +31,8 @@ export const MentionInput = ({
   }, []);
 
   useEffect(() => {
-    // 없는 해시태그 입력시
+    console.log(hashList?.current);
+    //없는 해시태그 입력시
     if (hashValue !== "") {
       if (value[value.length - 1] == " ") {
         hashList.current.push(`#${hashValue}`);
@@ -39,6 +40,8 @@ export const MentionInput = ({
         setOnHash(false);
       }
     }
+
+    console.log(hashList?.current, mentionList?.current);
 
     // 멘션
     if (value[value.length - 1] == " ") {
@@ -51,21 +54,21 @@ export const MentionInput = ({
 
     if (onMention) {
       let mention = value.substring(currentCusor);
-
       setMentionValue(mention);
     }
 
     mentionList.current = mentionList.current.filter((item) =>
       value.includes(item)
     );
-
     // 해시태그
     if (onHash) {
       let hash = value.substring(currentCusor);
       setHashValue(hash);
     }
 
-    hashList.current = hashList.current.filter((item) => value.includes(item));
+    hashList.current = hashList?.current?.filter((item) =>
+      value.includes(item)
+    );
 
     if (!value.includes("#")) {
       setOnHash(false);
@@ -109,7 +112,7 @@ export const MentionInput = ({
 
   const onMentionClick = (userName) => {
     mentionList.current.push(`@${userName}`);
-    let newValue = value.substring(0, currentCusor) + userName + " ";
+    let newValue = value.substring(0, currentCusor) + userName;
     setOnMention(false);
     onChange(newValue);
 
@@ -118,7 +121,7 @@ export const MentionInput = ({
 
   const onHashClick = (hash) => {
     hashList.current.push(`#${hash}`);
-    let newValue = value.substring(0, currentCusor) + hash + " ";
+    let newValue = value.substring(0, currentCusor) + hash;
     setHashValue("");
     setOnHash(false);
     onChange(newValue);
@@ -126,8 +129,21 @@ export const MentionInput = ({
     inputRef.current.focus();
   };
 
+  // shift enter 눌렀을때 줄바꿈 코드
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.stopPropagation();
+      e.preventDefault(); // 기본 Enter 동작 방지
+    }
+    if (e.key === "Enter" && e.shiftKey) {
+      e.stopPropagation();
+      e.preventDefault();
+      onChange(value + "\n");
+    }
+  };
+
   return (
-    <div className="MentionInput">
+    <div className="MentionTextarea">
       {onMention ? (
         <SearchUser
           onMentionClick={onMentionClick}
@@ -140,12 +156,13 @@ export const MentionInput = ({
           hashValue={hashValue}
         ></SearchHashTag>
       ) : null}
-      <input
-        onKeyDown={onKeyDown}
+      <textarea
         type="text"
         value={value}
         onChange={onChangeInput}
         ref={inputRef}
+        style={{ whiteSpace: "pre-line" }}
+        onKeyDown={handleKeyPress}
       />
     </div>
   );

@@ -3,13 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { MentionInput } from "./MentionInput";
+import { postComment, postCommentReply } from "../../apis/feedApis";
+import { useMutation } from "@tanstack/react-query";
+import { Loading } from "../basic/Loading";
+import { useQueryClient } from "@tanstack/react-query";
 
-const ChatInput = ({ replyUser }) => {
+const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
   const [value, setValue] = useState(replyUser);
   const mentionList = useRef([]);
   const hashList = useRef([]);
   const inputRef = useRef(null);
-  console.log(mentionList.current, hashList.current);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // 답글 달기 눌렀을 때 해당 사용자 닉네임 인풋창에 추가하고, 멘션 리스트에 넣기 이 값은 나중에 서버로 보낼것
@@ -25,6 +29,124 @@ const ChatInput = ({ replyUser }) => {
     setValue(e);
   };
 
+  const { mutate: commentMutate, status: commentStatus } = useMutation({
+    mutationFn: postComment,
+    onMutate: async (newComment) => {
+      // 캐시에 있는 이전 댓글을 저장합니다.
+      const previousComments = queryClient.getQueryData([
+        "feedComment",
+        postId,
+      ]);
+
+      let newData = {
+        commentId: 0,
+        commentReplyCnt: 0,
+        content: newComment.content,
+        createAt: [2024, 1, 1, 1, 1, 1, 752664000],
+        likeCnt: 0,
+        postMember: {
+          id: 0,
+          nickname: localStorage.getItem("userNickName"),
+          profile: null,
+        },
+      };
+
+      // 새 댓글을 캐시에 추가합니다.
+      queryClient.setQueryData(["feedComment", postId], (old) => {
+        return { data: [...old.data, newData] };
+      });
+
+      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
+      return () =>
+        queryClient.setQueryData(["feedComment", postId], previousComments);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["feedComment", postId]);
+    },
+    onError: (err, newComment, rollback) => {
+      console.log(e);
+      rollback();
+    },
+  });
+
+  const { mutate: replyMutate, status: replyStatus } = useMutation({
+    mutationFn: postCommentReply,
+    onMutate: async (newComment) => {
+      // 캐시에 있는 이전 댓글을 저장합니다.
+      const previousCommentsReply = queryClient.getQueryData([
+        "feedReplys",
+        postId,
+        commentId,
+      ]);
+
+      let newData = {
+        commentId: 0,
+        commentReply: 0,
+        content: newComment.content,
+        createAt: [2024, 1, 1, 1, 1, 1, 752664000],
+        likeCnt: 0,
+        postMember: { id: 0, nickname: localStorage.getItem("userNickName") },
+      };
+
+      // 새 댓글을 캐시에 추가합니다.
+      queryClient.setQueryData(["feedReplys", postId, commentId], (old) => {
+        if (old) {
+          return { data: [...old.data, newData] };
+        } else {
+          return { data: [newData] };
+        }
+      });
+
+      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
+      return () =>
+        queryClient.setQueryData(
+          ["feedReplys", postId, commentId],
+          previousCommentsReply
+        );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["feedComment", postId]);
+    },
+    onError: (err, newComment, rollback) => {
+      console.log(e);
+      rollback();
+    },
+  });
+
+  const onSubmit = () => {
+    let data;
+    let reply = false;
+    if (commentId == 0) {
+      data = {
+        postId: postId,
+        content: value,
+        mention: mentionList.current,
+      };
+      reply = true;
+    } else {
+      data = {
+        commentId: commentId,
+        postId: postId,
+        content: value,
+        mention: mentionList.current,
+      };
+    }
+    if (reply) {
+      commentMutate(data);
+    } else {
+      replyMutate(data);
+    }
+    setValue("");
+    setReplyUser("");
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key == "Enter") {
+      e.preventDefault();
+      onSubmit();
+    }
+  };
+
   return (
     <div className="ChatInput">
       <MentionInput
@@ -34,10 +156,11 @@ const ChatInput = ({ replyUser }) => {
         replyUser={replyUser}
         mentionList={mentionList}
         hashList={hashList}
+        onKeyDown={onKeyDown}
       ></MentionInput>
 
       <div className="ChatInput-submit">
-        <button>
+        <button onClick={onSubmit}>
           <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </div>
