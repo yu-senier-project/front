@@ -2,9 +2,9 @@
 
 export const renderContent = (text) => {
   // 공백을 포함한 분할
-  const parts = text.split(/(\s+)/);
+  const parts = text?.split(/(\s+)/);
 
-  return parts.map((part, index) => {
+  return parts?.map((part, index) => {
     if (part.startsWith("@")) {
       return (
         <span key={index} className="metionHighlight">
