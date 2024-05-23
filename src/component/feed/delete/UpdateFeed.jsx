@@ -79,8 +79,6 @@ export const UpdateFeed = ({
       postFileList: isImg ? postFileList : [],
     };
 
-    console.log(postData);
-
     return await updateFeed(feedList.id, postData);
   };
 

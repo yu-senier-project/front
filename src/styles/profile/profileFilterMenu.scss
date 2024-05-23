@@ -1,0 +1,26 @@
+.ProfileFilterMenu {
+  position: absolute;
+  top: 35px;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 200px;
+  background-color: white;
+  z-index: 1000px;
+}
+
+// 게시물 필터 타이틀
+.ProfileFilterMenu-title {
+  text-align: center;
+  border-bottom: 1px solid black;
+  padding: 5px 0px;
+}
+
+.ProfileFilterMenu-menu {
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    cursor: pointer;
+  }
+}

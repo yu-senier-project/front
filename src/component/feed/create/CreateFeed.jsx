@@ -39,7 +39,7 @@ const CreateFeed = () => {
     }
 
     const postData = {
-      content: data.removeContent,
+      content: data.content,
       hashtag: data.hashList.current,
       mention: data.mentionList.current,
       isCommentEnabled: data.isChat,

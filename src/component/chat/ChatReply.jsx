@@ -42,9 +42,10 @@ export const ChatReply = ({ replyNum, onClickReply, postId, commentId }) => {
         >
           {data?.data?.map((item) => (
             <ChatReplyUserCard
+              id={item.postMember.id}
               liked={item.liked}
               onClickReply={onClickReply}
-              img="public/image/dp.jpg"
+              img={item.postMember.profile ?? "public/image/dp.jpg"}
               imgWidth={30}
               commentWidth={235}
               userName={item.postMember.nickname}

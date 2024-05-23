@@ -2,7 +2,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import IdFind from "./pages/Auth/IdFind";
-import PasswordFind from "./pages/PasswordFind";
+import PwInitCheckId from "./pages/Auth/PwInitCheckId";
+import PwInit from "./pages/Auth/PwInit";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SmallNav from "./component/nav/SmallNav";
@@ -18,11 +19,14 @@ import { ProjectHome } from "./pages/project/ProjectHome";
 import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
+import { Profile } from "./pages/Profile";
+
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
 function App() {
+
   const login = localStorage.getItem("login");
   const { toggle } = useCreateFeed((state) => state);
   const { isLogin } = useLoginStore((state) => state);
@@ -32,19 +36,25 @@ function App() {
       {toggle && <CreateFeed></CreateFeed>}
       <Routes>
         <Route path="/" element={<Login />} />
+
         <Route path="/" element={<SmallNav />}>
           <Route path="/Id" element={<IdFind />} />
           <Route path="/CheckId" element={<IdCheck />} />
           <Route path="/Password" element={<PasswordFind />} />
+           <Route path="/PasswordInit" element={<PwInit />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Search" element={<Search />} />
           <Route path="/Project" element={<ProjectHome />} />
           <Route path="/Project/Create" element={<CreateProject />} />
+          <Route path="/Profile" element={<Profile />} />
+        <Route path="/Profile/:id" element={<Profile />} />
+        <Route path="/Message" element={<Message />} />
         </Route>
         <Route path="/ProjectHome" element={<ProjectNav></ProjectNav>}>
           <Route path=":projectId" element={<ProjectCalendar />} />
         </Route>
         {/* <Route path="/Message" element={<Message />} /> */}
+
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </BrowserRouter>

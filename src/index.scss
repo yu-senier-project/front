@@ -87,3 +87,22 @@ input[type="radio"]:checked {
     font-size: #{$i}px;
   }
 }
+
+.react-datepicker__day--outside-month {
+  cursor: default;
+  visibility: hidden;
+}
+
+.metionHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #71c9ce;
+}
+
+.hashHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #ce7171;
+}

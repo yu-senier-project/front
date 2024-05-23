@@ -1,4 +1,6 @@
 import "../../../styles/feed/main/texts.scss";
+import { renderContent } from "../../../util/MentionHashText";
+
 const Texts = ({ loveNum, nickname, comment, falseLoveNum }) => {
   return (
     <div className="Texts">
@@ -7,7 +9,7 @@ const Texts = ({ loveNum, nickname, comment, falseLoveNum }) => {
         <div>
           <span className="Texts-id">{nickname}</span>
           <span className="Texts-content" style={{ whiteSpace: "pre-wrap" }}>
-            {comment}
+            {renderContent(comment)}
           </span>
         </div>
       )}

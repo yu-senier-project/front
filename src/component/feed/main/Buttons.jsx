@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 const Buttons = ({
+  isCommentEnabled,
   postId,
   setFalseLoveNum,
   falseLoveNum,
@@ -71,7 +72,10 @@ const Buttons = ({
       <div className={likeClassName} onClick={onLikeButton}>
         {falseLike ? <BiSolidLike></BiSolidLike> : <BiLike />}
       </div>
-      <div className="buttons" onClick={handleChatButtonClick}>
+      <div
+        className="buttons"
+        onClick={isCommentEnabled ? handleChatButtonClick : null}
+      >
         <AiOutlineMessage></AiOutlineMessage>
       </div>
       <div className="buttons">

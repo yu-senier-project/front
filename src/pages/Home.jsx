@@ -56,6 +56,7 @@ const Home = () => {
 
   list = list?.map((item1) => {
     return item1.map((item) => ({
+      memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
       isCommentEnabled: item.isCommentEnabled,
@@ -78,6 +79,7 @@ const Home = () => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,

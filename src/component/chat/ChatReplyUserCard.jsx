@@ -11,7 +11,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
+import { renderContent } from "../../util/MentionHashText";
 export const ChatReplyUserCard = ({
+  id,
   userName,
   comment,
   imgWidth,
@@ -87,9 +89,9 @@ export const ChatReplyUserCard = ({
               likeCnt: item.likeCnt - 1,
               liked: false,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {
@@ -134,9 +136,9 @@ export const ChatReplyUserCard = ({
               likeCnt: item.likeCnt + 1,
               liked: true,
               postMember: {
-                id: 0,
-                nickname: localStorage.getItem("userNickName"),
-                profile: null,
+                id: item.postMember.id,
+                nickname: item.postMember.nickname,
+                profile: item.postMember.profile,
               },
             };
           } else {
@@ -202,7 +204,7 @@ export const ChatReplyUserCard = ({
       />
       <div className={textClassName}>
         <span className="ChatUserCard-userName">{userName}</span>{" "}
-        <span className="ChatUserCard-commnet">{comment}</span>
+        <span className="ChatUserCard-commnet">{renderContent(comment)}</span>
         <div className="ChatUserCard-chat">
           <span
             className="ChatUserCard-chat-grey"
