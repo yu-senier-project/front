@@ -11,6 +11,7 @@ import { UpdateFeed } from "../delete/UpdateFeed";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
+import { renderContent } from "../../../util/MentionHashText";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -107,6 +108,7 @@ const Feed = ({ feedList }) => {
         </div>
       ) : null}
       <UserInfo
+        id={feedList.memberId}
         profile={feedList.profile}
         clock={feedList.createdAt}
         username={feedList.nickname}
@@ -120,6 +122,7 @@ const Feed = ({ feedList }) => {
             <div className="main-img">
               <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
               <Buttons
+                isCommentEnabled={feedList.isCommentEnabled}
                 handleChatButtonClick={handleChatButtonClick}
                 postId={feedList.id}
                 like={feedList.liked}
@@ -144,6 +147,7 @@ const Feed = ({ feedList }) => {
             <div>
               {isChatOpen ? (
                 <ChatModal
+                  profile={feedList.profile}
                   handleUpdateButtonClick={handleUpdateButtonClick}
                   handleOnDelete={handleOnDelete}
                   imgList={imgList}
@@ -165,9 +169,11 @@ const Feed = ({ feedList }) => {
               style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
               className="Feed-content"
             >
-              {feedList.content}
+              {renderContent(feedList.content)}
             </p>
             <Buttons
+              isCommentEnabled={feedList.isCommentEnabled}
+              handleChatButtonClick={handleChatButtonClick}
               postId={feedList.id}
               like={feedList.liked}
               setFalseLoveNum={setFalseLoveNum}
@@ -191,6 +197,7 @@ const Feed = ({ feedList }) => {
           <div>
             {isChatOpen ? (
               <ChatModal
+                profile={feedList.profile}
                 handleUpdateButtonClick={handleUpdateButtonClick}
                 handleOnDelete={handleOnDelete}
                 imgList={imgList}

@@ -19,6 +19,7 @@ const SmallNav = () => {
   const onCreate = () => {
     setToggle();
   };
+  const myId = localStorage.getItem("memberId");
   return (
     <div className="SmallNav">
       <h1>CNS</h1>
@@ -45,10 +46,12 @@ const SmallNav = () => {
           <FontAwesomeIcon icon={faCalendarDays} className="icon" />
           <p>프로젝트</p>
         </div>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faUser} className="icon" />
-          <p>프로필</p>
-        </div>{" "}
+        <Link to={`/Profile/${myId}`}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faUser} className="icon" />
+            <p>프로필</p>
+          </div>
+        </Link>
         <div className="SmallNav-menu" onClick={onCreate}>
           <FontAwesomeIcon icon={faSquarePlus} className="icon" />
           <p>만들기</p>

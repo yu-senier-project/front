@@ -9,6 +9,7 @@
     overflow-wrap: break-word;
 
     .ChatUserCard-userName {
+      cursor: pointer;
       font-weight: 900;
       margin-right: 10px;
     }
@@ -51,6 +52,7 @@
 
 .ChatUserCard-Setting {
   position: absolute;
+  z-index: 10000;
 }
 
 .ChatReplyUserCard-Setting {

@@ -8,7 +8,13 @@ import { useMutation } from "@tanstack/react-query";
 import { Loading } from "../basic/Loading";
 import { useQueryClient } from "@tanstack/react-query";
 
-const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
+const ChatInput = ({
+  replyUser,
+  postId,
+  commentId,
+  setReplyUser,
+  setCommentId,
+}) => {
   const [value, setValue] = useState(replyUser);
   const mentionList = useRef([]);
   const hashList = useRef([]);
@@ -29,14 +35,20 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
     setValue(e);
   };
 
+  // 댓글 달기
   const { mutate: commentMutate, status: commentStatus } = useMutation({
     mutationFn: postComment,
+    onError: (e) => {
+      console.log(e);
+    },
     onMutate: async (newComment) => {
-      // 캐시에 있는 이전 댓글을 저장합니다.
+      // 캐시에 있는 이전 댓글을 저장
       const previousComments = queryClient.getQueryData([
         "feedComment",
         postId,
       ]);
+
+      console.log(previousComments);
 
       let newData = {
         commentId: 0,
@@ -45,13 +57,16 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
         postMember: {
-          id: 0,
+          id: localStorage.getItem("memberId"),
           nickname: localStorage.getItem("userNickName"),
-          profile: null,
+          profile:
+            previousComments.data.length !== 0
+              ? previousComments?.data[0].postMember.profile
+              : "/public/image/dp.jpg",
         },
       };
 
-      // 새 댓글을 캐시에 추가합니다.
+      // 새 댓글을 캐시에 추가
       queryClient.setQueryData(["feedComment", postId], (old) => {
         return { data: [...old.data, newData] };
       });
@@ -69,6 +84,7 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
     },
   });
 
+  // 답글 달기기
   const { mutate: replyMutate, status: replyStatus } = useMutation({
     mutationFn: postCommentReply,
     onMutate: async (newComment) => {
@@ -79,13 +95,21 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
         commentId,
       ]);
 
+      console.log(previousCommentsReply);
       let newData = {
         commentId: 0,
         commentReply: 0,
         content: newComment.content,
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
-        postMember: { id: 0, nickname: localStorage.getItem("userNickName") },
+        postMember: {
+          id: localStorage.getItem("memberId"),
+          nickname: localStorage.getItem("userNickName"),
+          profile:
+            previousCommentsReply?.data.length !== 0
+              ? previousCommentsReply?.data[0].postMember.profile
+              : "/public/image/dp.jpg",
+        },
       };
 
       // 새 댓글을 캐시에 추가합니다.
@@ -108,7 +132,7 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
     onError: (err, newComment, rollback) => {
-      console.log(e);
+      console.log(err);
       rollback();
     },
   });
@@ -132,10 +156,12 @@ const ChatInput = ({ replyUser, postId, commentId, setReplyUser }) => {
       };
     }
     if (reply) {
+      console.log(data);
       commentMutate(data);
     } else {
       replyMutate(data);
     }
+    setCommentId(0);
     setValue("");
     setReplyUser("");
   };

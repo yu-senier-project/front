@@ -1,49 +1,20 @@
-import { throttle } from "lodash";
-import Feed from "../component/feed/main/Feed";
-import {
-  useQuery,
-  useQueryClient,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
-import { getAllFeed } from "../apis/feedApis";
-import { useState } from "react";
-import { Loading } from "../component/basic/Loading";
-const Home = () => {
-  // 게시물 받아오는 함수
-  const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
+import React from "react";
+import { useGetLikeFeed } from "../../../react-query/useProfile";
+import Feed from "../../feed/main/Feed";
 
-  // 무한 스크롤 구현 부분
-  const {
-    isLoading,
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["feeds"],
-    queryFn: fetchFeeds,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage
-        ? lastPage.data[lastPage.data.length - 1].id ?? false
-        : false;
-    },
-    staleTime: 1000 * 60 * 5,
-    retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
+export const ProfileLikeFeedList = ({ memberId }) => {
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetLikeFeed(memberId);
 
   if (isLoading) {
-    return <Loading text={"게시물 불러오는중..."}></Loading>;
+    return "로딩중...";
   }
 
   // 화면 끝에 도달했는지 확인하는 함수
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight) {
+
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
       if (hasNextPage && !isFetchingNextPage) {
         console.log("게시물 불러오기");
         fetchNextPage();
@@ -56,7 +27,6 @@ const Home = () => {
 
   list = list?.map((item1) => {
     return item1.map((item) => ({
-      memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
       isCommentEnabled: item.isCommentEnabled,
@@ -79,7 +49,6 @@ const Home = () => {
   }
 
   const feedList = spreadList?.map((item) => ({
-    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,
@@ -94,11 +63,7 @@ const Home = () => {
   }));
 
   return (
-    <div
-      className="Home"
-      onScroll={handleScroll}
-      style={{ height: "100vh", overflow: "auto" }}
-    >
+    <div onScroll={handleScroll} style={{ height: "100vh", overflow: "auto" }}>
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}
@@ -108,5 +73,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;
