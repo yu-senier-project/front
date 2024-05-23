@@ -8,13 +8,13 @@ import {
   faCalendarDays,
   faUser,
   faSquarePlus,
-  faGear,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import useCreateFeed from "../../store/feed/useCreateFeed";
 import CreateFeed from "../feed/create/CreateFeed";
 import { logout } from "../../util/auth";
 
-const SmallNav = () => {
+export const ProjectNav = () => {
   const { setToggle } = useCreateFeed((state) => state);
   const onCreate = () => {
     setToggle();
@@ -24,10 +24,10 @@ const SmallNav = () => {
       <div className="SmallNav">
         <h1>CNS</h1>
         <div className="SmallNav-menuWrap">
-          <Link to={"/Home"}>
+          <Link to={"/ProjectHome"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faHouse} className="icon" />
-              <p>홈</p>
+              <FontAwesomeIcon icon={faCalendarDays} className="icon" />
+              <p>캘린더</p>
             </div>
           </Link>
           <Link to={"/Message"}>
@@ -42,12 +42,6 @@ const SmallNav = () => {
               <p>검색</p>
             </div>
           </Link>
-          <Link to={"/Project"}>
-            <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faCalendarDays} className="icon" />
-              <p>프로젝트</p>
-            </div>
-          </Link>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faUser} className="icon" />
             <p>프로필</p>
@@ -57,15 +51,14 @@ const SmallNav = () => {
             <p>만들기</p>
           </div>
         </div>
-        <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faGear} className="icon" />
-          <p>설정</p>
-        </div>
-        <button onClick={logout}>로그아웃</button>
+        <Link to={"/Home"}>
+          <div className="SmallNav-menu">
+            <FontAwesomeIcon icon={faRightFromBracket} className="icon" />
+            <p>나가기</p>
+          </div>
+        </Link>
       </div>
       <Outlet />
     </div>
   );
 };
-
-export default SmallNav;
