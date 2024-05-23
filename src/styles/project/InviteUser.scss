@@ -1,0 +1,45 @@
+.InviteUser {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid lightgrey;
+  height: 530px;
+
+  display: flex;
+}
+
+.InviteUser-search {
+  width: 50%;
+  padding: 20px;
+  padding-top: 20px;
+
+  input {
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: 1px solid lightgrey;
+    margin-bottom: 20px;
+  }
+}
+
+.InviteUser-list {
+  width: 50%;
+  border-left: 1px solid lightgrey;
+  padding: 5px 10px;
+  overflow: scroll;
+  table {
+    width: 100%;
+  }
+  th {
+    font-size: 14px;
+  }
+}
+
+.InviteUser-list-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.td-radio {
+  text-align: center;
+}

@@ -15,7 +15,12 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ProjectHome } from "./pages/project/ProjectHome";
+import { CreateProject } from "./pages/project/CreateProject";
+import { ProjectCalendar } from "./pages/project/ProjectCalendar";
+import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -27,20 +32,29 @@ function App() {
   const { isLogin } = useLoginStore((state) => state);
   return (
     <BrowserRouter>
-      {login && <SmallNav></SmallNav>}
+      {/* {login && <SmallNav></SmallNav>} */}
       {toggle && <CreateFeed></CreateFeed>}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/Id" element={<IdFind />} />
-        <Route path="/CheckId" element={<IdCheck />} />
-        <Route path="/Password" element={<PwInitCheckId />} />
-        <Route path="/PasswordInit" element={<PwInit />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/Search" element={<Search />} />
 
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/" element={<SmallNav />}>
+          <Route path="/Id" element={<IdFind />} />
+          <Route path="/CheckId" element={<IdCheck />} />
+          <Route path="/Password" element={<PasswordFind />} />
+           <Route path="/PasswordInit" element={<PwInit />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/Search" element={<Search />} />
+          <Route path="/Project" element={<ProjectHome />} />
+          <Route path="/Project/Create" element={<CreateProject />} />
+          <Route path="/Profile" element={<Profile />} />
         <Route path="/Profile/:id" element={<Profile />} />
         <Route path="/Message" element={<Message />} />
+        </Route>
+        <Route path="/ProjectHome" element={<ProjectNav></ProjectNav>}>
+          <Route path=":projectId" element={<ProjectCalendar />} />
+        </Route>
+        {/* <Route path="/Message" element={<Message />} /> */}
+
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </BrowserRouter>

@@ -1,0 +1,92 @@
+.ProjectHome {
+  //margin-left: 120px;
+  padding: 30px 100px 30px 150px;
+}
+
+.ProjectHome-btn {
+  display: flex;
+  margin-bottom: 20px;
+
+  div {
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #e7aafd;
+    color: white;
+  }
+}
+
+.ProjectHome-projectList {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+
+  .lightcoral {
+    border-left: 10px solid lightcoral;
+  }
+  .lightsalmon {
+    border-left: 10px solid lightsalmon;
+  }
+  .lightgoldenrodyellow {
+    border-left: 10px solid lightgoldenrodyellow;
+  }
+  .lightgreen {
+    border-left: 10px solid lightgreen;
+  }
+  .lightblue {
+    border-left: 10px solid lightblue;
+  }
+  .lightskyblue {
+    border-left: 10px solid lightskyblue;
+  }
+  .lightslategrey {
+    border-left: 10px solid lightslategrey;
+  }
+}
+
+.ProjectHome-project {
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px 20px 20px 30px;
+  width: 280px;
+  height: 200px;
+  position: relative;
+
+  p {
+    &:nth-child(2) {
+      font-size: 30px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      overflow: scroll;
+      height: 30%;
+    }
+
+    &:nth-child(3) {
+      overflow: scroll;
+      height: 55%;
+    }
+
+    &:nth-child(4) {
+      font-size: 12px;
+      height: 15%;
+    }
+  }
+}
+
+.ProjectHome-projectSetting {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  cursor: pointer;
+  &:hover {
+    border-bottom: 1px solid black;
+  }
+}
