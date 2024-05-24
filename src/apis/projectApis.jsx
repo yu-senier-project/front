@@ -44,3 +44,18 @@ export const createPlan = async (data, projectId) => {
     console.log(error);
   }
 };
+
+// 일정 상세조회 api
+export const getDetailPlan = async (planId) => {
+  return apiClient.get(`/api/v1/plan/${planId}`);
+};
+
+// 일정 삭제 api
+export const deletePlan = async (planId) => {
+  try {
+    const response = await apiClient.delete(`/api/v1/plan/${planId}`);
+    return response.data;
+  } catch (error) {
+    alert("일정은 프로젝트 관리자만 삭제할 수 있습니다!");
+  }
+};

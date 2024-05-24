@@ -49,7 +49,9 @@ export const ProjectHome = () => {
             key={project.projectId}
             className={getClassName(idx)}
             onClick={() => {
-              nav(`/ProjectHome/${project.projectId}`);
+              nav(
+                `/ProjectHome/${project.projectId}?memberId=${project.postMember.id}`
+              );
             }}
           >
             <div className="ProjectHome-projectSetting">

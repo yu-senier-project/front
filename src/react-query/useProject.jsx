@@ -12,6 +12,8 @@ import {
   getProjectList,
   getParticipant,
   getPlanList,
+  getDetailPlan,
+  deletePlan,
 } from "../apis/projectApis";
 
 // 프로젝트 조회
@@ -102,6 +104,7 @@ export const useCreatePlan = (projectId) => {
   return { mutate, status };
 };
 
+// 계획 정보 다 받아오기
 export const useGetPlanList = (projectId) => {
   const { data, isLoading } = useQuery({
     queryKey: ["planList", projectId],
@@ -112,4 +115,43 @@ export const useGetPlanList = (projectId) => {
     refetchOnReconnect: false,
   });
   return { data, isLoading };
+};
+
+// 계획 상세정보 조회
+export const useGetDetailPlan = (planId) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["detailPlan", planId],
+    queryFn: () => getDetailPlan(planId),
+    staleTime: 5 * 1000 * 60,
+    gcTime: 10 * 1000 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  return { data, isLoading };
+};
+
+// 일정 삭제
+export const useDeletePlan = (planId, projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: () => deletePlan(planId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["planList", projectId]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["planList", projectId]);
+
+      const newArr = prevData?.data?.filter((plan) => {
+        console.log(plan.planId);
+        return plan.planId != planId;
+      });
+
+      queryClient.setQueryData(["planList", projectId], { data: newArr });
+    },
+  });
+
+  return { mutate, status };
 };

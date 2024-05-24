@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { CreateSchedule } from "./CreateSchedule";
 import useProjectStore from "../../store/project/useProjectStore";
 import { useGetPlanList } from "../../react-query/useProject";
+import { PlanDetail } from "./PlanDetail";
+import { useSearchParams } from "react-router-dom";
 
 const FullCalendarContainer = styled.div`
   width: 100%;
@@ -92,20 +94,27 @@ const FullCalendarContainer = styled.div`
 `;
 
 export const Calendar = () => {
-  function formatToISO(dateString) {
-    const date = new Date(dateString);
-    const isoString = date.toISOString().slice(0, 19); // "YYYY-MM-DDTHH:MM:SS" 형식
-    return isoString;
-  }
+  // 매니저 아이디 저장
+  const [searchParams, setSearchParams] = useSearchParams();
+  const managerId = searchParams.get("memberId");
+  const { setManagerId, projectId } = useProjectStore();
+  useEffect(() => {
+    if (managerId) {
+      setManagerId(managerId);
+    }
+  }, [managerId, setManagerId]);
+
   // 일정 생성 버튼 눌렀는지 or 날짜를 클릭해도 뜨게
   const [onCreate, setOnCreate] = useState(false);
 
-  // 프로젝트 id 가져오기
-  const { projectId } = useProjectStore();
+  // 일정 상세보기 클릭했는지
+  const [onDetail, setDetail] = useState(false);
+
+  //클릭한 일정 정보 저장할 변수
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   // 이벤트 정보 가져오기
   const { data, isLoading } = useGetPlanList(projectId);
-  console.log(data);
 
   // 일정 저장 state
   const [events, setEvents] = useState([]);
@@ -133,10 +142,10 @@ export const Calendar = () => {
         "palevioletred",
       ];
       return {
-        planId: plan.planId,
+        id: plan.planId,
         title: plan.planName,
-        start: formatToISO(plan.startedAt),
-        end: formatToISO(plan.endedAt),
+        start: plan.startedAt,
+        end: plan.endedAt,
         backgroundColor: colors[index % colors.length],
       };
     });
@@ -146,7 +155,6 @@ export const Calendar = () => {
   // 날짜 클릭했을 때 해당 날짜를 일정 생성에 넘기기 위한 state
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-
   const handleDateClick = (arg) => {
     setOnCreate(true);
 
@@ -164,12 +172,10 @@ export const Calendar = () => {
     // }
   };
 
+  // 이벤트 클릭했을 떄
   const handleEventClick = (info) => {
-    return (
-      <h1>
-        fkasdjfkldsajfklsdfjslkdfjslkfjsafkjasdkfjasdfkjasfkjasfkajsdkfjadfkj
-      </h1>
-    );
+    setSelectedEvent(info.event);
+    setDetail(true);
   };
 
   const handleEventDrop = (info) => {
@@ -182,7 +188,6 @@ export const Calendar = () => {
   };
 
   const renderEventContent = (eventInfo) => {
-    console.log(eventInfo);
     return (
       <>
         <i>{eventInfo.event.title}</i>
@@ -192,9 +197,6 @@ export const Calendar = () => {
 
   return (
     <div className="calendar-container">
-      {onCreate ? (
-        <CreateSchedule setOnCreate={setOnCreate} start={start} end={end} />
-      ) : null}
       <FullCalendarContainer>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
@@ -219,6 +221,18 @@ export const Calendar = () => {
           }}
         />
       </FullCalendarContainer>
+
+      {onCreate ? (
+        <CreateSchedule setOnCreate={setOnCreate} start={start} end={end} />
+      ) : null}
+
+      {onDetail ? (
+        <PlanDetail
+          setDetail={setDetail}
+          setSelectedEvent={setSelectedEvent}
+          selectedEvent={selectedEvent}
+        />
+      ) : null}
     </div>
   );
 };

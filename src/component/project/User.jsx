@@ -36,7 +36,7 @@ export const User = ({
         >
           <FontAwesomeIcon icon={faXmark} />
         </div>
-      ) : (
+      ) : button !== "none" ? (
         <div
           className="User-button-plus"
           onClick={() => {
@@ -45,7 +45,7 @@ export const User = ({
         >
           <FontAwesomeIcon icon={faPlus} />
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
