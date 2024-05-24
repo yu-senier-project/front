@@ -50,7 +50,7 @@ export const ProjectHome = () => {
             className={getClassName(idx)}
             onClick={() => {
               nav(
-                `/ProjectHome/${project.projectId}?memberId=${project.postMember.id}`
+                `/ProjectHome/${project.projectId}?memberId=${project.postMember.id}&title=${project.projectName}`
               );
             }}
           >

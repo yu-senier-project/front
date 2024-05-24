@@ -11,10 +11,16 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import useCreateFeed from "../../store/feed/useCreateFeed";
-import CreateFeed from "../feed/create/CreateFeed";
+import useProjectStore from "../../store/project/useProjectStore";
 import { logout } from "../../util/auth";
+import { FaChartGantt } from "react-icons/fa6";
+import { MdDynamicFeed } from "react-icons/md";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { SlNotebook } from "react-icons/sl";
 
 export const ProjectNav = () => {
+  const { projectId, title, managerId } = useProjectStore();
+
   const { setToggle } = useCreateFeed((state) => state);
   const onCreate = () => {
     setToggle();
@@ -24,34 +30,32 @@ export const ProjectNav = () => {
       <div className="SmallNav">
         <h1>CNS</h1>
         <div className="SmallNav-menuWrap">
-          <Link to={"/ProjectHome"}>
+          <Link
+            to={`/ProjectHome/${projectId}?memberId=${managerId}&title=${title}`}
+          >
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faCalendarDays} className="icon" />
+              <FaRegCalendarAlt className="icon" />
               <p>캘린더</p>
             </div>
           </Link>
           <Link to={"/Message"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faMessage} className="icon" />
-              <p>메시지</p>
+              <FaChartGantt className="icon" />
+              <p>간트차트</p>
             </div>
           </Link>
           <Link to={"/search"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
-              <p>검색</p>
+              <MdDynamicFeed className="icon" />
+              <p>게시물</p>
             </div>
           </Link>
           <div className="SmallNav-menu">
-            <FontAwesomeIcon icon={faUser} className="icon" />
-            <p>프로필</p>
+            <SlNotebook className="icon" />
+            <p>할일</p>
           </div>{" "}
-          <div className="SmallNav-menu" onClick={onCreate}>
-            <FontAwesomeIcon icon={faSquarePlus} className="icon" />
-            <p>만들기</p>
-          </div>
         </div>
-        <Link to={"/Home"}>
+        <Link to={"/Project"}>
           <div className="SmallNav-menu">
             <FontAwesomeIcon icon={faRightFromBracket} className="icon" />
             <p>나가기</p>

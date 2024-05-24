@@ -59,3 +59,13 @@ export const deletePlan = async (planId) => {
     alert("일정은 프로젝트 관리자만 삭제할 수 있습니다!");
   }
 };
+
+// 일정 수정 api
+export const updatePlan = async (planId, data) => {
+  try {
+    const response = await apiClient.patch(`/api/v1/plan/${planId}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

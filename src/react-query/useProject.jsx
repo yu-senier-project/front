@@ -14,6 +14,7 @@ import {
   getPlanList,
   getDetailPlan,
   deletePlan,
+  updatePlan,
 } from "../apis/projectApis";
 
 // 프로젝트 조회
@@ -88,9 +89,7 @@ export const useCreatePlan = (projectId) => {
       queryClient.invalidateQueries(["planList", projectId]);
     },
     onMutate: (data) => {
-      console.log(data);
       const prevData = queryClient.getQueryData(["planList", projectId]);
-      console.log(prevData);
       const newData = {
         planName: data.planName,
         startedAt: data.startedAt,
@@ -150,6 +149,52 @@ export const useDeletePlan = (planId, projectId) => {
       });
 
       queryClient.setQueryData(["planList", projectId], { data: newArr });
+    },
+  });
+
+  return { mutate, status };
+};
+
+// 일정 수정
+export const useUpdatePlan = (planId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: () => updatePlan(planId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["detailPlan", planId.toString()]);
+    },
+    onMutate: (data) => {
+      console.log(data);
+      const prevData = queryClient.getQueryData([
+        "detailPlan",
+        planId.toString(),
+      ]);
+      console.log(prevData);
+
+      const newData = {
+        content: data.content,
+        endedAt: data.endedAt,
+        planId: prevData.data.planId,
+        planName: data.planName,
+        startedAt: data.startedAt,
+        participants: data.inviteList.map((user) => {
+          return {
+            nickname: "로딩중",
+            profile: null,
+            // id : user.
+          };
+        }),
+      };
+
+      // const newArr = prevData?.data?.filter((plan) => {
+      //   console.log(plan.planId);
+      //   return plan.planId != planId;
+      // });
+
+      // queryClient.setQueryData(["planList", projectId], { data: newArr });
     },
   });
 

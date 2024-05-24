@@ -121,25 +121,19 @@ export const Calendar = () => {
   useEffect(() => {
     let event = data?.data?.map((plan, index) => {
       const colors = [
-        "lightcoral",
-        "lightseagreen",
-        "lightgoldenrodyellow",
-        "lightblue",
-        "lightpink",
-        "lightcyan",
-        "lightgreen",
-        "lightyellow",
-        "lavender",
-        "thistle",
-        "plum",
-        "mintcream",
-        "honeydew",
-        "mistyrose",
-        "peachpuff",
-        "palegoldenrod",
-        "palegreen",
-        "paleturquoise",
-        "palevioletred",
+        "hsl(0, 50%, 70%)", // Red
+        "hsl(30, 50%, 70%)", // Orange
+        "hsl(60, 50%, 70%)", // Yellow
+        "hsl(90, 50%, 70%)", // Light Green
+        "hsl(120, 50%, 70%)", // Green
+        "hsl(150, 50%, 70%)", // Greenish Cyan
+        "hsl(180, 50%, 70%)", // Cyan
+        "hsl(210, 50%, 70%)", // Light Blue
+        "hsl(240, 50%, 70%)", // Blue
+        "hsl(270, 50%, 70%)", // Purple
+        "hsl(300, 50%, 70%)", // Magenta
+        "hsl(330, 50%, 70%)", // Pink
+        "hsl(360, 50%, 70%)", // Red
       ];
       return {
         id: plan.planId,
