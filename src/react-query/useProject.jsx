@@ -15,6 +15,11 @@ import {
   getDetailPlan,
   deletePlan,
   updatePlan,
+  exitProject,
+  getProjectInfo,
+  updateProjectInfo,
+  getProjectParticipants,
+  updateProjectParticipants,
 } from "../apis/projectApis";
 
 // 프로젝트 조회
@@ -159,7 +164,7 @@ export const useDeletePlan = (planId, projectId) => {
 export const useUpdatePlan = (planId) => {
   const queryClient = useQueryClient();
   const { mutate, status } = useMutation({
-    mutationFn: () => updatePlan(planId),
+    mutationFn: (data) => updatePlan(planId, data),
     onError: (e) => {
       console.log(e);
     },
@@ -184,7 +189,7 @@ export const useUpdatePlan = (planId) => {
           return {
             nickname: "로딩중",
             profile: null,
-            // id : user.
+            id: user,
           };
         }),
       };
@@ -194,7 +199,134 @@ export const useUpdatePlan = (planId) => {
       //   return plan.planId != planId;
       // });
 
-      // queryClient.setQueryData(["planList", projectId], { data: newArr });
+      queryClient.setQueryData(["detailPlan", planId.toString()], {
+        data: newData,
+      });
+    },
+  });
+
+  return { mutate, status };
+};
+
+// 프로젝트 나가기
+export const useExitProject = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: exitProject,
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["projectList"]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["projectList"]);
+
+      const newArr = prevData.data.filter(
+        (project) => project.projectId != data
+      );
+
+      queryClient.setQueryData(["projectList"], {
+        data: newArr,
+      });
+    },
+  });
+  return { mutate, status };
+};
+
+// 프로젝트 정보 받아오기
+export const useGetProjectInfo = (projectId) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["projectInfo", projectId],
+    queryFn: () => getProjectInfo(projectId),
+    staleTime: 5 * 1000 * 60,
+    gcTime: 10 * 1000 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  return { data, isLoading };
+};
+
+// 프로젝트 정보 수정하기
+export const useUpdateProjectInfo = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => updateProjectInfo(projectId, data),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["projectList"]);
+      queryClient.invalidateQueries(["projectInfo", projectId]);
+    },
+    onMutate: (data) => {
+      console.log(data);
+      const prevData = queryClient.getQueryData(["projectList"]);
+      console.log(prevData);
+      const projectInfo = queryClient.getQueryData(["projectInfo", projectId]);
+
+      let end = data.end.split("-");
+      let start = data.start.split("-");
+      const newObj = {
+        projectId: data.projectId,
+        projectName: data.projectName,
+        detail: data.detail,
+        goal: data.goal,
+        start: start,
+        end: end,
+      };
+
+      const newArr = prevData.data.map((project) => {
+        if (project.projectId == projectId) {
+          return {
+            projectId,
+            detail: data.detail,
+            postMember: project.postMember,
+            projectName: data.projectName,
+          };
+        } else {
+          return project;
+        }
+      });
+
+      queryClient.setQueryData(["projectInfo", projectId], {
+        data: newObj,
+      });
+      queryClient.setQueryData(["projectList"], {
+        data: newArr,
+      });
+    },
+  });
+
+  return { mutate, status };
+};
+
+// 프로젝트 참여자 정보 가져오기
+export const useGetProjectParticipants = (projectId) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["projectParticipants", projectId],
+    queryFn: () => getProjectParticipants(projectId),
+    staleTime: 5 * 1000 * 60,
+    gcTime: 10 * 1000 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  return { data, isLoading };
+};
+
+// 프로젝트 참여자 정보 수정하기
+export const useUpdateProjectParticipant = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => updateProjectParticipants(projectId, data),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries([
+        "projectParticipants",
+        projectId.toString(),
+      ]);
     },
   });
 

@@ -156,7 +156,7 @@ export async function logout() {
     sessionStorage.clear();
 
     // 루트로 리다이렉트
-    window.location.href = "/";
+    // window.location.href = "/";
   } catch (error) {
     console.error("로그아웃 오류:", error);
     alert("로그아웃에 실패했습니다. 다시 시도해주세요.");

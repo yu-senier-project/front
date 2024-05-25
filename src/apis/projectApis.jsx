@@ -69,3 +69,49 @@ export const updatePlan = async (planId, data) => {
     console.log(error);
   }
 };
+
+// 프로젝트 나가기 api
+export const exitProject = async (projectId) => {
+  try {
+    const res = await apiClient.delete(`/api/v1/project/${projectId}/exit`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 프로젝트 정보 가져오는 api
+export const getProjectInfo = async (projectId) => {
+  return apiClient.get(`/api/v1/project/${projectId}`);
+};
+
+// 프로젝트 정보 수정하는 api
+export const updateProjectInfo = async (projectId, data) => {
+  try {
+    const response = await apiClient.patch(
+      `/api/v1/project/${projectId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 프로젝트 참여자 정보 가져오는 api
+export const getProjectParticipants = async (projectId) => {
+  return apiClient.get(`/api/v1/project/${projectId}/participant`);
+};
+
+// 프로젝트 참여자 수정하는 api
+export const updateProjectParticipants = async (projectId, data) => {
+  try {
+    const response = await apiClient.patch(
+      `/api/v1/project/${projectId}/invite`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

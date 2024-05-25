@@ -20,6 +20,8 @@ import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+import { UpdateProject } from "./pages/project/UpdateProject";
+import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -48,6 +50,8 @@ function App() {
           <Route path="/Message" element={<Message />} />
         </Route>
         <Route path="/ProjectHome" element={<ProjectNav></ProjectNav>}>
+          <Route path="InfoUpdate" element={<UpdateProject></UpdateProject>} />
+          <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
           <Route path=":projectId" element={<ProjectCalendar />} />
         </Route>
         {/* <Route path="/Message" element={<Message />} /> */}
