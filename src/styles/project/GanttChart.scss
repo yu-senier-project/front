@@ -28,3 +28,28 @@ $colors: (
     background-color: #{$color};
   }
 }
+
+.gantt-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  // padding: 20px;
+  margin: 0px;
+  width: 100vw;
+
+
+  .gantt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1300px;
+    height: 80vh;
+  }
+  .gantt_add,
+  .gantt_task_add {
+    display: none;
+  }
+}
