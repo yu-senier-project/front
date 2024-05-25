@@ -38,7 +38,9 @@ export const ProjectNav = () => {
               <p>캘린더</p>
             </div>
           </Link>
-          <Link to={"/Message"}>
+          <Link
+            to={`/ProjectHome/${projectId}/Gantt?memberId=${managerId}&title=${title}`}
+          >
             <div className="SmallNav-menu">
               <FaChartGantt className="icon" />
               <p>간트차트</p>
