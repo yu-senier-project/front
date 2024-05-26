@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useQuery,
   useQueryClient,
@@ -310,14 +311,15 @@ export const useGetProjectParticipants = (projectId) => {
     queryFn: () => getProjectParticipants(projectId),
     staleTime: 5 * 1000 * 60,
     gcTime: 10 * 1000 * 60,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    // refetchOnWindowFocus: false,
+    // refetchOnReconnect: false,
   });
   return { data, isLoading };
 };
 
 // 프로젝트 참여자 정보 수정하기
 export const useUpdateProjectParticipant = (projectId) => {
+  const nav = useNavigate();
   const queryClient = useQueryClient();
   const { mutate, status } = useMutation({
     mutationFn: (data) => updateProjectParticipants(projectId, data),
@@ -325,10 +327,19 @@ export const useUpdateProjectParticipant = (projectId) => {
       console.log(e);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries([
-        "projectParticipants",
-        projectId.toString(),
-      ]);
+      nav("/Project");
+      queryClient.invalidateQueries(["projectList"]);
+      queryClient.invalidateQueries(
+        ["projectParticipants", projectId.toString()],
+        { refetchInactive: true }
+      );
+    },
+    onMutate: (data) => {
+      console.log(data);
+      let prev = queryClient.getQueryData(["projectList"]);
+      console.log(prev);
+
+      const newArr = prev.data.map((project) => {});
     },
   });
 

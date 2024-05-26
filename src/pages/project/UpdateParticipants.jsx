@@ -39,6 +39,10 @@ export const UpdateParticipants = () => {
     return <Loading text="정보 가져오는중..."></Loading>;
   }
 
+  if (status == "pending") {
+    return <Loading text="수정중..."></Loading>;
+  }
+
   // 참여자 수정 버튼 눌렀을 때
   const createProject = () => {
     let memberList = participants.map((user) => user.memberId);
@@ -51,7 +55,6 @@ export const UpdateParticipants = () => {
 
     mutate(projectData);
     alert("수정완료!");
-    nav("/Project");
   };
 
   // 취소 버튼 눌렀을 때
