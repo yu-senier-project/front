@@ -77,7 +77,7 @@ export const PlanDetail = ({ setDetail, setSelectedEvent, selectedEvent }) => {
     <div className="PlanDetail" ref={backgroundRef} onClick={onBackgroundClick}>
       {onUpdate ? <UpdatePlan setOnUpdate={setOnUpdate} event={event} /> : null}
       <div className="PlanDetail-wrap">
-        <h2>{selectedEvent.title}</h2>
+        <h2>{event?.planName}</h2>
         {isLoading ? (
           "로딩중... "
         ) : (

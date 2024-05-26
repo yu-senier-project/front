@@ -70,8 +70,6 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
   // 종일 아닐때 날짜 선택
   const [date, setDate] = useState(event.today ?? event.start);
 
-  console.log(event);
-
   // 시간 선택 상태
   const [startHour, setStartHour] = useState(event.start.slice(0, 2));
   const [startMinute, setStartMinute] = useState(event.start.slice(3));

@@ -20,6 +20,7 @@ import {
   updateProjectInfo,
   getProjectParticipants,
   updateProjectParticipants,
+  deleteProject,
 } from "../apis/projectApis";
 
 // 프로젝트 조회
@@ -61,9 +62,7 @@ export const useCreateProject = () => {
       queryClient.invalidateQueries(["projectList"]);
     },
     onMutate: (data) => {
-      console.log(data);
       const prevData = queryClient.getQueryData(["projectList"]);
-      console.log(prevData);
       const newData = {
         detail: data.detail,
         projectId: 0,
@@ -185,13 +184,16 @@ export const useUpdatePlan = (planId) => {
         planId: prevData.data.planId,
         planName: data.planName,
         startedAt: data.startedAt,
-        participants: data.inviteList.map((user) => {
-          return {
-            nickname: "로딩중",
-            profile: null,
-            id: user,
-          };
-        }),
+        participants:
+          data.inviteList.length !== 0
+            ? data.inviteList.map((user) => {
+                return {
+                  nickname: "로딩중",
+                  profile: null,
+                  id: user,
+                };
+              })
+            : prevData.data.participants,
       };
 
       // const newArr = prevData?.data?.filter((plan) => {
@@ -330,5 +332,32 @@ export const useUpdateProjectParticipant = (projectId) => {
     },
   });
 
+  return { mutate, status };
+};
+
+// 프로젝트 삭제하기
+export const useDeleteProject = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: () => deleteProject(projectId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["projectList"]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["projectList"]);
+      console.log(prevData);
+
+      const newArr = prevData.data.filter(
+        (project) => project.projectId != projectId
+      );
+
+      queryClient.setQueryData(["projectList"], {
+        data: newArr,
+      });
+    },
+  });
   return { mutate, status };
 };

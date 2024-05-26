@@ -1,0 +1,49 @@
+.DeleteProject {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+}
+
+.DeleteProject-wrap {
+  width: 500px;
+  position: relative;
+  padding: 10px 25px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 2px 2px grey;
+  text-align: center;
+
+  input {
+    width: 50%;
+    padding: 10px;
+    outline: none;
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 10px;
+  }
+}
+
+.DeleteProject-btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  button {
+    cursor: pointer;
+    padding: 10px 10px;
+    width: 100px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+  }
+}

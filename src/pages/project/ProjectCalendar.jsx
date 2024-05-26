@@ -11,6 +11,7 @@ import { useExitProject } from "../../react-query/useProject";
 import { useNavigate } from "react-router-dom";
 import { Participants } from "../../component/project/Participants";
 import { ProjectInfo } from "../../component/project/ProjectInfo";
+import { DeleteProject } from "../../component/project/DeleteProject";
 
 export const ProjectCalendar = () => {
   const myId = localStorage.getItem("memberId");
@@ -40,6 +41,9 @@ export const ProjectCalendar = () => {
 
   // 프로젝트 정보 창
   const [onProjectInfo, setOnProjectInfo] = useState(false);
+
+  // 프로젝트 삭제 창
+  const [onDelete, setOnDelete] = useState(false);
 
   // 배경 클릭하면 세팅 닫기
   const settingRef = useRef(null);
@@ -81,6 +85,16 @@ export const ProjectCalendar = () => {
     setOnSetting(false);
   };
 
+  // 프로젝트 삭제하기
+  const deleteProject = () => {
+    if (myId != managerId) {
+      alert("프로젝트 담당자만 삭제가능힙니다");
+      return;
+    }
+    setOnDelete(true);
+    setOnSetting(false);
+  };
+
   // 세팅 정보 담긴 리스트
   const settingTitleList = [
     {
@@ -97,7 +111,7 @@ export const ProjectCalendar = () => {
     },
     {
       title: "삭제하기",
-      onClick: null,
+      onClick: deleteProject,
     },
   ];
 
@@ -108,12 +122,20 @@ export const ProjectCalendar = () => {
 
   return (
     <div className="ProjectCalendar" onClick={onBackgroundClick}>
+      {/* 프로젝트 삭제 모달 */}
+      {onDelete ? <DeleteProject setOnDelete={setOnDelete} /> : null}
+
+      {/* 프로젝트 정보 모달 */}
       {onProjectInfo ? (
         <ProjectInfo setOnProjectInfo={setOnProjectInfo} />
       ) : null}
+
+      {/* 참여자 모달  */}
       {onParticipants ? (
         <Participants setOnParticipants={setOnParticipants} />
       ) : null}
+
+      {/* 스케줄 생성 모달 */}
       {onCreate ? (
         <CreateSchedule setOnCreate={setOnCreate}></CreateSchedule>
       ) : null}

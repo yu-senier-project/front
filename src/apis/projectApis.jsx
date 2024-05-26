@@ -115,3 +115,13 @@ export const updateProjectParticipants = async (projectId, data) => {
     console.log(error);
   }
 };
+
+// 프로젝트 삭제하는 api
+export const deleteProject = async (projectId) => {
+  try {
+    const response = await apiClient.delete(`/api/v1/project/${projectId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

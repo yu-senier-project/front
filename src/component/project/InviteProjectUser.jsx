@@ -7,7 +7,7 @@ import useProjectStore from "../../store/project/useProjectStore";
 export const InviteProjectUser = ({ setParticipantList, participantList }) => {
   const { projectId } = useProjectStore();
   const { data, isLoading } = useGetParticipant(projectId);
-  console.log(data);
+
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
