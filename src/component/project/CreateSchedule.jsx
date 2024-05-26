@@ -50,11 +50,11 @@ export const CreateSchedule = ({ setOnCreate, start, end }) => {
   const [toggle, setToggle] = useState(true);
 
   // 종일 일때 기간 선택
-  const [startDate, setStartDate] = useState(start);
+  const [startDate, setStartDate] = useState(start ?? null);
   const [endDate, setEndDate] = useState(null);
 
   // 종일 아닐때 날짜 선택
-  const [date, setDate] = useState(start);
+  const [date, setDate] = useState(start ?? null);
 
   // 시간 선택 상태
   const [startHour, setStartHour] = useState(0);
@@ -64,6 +64,11 @@ export const CreateSchedule = ({ setOnCreate, start, end }) => {
 
   // 일저 생성 함수
   const onSubmit = () => {
+    if (participantList.length == 0) {
+      alert("참여자를 선택해주세요");
+      return;
+    }
+
     let inviteList;
     let startedAt;
     let endedAt;
@@ -91,6 +96,33 @@ export const CreateSchedule = ({ setOnCreate, start, end }) => {
 
     mutate(data);
     setOnCreate(false);
+  };
+
+  // 다음 버튼 눌렀을 때 실행할 함수
+  const onNextBtn = () => {
+    if (planName == "") {
+      alert("일정 제목을 입력해주세요!");
+      return;
+    }
+    if (content == "") {
+      alert("일정 설명을 입력해주세요!");
+    }
+    if (toggle) {
+      if (endDate == null) {
+        alert("기간을 설정해주세요");
+        return;
+      }
+      if (startDate == null) {
+        alert("기간을 설정해주세요");
+        return;
+      }
+    } else {
+      if (data == null) {
+        alert("날짜를 선택해주세요");
+        return;
+      }
+    }
+    setStage(2);
   };
 
   // startHour 바꾸면 endHour 바꾸는 코드
@@ -241,13 +273,7 @@ export const CreateSchedule = ({ setOnCreate, start, end }) => {
               ></textarea>
             </div>
             <div className="CreateSchedule-nextBtn">
-              <button
-                onClick={() => {
-                  setStage(2);
-                }}
-              >
-                다음
-              </button>
+              <button onClick={onNextBtn}>다음</button>
             </div>
           </div>
         ) : (

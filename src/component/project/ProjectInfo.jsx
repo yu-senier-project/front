@@ -4,6 +4,7 @@ import useProjectStore from "../../store/project/useProjectStore";
 import { useNavigate } from "react-router-dom";
 import { useGetProjectInfo } from "../../react-query/useProject";
 import { Loading } from "../basic/Loading";
+import { SpinLoading } from "../basic/SpinLoading";
 
 export const ProjectInfo = ({ setOnProjectInfo }) => {
   const myId = localStorage.getItem("memberId");
@@ -64,7 +65,7 @@ export const ProjectInfo = ({ setOnProjectInfo }) => {
   }, [data]);
 
   if (isLoading) {
-    return <Loading text={"정보 가져오는중..."}></Loading>;
+    return <Loading text={"정보 가져오는 중..."}></Loading>;
   }
 
   return (

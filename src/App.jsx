@@ -36,7 +36,6 @@ function App() {
       {toggle && <CreateFeed></CreateFeed>}
       <Routes>
         <Route path="/" element={<Login />} />
-
         <Route path="/" element={<SmallNav />}>
           <Route path="/Id" element={<IdFind />} />
           <Route path="/CheckId" element={<IdCheck />} />

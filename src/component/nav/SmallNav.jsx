@@ -24,6 +24,7 @@ const SmallNav = () => {
   const nav = useNavigate();
   const { setToggle } = useCreateFeed((state) => state);
   const onCreate = () => {
+    nav("/Home");
     setToggle();
   };
   const myId = localStorage.getItem("memberId");

@@ -6,6 +6,7 @@ import { useDeletePlan } from "../../react-query/useProject";
 import useProjectStroe from "../../store/project/useProjectStore";
 import { updatePlan } from "../../apis/projectApis";
 import { UpdatePlan } from "./UpdatePlan";
+import { SpinLoading } from "../basic/SpinLoading";
 
 export const PlanDetail = ({ setDetail, setSelectedEvent, selectedEvent }) => {
   // 수정 버튼 눌렀는지
@@ -79,7 +80,15 @@ export const PlanDetail = ({ setDetail, setSelectedEvent, selectedEvent }) => {
       <div className="PlanDetail-wrap">
         <h2>{event?.planName}</h2>
         {isLoading ? (
-          "로딩중... "
+          <div
+            style={{
+              display: "felx",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <SpinLoading />
+          </div>
         ) : (
           <div>
             <div style={{ marginBottom: "15px" }}>

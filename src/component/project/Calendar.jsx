@@ -154,16 +154,6 @@ export const Calendar = () => {
 
     setStart(arg.dateStr);
     setEnd(arg.dateStr);
-    // const title = prompt("Enter event title:");
-    // if (title) {
-    //   const newEvent = {
-    //     id: String(events.length + 1),
-    //     title,
-    //     start: arg.date,
-    //     end: arg.date,
-    //   };
-    //   setEvents([...events, newEvent]);
-    // }
   };
 
   // 이벤트 클릭했을 떄
@@ -172,7 +162,9 @@ export const Calendar = () => {
     setDetail(true);
   };
 
+  // 일정 이동했을때
   const handleEventDrop = (info) => {
+    console.log(new Date(info.event.start).getFullYear());
     const updatedEvents = events.map((event) =>
       event.id === info.event.id
         ? { ...event, start: info.event.start, end: info.event.end }

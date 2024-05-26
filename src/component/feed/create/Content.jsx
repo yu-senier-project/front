@@ -18,7 +18,7 @@ const Content = ({
   return (
     <div className="Content">
       <UserCard
-        userName={"yeongi0111"}
+        userName={localStorage.getItem("userNickName")}
         width="width-40"
         img="public/image/dp.jpg"
       ></UserCard>
