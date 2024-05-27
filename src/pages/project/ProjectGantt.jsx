@@ -18,6 +18,7 @@ export default function ProjectGantt() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [title, setTitle] = useState(searchParams.get("title"));
   const ganttContainer = useRef(null);
+  const [onCreate, setOnCreate] = useState(false);
 
   useEffect(() => {
     if (data && data.data) {
@@ -39,20 +40,10 @@ export default function ProjectGantt() {
       gantt.init(ganttContainer.current);
       gantt.parse(tasks);
 
-      gantt.attachEvent("onAfterTaskDrag", function (id, mode, e) {
-        const task = gantt.getTask(id);
-        console.log(
-          `Task ${task.text} was moved to: Start date - ${task.start_date}, End date - ${task.end_date}`
-        );
-      });
-
       gantt.config.date_format = "%Y-%m-%d %H:%i"; // 날짜 형식 설정
-      gantt.config.scale_unit = "month";
-      gantt.config.date_scale = "%F";
-      gantt.config.subscales = [
-        { unit: "year", step: 1, date: "%Y" },
-        { unit: "day", step: 1, date: "%d" },
-      ];
+      gantt.config.scale_unit = "day";
+      gantt.config.date_scale = "%d";
+      gantt.config.subscales = [];
 
       gantt.config.row_height = 50; // 원하는 높이로 조정
       gantt.config.bar_height = 40; // 원하는 높이로 조정
@@ -60,35 +51,24 @@ export default function ProjectGantt() {
       gantt.config.show_progress = false; // 진행도 바 제거
       gantt.config.show_links = false; // 링크 아이콘 제거
 
-
       gantt.config.drag_resize = false; //일정 늘리기 제거
-      gantt.config.drag_progress = false; // 
-      gantt.config.drag_move = false;
+      gantt.config.drag_progress = false; //
+      gantt.config.drag_move = false; // 드래그를 통한 수정 제거
 
-      gantt.templates.timeline_cell_class = function (task, date) {
-        if (date.getDay() === 0 || date.getDay() === 6) {
-          // 주말
-          return "weekend";
-        }
-        return "";
+      //날짜 형식 24 May 02
+      gantt.templates.date_scale = function (date) {
+        return gantt.date.date_to_str("%y %M %d")(date);
       };
-
-      gantt.templates.tooltip_text = function (start, end, task) {
-        return `<b>Task:</b> ${task.text}<br/>
-                <b>Start date:</b> ${gantt.templates.tooltip_date_format(
-                  start
-                )}<br/>
-                <b>End date:</b> ${gantt.templates.tooltip_date_format(
-                  end
-                )}<br/>
-                <b>Description:</b> ${task.description}<br/>
-                <b>Assigned to:</b> ${task.assigned_to}<br/>
-                <b>Priority:</b> ${task.priority}`;
-      };
-
+      // Tasks 색 지정(수정중)
       gantt.templates.task_class = function (start, end, task) {
-        return task.color; 
+        return task.color;
       };
+      //Todo list 테이블 속성
+      gantt.config.columns = [
+        { name: "text", label: "Task name", width: "*", tree: true },
+        { name: "start_date", label: "Start time", align: "center" },
+        { name: "end_date", label: "End time", align: "center" },
+      ];
 
       gantt.render();
     }
@@ -96,6 +76,9 @@ export default function ProjectGantt() {
 
   return (
     <div className="gantt-chart">
+      {onCreate ? (
+        <CreateSchedule setOnCreate={setOnCreate}></CreateSchedule>
+      ) : null}
       <div className="ProjectCalendar-top">
         <h2>
           <button>
@@ -113,18 +96,14 @@ export default function ProjectGantt() {
           </button>
         </div>
       </div>
-      <div className="gantt"
-        ref={ganttContainer}
-        id="gantt_here"
-        style={{ }}
-      ></div>
-      {/* <button
+      <div className="gantt" ref={ganttContainer} id="gantt_here"></div>
+      <button
         onClick={() => {
           console.log(tasks);
         }}
       >
         asdfasfasdfasdfasdfasfd
-      </button> */}
+      </button>
     </div>
   );
 }

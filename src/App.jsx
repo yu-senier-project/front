@@ -20,7 +20,7 @@ import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
 import ProjectGantt from "./pages/project/ProjectGantt";
-
+import ProJectPost from "./pages/project/ProjectPost";
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
@@ -37,6 +37,7 @@ function App() {
         <Route path="/" element={<SmallNav />}>
           <Route path="Id" element={<IdFind />} />
           <Route path="CheckId" element={<IdCheck />} />
+          <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
           <Route path="Home" element={<Home />} />
           <Route path="Search" element={<Search />} />
@@ -50,6 +51,7 @@ function App() {
         <Route path="ProjectHome" element={<ProjectNav />}>
           <Route path=":projectId" element={<ProjectCalendar />} />
           <Route path=":projectId/Gantt" element={<ProjectGantt />} />
+          <Route path=":projectId/Post" element={<ProJectPost />} />
         </Route>
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

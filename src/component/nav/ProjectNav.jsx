@@ -46,7 +46,9 @@ export const ProjectNav = () => {
               <p>간트차트</p>
             </div>
           </Link>
-          <Link to={"/search"}>
+          <Link
+            to={`/ProjectHome/${projectId}/Post?memberId=${managerId}&title=${title}`}
+          >
             <div className="SmallNav-menu">
               <MdDynamicFeed className="icon" />
               <p>게시물</p>
