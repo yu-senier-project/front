@@ -78,10 +78,6 @@ const ChatInput = ({
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
-    onError: (err, newComment, rollback) => {
-      console.log(e);
-      rollback();
-    },
   });
 
   // 답글 달기기
