@@ -439,15 +439,14 @@ export const useCreateTodo = (projectId) => {
 
 // 나의 할일 가져오기
 export const useGetMyTodo = (projectId) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["myTodos", projectId],
     queryFn: () => getMyTodo(projectId),
     staleTime: 5 * 1000 * 60,
     gcTime: 10 * 1000 * 60,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnMount: true,
   });
-  return { data, isLoading };
+  return { data, isLoading, refetch };
 };
 
 // 할일 삭제하기
@@ -478,7 +477,7 @@ export const useDeleteTodo = (projectId, taskId) => {
 // 할일 상태 수정하기
 export const useUpdateTodoState = (projectId) => {
   const queryClient = useQueryClient();
-  const { mutate, status } = useMutation({
+  const { mutate, status, refetch } = useMutation({
     mutationFn: ({ taskId, data }) => {
       console.log(taskId);
       return updateTodoState(taskId, data);
@@ -506,7 +505,7 @@ export const useUpdateTodoState = (projectId) => {
       // });
     },
   });
-  return { mutate, status };
+  return { mutate, status, refetch };
 };
 
 // 전체 할일 가져오기

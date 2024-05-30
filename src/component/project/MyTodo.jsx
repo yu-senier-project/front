@@ -11,37 +11,44 @@ import {
 import "../../styles/project/MyTodo.scss";
 import { useUpdateTodoState } from "../../react-query/useProject";
 
-export const MyTodo = ({ items, onCreateClick, projectId }) => {
+export const MyTodo = ({
+  items,
+  onCreateClick,
+  projectId,
+  todos,
+  setTodos,
+}) => {
   const { mutate: updateMutate } = useUpdateTodoState(projectId);
+  console.log(todos);
 
-  const { data, isLoading } = useGetMyTodo(projectId);
-  const [todos, setTodos] = useState({
-    BEFORE: [],
-    ONGOING: [],
-    AFTER: [],
-  });
+  // const { data, isLoading } = useGetMyTodo(projectId);
+  // const [todos, setTodos] = useState({
+  //   BEFORE: [],
+  //   ONGOING: [],
+  //   AFTER: [],
+  // });
 
-  // 할일 데이터 저장
-  useEffect(() => {
-    const newObj = {
-      BEFORE: [],
-      ONGOING: [],
-      AFTER: [],
-    };
-    if (data && data.data && data.data.todoList) {
-      for (let todo of data.data.todoList) {
-        const type = todo.state;
-        newObj[type] = [
-          ...newObj[type],
-          { id: todo.id, content: todo.content },
-        ];
-      }
-      for (let key in newObj) {
-        newObj[key].sort((a, b) => b.id - a.id);
-      }
-    }
-    setTodos(newObj);
-  }, [data]);
+  // // 할일 데이터 저장
+  // useEffect(() => {
+  //   const newObj = {
+  //     BEFORE: [],
+  //     ONGOING: [],
+  //     AFTER: [],
+  //   };
+  //   if (data && data.data && data.data.todoList) {
+  //     for (let todo of data.data.todoList) {
+  //       const type = todo.state;
+  //       newObj[type] = [
+  //         ...newObj[type],
+  //         { id: todo.id, content: todo.content },
+  //       ];
+  //     }
+  //     for (let key in newObj) {
+  //       newObj[key].sort((a, b) => b.id - a.id);
+  //     }
+  //   }
+  //   setTodos(newObj);
+  // }, [data]);
 
   // 버튼 스타일 지정하는 함수
   const buttonStyles = (type) => ({
@@ -83,14 +90,15 @@ export const MyTodo = ({ items, onCreateClick, projectId }) => {
       newTodos[start] = updatedItems;
     } else {
       const startItems = Array.from(newTodos[start]);
-      // console.log(startItems); // 이동하는 친구
+
       const [movedItem] = startItems.splice(source.index, 1);
+      console.log(movedItem); // 이동하는 친구
       const finishItems = Array.from(newTodos[finish]);
       finishItems.splice(destination.index, 0, movedItem);
       newTodos[start] = startItems;
       newTodos[finish] = finishItems;
       const data = { state: destination.droppableId };
-      updateMutate({ taskId: startItems[0].id, data });
+      updateMutate({ taskId: movedItem.id, data });
     }
 
     setTodos(newTodos);

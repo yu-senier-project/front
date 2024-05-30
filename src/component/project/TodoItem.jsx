@@ -48,7 +48,6 @@ export const TodoItem = ({
         [type]: todos[type].filter((todo) => todo.id != id),
         ONGOING: [...todos.ONGOING, { ...todoItem }],
       };
-      console.log(updatedTodos);
       setTodos(updatedTodos); // 낙관적 업데이트
       const data = { state: "ONGOING" };
       updateMutate(data);
