@@ -487,7 +487,7 @@ export const useUpdateTodoState = (projectId) => {
       console.log(e);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["myTodos", projectId]);
+      // queryClient.invalidateQueries(["myTodos", projectId]);
     },
     onMutate: (data) => {
       // console.log(data);
@@ -516,8 +516,8 @@ export const useGetAllTodos = (projectId) => {
     queryFn: () => getAllTodos(projectId),
     staleTime: 5 * 1000 * 60,
     gcTime: 10 * 1000 * 60,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    // refetchOnWindowFocus: false,
+    // refetchOnReconnect: false,
   });
   return { data, isLoading };
 };

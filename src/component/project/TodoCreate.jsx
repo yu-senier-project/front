@@ -28,9 +28,6 @@ export const TodoCreate = ({
   // 할일 제목
   const [title, setTitle] = useState("");
 
-  // 참여자 추가하기 버튼 눌렀는지
-  const [onPlus, setOnPlus] = useState(false);
-
   // 참여자 저장
   const [participantList, setParticipantList] = useState([]);
 
