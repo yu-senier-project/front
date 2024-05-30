@@ -476,10 +476,13 @@ export const useDeleteTodo = (projectId, taskId) => {
 };
 
 // 할일 상태 수정하기
-export const useUpdateTodoState = (projectId, taskId) => {
+export const useUpdateTodoState = (projectId) => {
   const queryClient = useQueryClient();
   const { mutate, status } = useMutation({
-    mutationFn: (data) => updateTodoState(taskId, data),
+    mutationFn: ({ taskId, data }) => {
+      console.log(taskId);
+      return updateTodoState(taskId, data);
+    },
     onError: (e) => {
       console.log(e);
     },
@@ -487,21 +490,20 @@ export const useUpdateTodoState = (projectId, taskId) => {
       queryClient.invalidateQueries(["myTodos", projectId]);
     },
     onMutate: (data) => {
-      console.log(data);
-      const prevData = queryClient.getQueryData(["myTodos", projectId]);
-      let todoList = prevData.data.todoList;
-      todoList = todoList.map((todo) => {
-        if (todo.id == taskId) {
-          todo.state = data.state;
-          return todo;
-        } else {
-          return todo;
-        }
-      });
-
-      queryClient.setQueryData(["myTodos", projectId], {
-        data: { todoList },
-      });
+      // console.log(data);
+      // const prevData = queryClient.getQueryData(["myTodos", projectId]);
+      // let todoList = prevData.data.todoList;
+      // todoList = todoList.map((todo) => {
+      //   if (todo.id == taskId) {
+      //     todo.state = data.state;
+      //     return todo;
+      //   } else {
+      //     return todo;
+      //   }
+      // });
+      // queryClient.setQueryData(["myTodos", projectId], {
+      //   data: { todoList },
+      // });
     },
   });
   return { mutate, status };

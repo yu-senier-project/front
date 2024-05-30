@@ -9,8 +9,11 @@ import {
   TodoIngIcon,
 } from "../../pages/project/Todo";
 import "../../styles/project/MyTodo.scss";
+import { useUpdateTodoState } from "../../react-query/useProject";
 
 export const MyTodo = ({ items, onCreateClick, projectId }) => {
+  const { mutate: updateMutate } = useUpdateTodoState(projectId);
+
   const { data, isLoading } = useGetMyTodo(projectId);
   const [todos, setTodos] = useState({
     BEFORE: [],
@@ -80,15 +83,17 @@ export const MyTodo = ({ items, onCreateClick, projectId }) => {
       newTodos[start] = updatedItems;
     } else {
       const startItems = Array.from(newTodos[start]);
+      // console.log(startItems); // 이동하는 친구
       const [movedItem] = startItems.splice(source.index, 1);
       const finishItems = Array.from(newTodos[finish]);
       finishItems.splice(destination.index, 0, movedItem);
       newTodos[start] = startItems;
       newTodos[finish] = finishItems;
+      const data = { state: destination.droppableId };
+      updateMutate({ taskId: startItems[0].id, data });
     }
 
     setTodos(newTodos);
-    console.log(todos);
   };
 
   return (
@@ -129,6 +134,8 @@ export const MyTodo = ({ items, onCreateClick, projectId }) => {
                             {...provided.dragHandleProps}
                           >
                             <TodoItem
+                              todos={todos}
+                              setTodos={setTodos}
                               projectId={projectId}
                               id={item.id.toString()}
                               type={type}

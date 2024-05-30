@@ -8,7 +8,8 @@ export const TodoPlusUser = ({ projectId, setOnPlusUser }) => {
   const myId = localStorage.getItem("memberId");
 
   // 사용자가 설정한 유저 정보 가져오기
-  const selectUsers = JSON.parse(localStorage.getItem("selectUsers"));
+  const selectUsers =
+    JSON.parse(localStorage.getItem(`selectUsers${projectId}`)) || null;
 
   // 참여자 정보 가져오기
   const { data, isLoading } = useGetProjectParticipants(projectId);
@@ -38,7 +39,10 @@ export const TodoPlusUser = ({ projectId, setOnPlusUser }) => {
       document.querySelectorAll(".td-radio input:checked")
     ).map((input) => input.id);
 
-    localStorage.setItem("selectUsers", JSON.stringify(checkedUsers));
+    localStorage.setItem(
+      `selectUsers${projectId}`,
+      JSON.stringify(checkedUsers)
+    );
     setOnPlusUser(false);
     // console.log("Selected users:", checkedUsers);
   };

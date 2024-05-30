@@ -14,12 +14,20 @@ import { useDeleteTodo } from "../../react-query/useProject";
 import { useUpdateTodoState } from "../../react-query/useProject";
 import { ElevatorSharp } from "@mui/icons-material";
 
-export const TodoItem = ({ type, my, content, id, projectId }) => {
+export const TodoItem = ({
+  type,
+  my,
+  content,
+  id,
+  projectId,
+  todos,
+  setTodos,
+}) => {
   // 할일 삭제하는 mutate
   const { mutate, status } = useDeleteTodo(projectId, id);
 
   // 할일 상태 없데이트 mutate
-  const { mutate: updateMutate } = useUpdateTodoState(projectId, id);
+  const { mutate: updateMutate } = useUpdateTodoState(projectId);
 
   // 할 일 삭제
   const onDelete = () => {
@@ -33,6 +41,15 @@ export const TodoItem = ({ type, my, content, id, projectId }) => {
     if (type == "ONGOING") {
       return;
     } else {
+      const todoItem = todos[type].find((todo) => todo.id == id);
+      console.log(todoItem);
+      const updatedTodos = {
+        ...todos,
+        [type]: todos[type].filter((todo) => todo.id != id),
+        ONGOING: [...todos.ONGOING, { ...todoItem }],
+      };
+      console.log(updatedTodos);
+      setTodos(updatedTodos); // 낙관적 업데이트
       const data = { state: "ONGOING" };
       updateMutate(data);
     }
@@ -42,8 +59,15 @@ export const TodoItem = ({ type, my, content, id, projectId }) => {
     if (type == "BEFORE") {
       return;
     } else {
+      const todoItem = todos[type].find((todo) => todo.id == id);
+      const updatedTodos = {
+        ...todos,
+        [type]: todos[type].filter((todo) => todo.id != id),
+        BEFORE: [...todos.BEFORE, { ...todoItem, type: "BEFORE" }],
+      };
+      setTodos(updatedTodos); // 낙관적 업데이트
       const data = { state: "BEFORE" };
-      updateMutate(data);
+      updateMutate({ taskId: id, data });
     }
   };
 
@@ -51,6 +75,13 @@ export const TodoItem = ({ type, my, content, id, projectId }) => {
     if (type == "AFTER") {
       return;
     } else {
+      const todoItem = todos[type].find((todo) => todo.id == id);
+      const updatedTodos = {
+        ...todos,
+        [type]: todos[type].filter((todo) => todo.id != id),
+        AFTER: [...todos.AFTER, { ...todoItem, type: "AFTER" }],
+      };
+      setTodos(updatedTodos); // 낙관적 업데이트
       const data = { state: "AFTER" };
       updateMutate(data);
     }

@@ -16,7 +16,8 @@ export const Todo = () => {
   const { projectId } = useParams();
 
   // 볼 사용자 정보 저장하는 변수
-  let selectUsers = JSON.parse(localStorage.getItem("selectUsers"));
+  let selectUsers =
+    JSON.parse(localStorage.getItem(`selectUsers${projectId}`)) || [];
 
   // 모든 참여자 데이터 가져오기
   const { data, isLoading } = useGetAllTodos(projectId);
@@ -37,7 +38,8 @@ export const Todo = () => {
   };
 
   useEffect(() => {
-    selectUsers = JSON.parse(localStorage.getItem("selectUsers"));
+    selectUsers =
+      JSON.parse(localStorage.getItem(`selectUsers${projectId}`)) || [];
 
     if (data && data.data) {
       let updatedTodos = selectUsers?.map((user1) => {
@@ -71,7 +73,7 @@ export const Todo = () => {
         ) : null}
         <MyTodo onCreateClick={onCreateClick} projectId={projectId}></MyTodo>
         {otherUserTodos?.map((todo) => (
-          <OtherTodo nickname={todo.nickname} />
+          <OtherTodo nickname={todo.nickname} todoList={todo.todoList} />
         ))}
 
         <button

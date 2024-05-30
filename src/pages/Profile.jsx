@@ -26,13 +26,13 @@ export const Profile = () => {
     useMemberData(memberId);
 
   const [profileImg, setProfileImg] = useState(
-    memberData?.data?.profile ?? "/public/image/dp.jpg"
+    memberData?.data?.profile ?? "/image/dp.jpg"
   );
 
   console.log(profileImg);
 
   useEffect(() => {
-    setProfileImg(memberData?.data?.profile ?? "/public/image/dp.jpg");
+    setProfileImg(memberData?.data?.profile ?? "/image/dp.jpg");
   }, [memberData]);
 
   // 소속 변경 버튼 눌렀을 떄

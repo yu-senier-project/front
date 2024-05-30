@@ -20,7 +20,7 @@ const Content = ({
       <UserCard
         userName={localStorage.getItem("userNickName")}
         width="width-40"
-        img="public/image/dp.jpg"
+        img="/image/dp.jpg"
       ></UserCard>
       <MentionTextarea
         inputRef={inputRef}

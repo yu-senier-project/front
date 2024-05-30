@@ -62,7 +62,7 @@ const ChatInput = ({
           profile:
             previousComments.data.length !== 0
               ? previousComments?.data[0].postMember.profile
-              : "/public/image/dp.jpg",
+              : "/image/dp.jpg",
         },
       };
 
@@ -104,7 +104,7 @@ const ChatInput = ({
           profile:
             previousCommentsReply?.data.length !== 0
               ? previousCommentsReply?.data[0].postMember.profile
-              : "/public/image/dp.jpg",
+              : "/image/dp.jpg",
         },
       };
 

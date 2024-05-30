@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/project/OtherTodo.scss";
 import { TodoItem } from "./TodoItem";
 import {
@@ -6,25 +6,35 @@ import {
   TodoDoneIcon,
   TodoIngIcon,
 } from "../../pages/project/Todo";
+import { constructNow } from "date-fns";
 
-export const OtherTodo = ({ nickname }) => {
-  const items = {
-    will: [
-      { id: "1", content: "할 일 1" },
-      { id: "2", content: "할 일 2" },
-      { id: "3", content: "할 일 3" },
-    ],
-    ing: [
-      { id: "4", content: "진행중 1" },
-      { id: "5", content: "진행중 2" },
-      { id: "6", content: "진행중 3" },
-    ],
-    done: [
-      { id: "7", content: "완료 1" },
-      { id: "8", content: "완료 2" },
-      { id: "9", content: "완료 3" },
-    ],
-  };
+export const OtherTodo = ({ nickname, todoList }) => {
+  console.log(todoList);
+
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    if (todoList.length != 0) {
+      const newObj = {
+        BEFORE: [],
+        ONGOING: [],
+        AFTER: [],
+      };
+      for (let todo of todoList) {
+        const type = todo.state;
+        newObj[type] = [
+          ...newObj[type],
+          { id: todo.id, content: todo.content },
+        ];
+      }
+      for (let key in newObj) {
+        newObj[key].sort((a, b) => b.id - a.id);
+      }
+
+      setTodos(newObj);
+    }
+  }, []);
+
   return (
     <div className="OtherTodo">
       <p style={{ marginBottom: "10px" }}>
@@ -39,7 +49,7 @@ export const OtherTodo = ({ nickname }) => {
               {type === "AFTER" && <TodoDoneIcon />}
             </div>
             <div className={`Todo-${type}-list`}>
-              {items[type]?.map((item, index) => (
+              {todos[type]?.map((item, index) => (
                 <TodoItem type={type} content={item.content} />
               ))}
             </div>
