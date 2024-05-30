@@ -28,9 +28,10 @@ export default function ProjectPost() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // loaderRef = useRef(null);
       setLoading(true);  // 데이터 로딩 시작
       try {
-        const response = await apiClient.get(`/api/v1/project/${projectId}/post?cursorValue=${page}`);
+        const response = await apiClient.get(`/api/v1/project/${projectId}/post?cursorValue=${0}`);
         setPosts(response.data);  // 데이터 설정
         setLoading(false);  // 로딩 완료
       } catch (error) {
@@ -141,14 +142,14 @@ export default function ProjectPost() {
     if (postIndex === -1) return;  // 게시글을 찾지 못한 경우 함수 종료
 
     const post = posts[postIndex];
-    const currentReaction = post.userReaction;
+    const currentReaction = post.opinion;
     const isRemovingReaction = currentReaction === buttonId;
 
     // 옵티미스틱 업데이트를 위해 먼저 UI를 업데이트
     const updatedPosts = [...posts]; // 게시물 배열 복사
     const updatedPost = {
       ...post,
-      userReaction: isRemovingReaction ? null : buttonId,
+      opinion: isRemovingReaction ? null : buttonId,
       prosCnt: post.prosCnt + (buttonId === 'PROS' ? (isRemovingReaction ? -1 : 1) : 0),
       consCnt: post.consCnt + (buttonId === 'CONS' ? (isRemovingReaction ? -1 : 1) : 0),
       checkCnt: post.checkCnt + (buttonId === 'CHECK' ? (isRemovingReaction ? -1 : 1) : 0),
