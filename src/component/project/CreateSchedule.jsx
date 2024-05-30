@@ -117,7 +117,7 @@ export const CreateSchedule = ({ setOnCreate, start, end }) => {
         return;
       }
     } else {
-      if (data == null) {
+      if (date == null) {
         alert("날짜를 선택해주세요");
         return;
       }

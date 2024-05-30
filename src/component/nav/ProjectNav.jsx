@@ -50,10 +50,12 @@ export const ProjectNav = () => {
               <p>게시물</p>
             </div>
           </Link>
-          <div className="SmallNav-menu">
-            <SlNotebook className="icon" />
-            <p>할일</p>
-          </div>{" "}
+          <Link to={`/ProjectHome/Todo/${projectId}`}>
+            <div className="SmallNav-menu">
+              <SlNotebook className="icon" />
+              <p>할 일</p>
+            </div>
+          </Link>
         </div>
         <Link to={"/Project"}>
           <div className="SmallNav-menu">

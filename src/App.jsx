@@ -21,6 +21,7 @@ import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
 import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
+import { Todo } from "./pages/project/Todo";
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -48,6 +49,7 @@ function App() {
         </Route>
         <Route path="/ProjectHome" element={<ProjectNav></ProjectNav>}>
           <Route path="InfoUpdate" element={<UpdateProject></UpdateProject>} />
+          <Route path="Todo/:projectId" element={<Todo></Todo>} />
           <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
           <Route path=":projectId" element={<ProjectCalendar />} />
         </Route>

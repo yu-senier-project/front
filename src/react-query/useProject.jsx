@@ -22,7 +22,14 @@ import {
   getProjectParticipants,
   updateProjectParticipants,
   deleteProject,
+  updatePlanDate,
+  createTodo,
+  getMyTodo,
+  deleteTodo,
+  updateTodoState,
+  getAllTodos,
 } from "../apis/projectApis";
+import { QueryStatsTwoTone } from "@mui/icons-material";
 
 // 프로젝트 조회
 export const useGetProjectList = () => {
@@ -211,6 +218,27 @@ export const useUpdatePlan = (planId) => {
   return { mutate, status };
 };
 
+// 일정 날짜 변경
+export const useUpdatePlanDate = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: ({ planId, data }) => {
+      console.log(planId), console.log(data);
+      updatePlanDate(planId, data);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data, variables) => {
+      const { planId } = variables;
+      queryClient.invalidateQueries(["detailPlan", planId.toString()]);
+      queryClient.invalidateQueries(["planList"], projectId);
+    },
+  });
+
+  return { mutate, status };
+};
+
 // 프로젝트 나가기
 export const useExitProject = (projectId) => {
   const queryClient = useQueryClient();
@@ -371,4 +399,123 @@ export const useDeleteProject = (projectId) => {
     },
   });
   return { mutate, status };
+};
+
+// 할일 생성하기
+export const useCreateTodo = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => createTodo(projectId, data),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["myTodos", projectId]);
+      console.log("성공! ");
+    },
+    onMutate: (data) => {
+      const prev = queryClient.getQueryData(["myTodos", projectId]);
+      console.log(prev);
+      let prevObj = prev?.data.todoList ?? [];
+      prevObj = [
+        {
+          content: data.content,
+          state: data.state,
+          id: prevObj[prevObj.length - 1].id + 1,
+        },
+        ...prevObj,
+      ];
+
+      console.log(prevObj);
+
+      queryClient.setQueryData(["myTodos", projectId], {
+        data: { todoList: prevObj },
+      });
+    },
+  });
+
+  return { mutate, status };
+};
+
+// 나의 할일 가져오기
+export const useGetMyTodo = (projectId) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["myTodos", projectId],
+    queryFn: () => getMyTodo(projectId),
+    staleTime: 5 * 1000 * 60,
+    gcTime: 10 * 1000 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  return { data, isLoading };
+};
+
+// 할일 삭제하기
+export const useDeleteTodo = (projectId, taskId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: () => deleteTodo(taskId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["myTodos", projectId]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["myTodos", projectId]);
+      console.log(prevData);
+      let todoList = prevData.data.todoList;
+      todoList = todoList.filter((todo) => todo.id != taskId);
+
+      queryClient.setQueryData(["myTodos", projectId], {
+        data: { todoList },
+      });
+    },
+  });
+  return { mutate, status };
+};
+
+// 할일 상태 수정하기
+export const useUpdateTodoState = (projectId, taskId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => updateTodoState(taskId, data),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["myTodos", projectId]);
+    },
+    onMutate: (data) => {
+      console.log(data);
+      const prevData = queryClient.getQueryData(["myTodos", projectId]);
+      let todoList = prevData.data.todoList;
+      todoList = todoList.map((todo) => {
+        if (todo.id == taskId) {
+          todo.state = data.state;
+          return todo;
+        } else {
+          return todo;
+        }
+      });
+
+      queryClient.setQueryData(["myTodos", projectId], {
+        data: { todoList },
+      });
+    },
+  });
+  return { mutate, status };
+};
+
+// 전체 할일 가져오기
+export const useGetAllTodos = (projectId) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["allTodos", projectId],
+    queryFn: () => getAllTodos(projectId),
+    staleTime: 5 * 1000 * 60,
+    gcTime: 10 * 1000 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  return { data, isLoading };
 };

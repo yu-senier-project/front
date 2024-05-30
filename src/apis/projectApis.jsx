@@ -70,6 +70,19 @@ export const updatePlan = async (planId, data) => {
   }
 };
 
+// 일정 날자 수정 api
+export const updatePlanDate = async (planId, data) => {
+  try {
+    const response = await apiClient.patch(
+      `/api/v1/plan/update-date/${planId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // 프로젝트 나가기 api
 export const exitProject = async (projectId) => {
   try {
@@ -124,4 +137,47 @@ export const deleteProject = async (projectId) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// 할일 생성하는 api
+export const createTodo = async (projectId, data) => {
+  try {
+    const response = await apiClient.post(`/api/v1/task/${projectId}`, data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 할일 불러오는 api
+export const getMyTodo = async (projectId) => {
+  return apiClient.get(`/api/v1/task?projectId=${projectId}`);
+};
+
+// 할일 삭제하는 api
+export const deleteTodo = async (taskId) => {
+  try {
+    const response = await apiClient.delete(`/api/v1/task/${taskId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 할일 상태변경하는 api
+export const updateTodoState = async (taskId, data) => {
+  try {
+    const response = await apiClient.patch(
+      `/api/v1/task/${taskId}/state`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 전체 할일 가져오는 api
+export const getAllTodos = async (projectId) => {
+  return apiClient.get(`/api/v1/task/all?projectId=${projectId}`);
 };

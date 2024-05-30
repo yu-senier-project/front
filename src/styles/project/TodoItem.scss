@@ -1,0 +1,41 @@
+.TodoItem {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 10px 5px 10px;
+  margin-bottom: 10px;
+
+  p {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+}
+
+.TodoItem > div {
+  margin-bottom: 10px;
+}
+
+.selectBox {
+  top: 30px;
+  z-index: 1000;
+  position: absolute;
+  background-color: white;
+  display: flex;
+  gap: 10px;
+  border-radius: 10px;
+
+  //   width: 100px;
+
+  > div {
+    border-radius: 10px;
+    &:hover {
+      box-shadow: 2px 2px 2px 2px lightgrey;
+    }
+  }
+}
+
+.TodoItem-setting {
+  position: absolute;
+  top: 30px;
+  right: -10px;
+  z-index: 100;
+}
