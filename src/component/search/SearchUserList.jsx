@@ -6,33 +6,33 @@ const SearchUserList = () => {
   const userList = [
     {
       id: "yeongi",
-      img: "public/image/dp.jpg",
+      img: "/image/dp.jpg",
     },
     {
       id: "aaaaaa",
-      img: "public/image/dp.jpg",
+      img: "/image/dp.jpg",
     },
     {
       id: "hello",
-      img: "public/image/dp.jpg",
+      img: "/image/dp.jpg",
     },
     {
       id: "byebye",
-      img: "public/image/dp.jpg",
+      img: "/image/dp.jpg",
     },
   ];
   const hashTagList = [
     {
       msg: "해시태그",
-      img: "public/image/images.png",
+      img: "/image/images.png",
     },
     {
       msg: "해시태그",
-      img: "public/image/images.png",
+      img: "/image/images.png",
     },
     {
       msg: "해시태그",
-      img: "public/image/images.png",
+      img: "/image/images.png",
     },
   ];
 

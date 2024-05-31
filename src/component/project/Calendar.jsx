@@ -6,6 +6,9 @@ import styled from "styled-components";
 import { CreateSchedule } from "./CreateSchedule";
 import useProjectStore from "../../store/project/useProjectStore";
 import { useGetPlanList } from "../../react-query/useProject";
+import { PlanDetail } from "./PlanDetail";
+import { useSearchParams } from "react-router-dom";
+import { useUpdatePlanDate } from "../../react-query/useProject";
 
 const FullCalendarContainer = styled.div`
   width: 100%;
@@ -92,51 +95,55 @@ const FullCalendarContainer = styled.div`
 `;
 
 export const Calendar = () => {
-  function formatToISO(dateString) {
-    const date = new Date(dateString);
-    const isoString = date.toISOString().slice(0, 19); // "YYYY-MM-DDTHH:MM:SS" 형식
-    return isoString;
-  }
+  // 매니저 아이디 저장
+  const [searchParams, setSearchParams] = useSearchParams();
+  const managerId = searchParams.get("memberId");
+  const { setManagerId, projectId } = useProjectStore();
+  useEffect(() => {
+    if (managerId) {
+      setManagerId(managerId);
+    }
+  }, [managerId, setManagerId]);
+
+  // 일정 날짜 변경하는 mutate
+  const { mutate, status } = useUpdatePlanDate(projectId);
+
   // 일정 생성 버튼 눌렀는지 or 날짜를 클릭해도 뜨게
   const [onCreate, setOnCreate] = useState(false);
 
-  // 프로젝트 id 가져오기
-  const { projectId } = useProjectStore();
+  // 일정 상세보기 클릭했는지
+  const [onDetail, setDetail] = useState(false);
+
+  //클릭한 일정 정보 저장할 변수
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   // 이벤트 정보 가져오기
   const { data, isLoading } = useGetPlanList(projectId);
-  console.log(data);
 
   // 일정 저장 state
   const [events, setEvents] = useState([]);
   useEffect(() => {
     let event = data?.data?.map((plan, index) => {
       const colors = [
-        "lightcoral",
-        "lightseagreen",
-        "lightgoldenrodyellow",
-        "lightblue",
-        "lightpink",
-        "lightcyan",
-        "lightgreen",
-        "lightyellow",
-        "lavender",
-        "thistle",
-        "plum",
-        "mintcream",
-        "honeydew",
-        "mistyrose",
-        "peachpuff",
-        "palegoldenrod",
-        "palegreen",
-        "paleturquoise",
-        "palevioletred",
+        "hsl(0, 50%, 70%)", // Red
+        "hsl(30, 50%, 70%)", // Orange
+        "hsl(60, 50%, 70%)", // Yellow
+        "hsl(90, 50%, 70%)", // Light Green
+        "hsl(120, 50%, 70%)", // Green
+        "hsl(150, 50%, 70%)", // Greenish Cyan
+        "hsl(180, 50%, 70%)", // Cyan
+        "hsl(210, 50%, 70%)", // Light Blue
+        "hsl(240, 50%, 70%)", // Blue
+        "hsl(270, 50%, 70%)", // Purple
+        "hsl(300, 50%, 70%)", // Magenta
+        "hsl(330, 50%, 70%)", // Pink
+        "hsl(360, 50%, 70%)", // Red
       ];
       return {
-        planId: plan.planId,
+        id: plan.planId,
         title: plan.planName,
-        start: formatToISO(plan.startedAt),
-        end: formatToISO(plan.endedAt),
+        start: plan.startedAt,
+        end: plan.endedAt,
         backgroundColor: colors[index % colors.length],
       };
     });
@@ -146,33 +153,49 @@ export const Calendar = () => {
   // 날짜 클릭했을 때 해당 날짜를 일정 생성에 넘기기 위한 state
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-
   const handleDateClick = (arg) => {
     setOnCreate(true);
 
     setStart(arg.dateStr);
     setEnd(arg.dateStr);
-    // const title = prompt("Enter event title:");
-    // if (title) {
-    //   const newEvent = {
-    //     id: String(events.length + 1),
-    //     title,
-    //     start: arg.date,
-    //     end: arg.date,
-    //   };
-    //   setEvents([...events, newEvent]);
-    // }
   };
 
+  // 이벤트 클릭했을 떄
   const handleEventClick = (info) => {
-    return (
-      <h1>
-        fkasdjfkldsajfklsdfjslkdfjslkfjsafkjasdkfjasdfkjasfkjasfkajsdkfjadfkj
-      </h1>
-    );
+    setSelectedEvent(info.event);
+    setDetail(true);
   };
 
+  // 일정 이동했을때
   const handleEventDrop = (info) => {
+    const currentEvent = events.filter((event) => event.id == info.event.id)[0];
+    const preStart = currentEvent.start.split(" ")[1];
+    const preEnd = currentEvent.end.split(" ")[1];
+
+    const start = new Date(info.event.start);
+    const end = new Date(info.event.end);
+
+    const startYear = start.getFullYear();
+    const startMonth =
+      start.getMonth() + 1 < 10
+        ? `0${start.getMonth() + 1}`
+        : start.getMonth() + 1;
+    const startDay =
+      start.getDate() < 10 ? `0${start.getDate()}` : start.getDate();
+
+    const endYear = end.getFullYear();
+    const endMonth =
+      end.getMonth() + 1 < 10 ? `0${end.getMonth() + 1}` : end.getMonth() + 1;
+    const endDay = end.getDate() < 10 ? `0${end.getDate()}` : end.getDate();
+
+    const startedAt = `${startYear}-${startMonth}-${startDay} ${preStart}`;
+    const endedAt = `${endYear}-${endMonth}-${endDay} ${preEnd}`;
+    const data = {
+      startedAt,
+      endedAt,
+    };
+    mutate({ planId: info.event.id, data });
+
     const updatedEvents = events.map((event) =>
       event.id === info.event.id
         ? { ...event, start: info.event.start, end: info.event.end }
@@ -182,7 +205,6 @@ export const Calendar = () => {
   };
 
   const renderEventContent = (eventInfo) => {
-    console.log(eventInfo);
     return (
       <>
         <i>{eventInfo.event.title}</i>
@@ -192,9 +214,6 @@ export const Calendar = () => {
 
   return (
     <div className="calendar-container">
-      {onCreate ? (
-        <CreateSchedule setOnCreate={setOnCreate} start={start} end={end} />
-      ) : null}
       <FullCalendarContainer>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
@@ -219,6 +238,18 @@ export const Calendar = () => {
           }}
         />
       </FullCalendarContainer>
+
+      {onCreate ? (
+        <CreateSchedule setOnCreate={setOnCreate} start={start} end={end} />
+      ) : null}
+
+      {onDetail ? (
+        <PlanDetail
+          setDetail={setDetail}
+          setSelectedEvent={setSelectedEvent}
+          selectedEvent={selectedEvent}
+        />
+      ) : null}
     </div>
   );
 };

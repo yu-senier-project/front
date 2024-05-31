@@ -8,21 +8,21 @@ const CreateFeedFindUser = ({ hashSearch }) => {
       <div className="CreateFeedFindUser-result">
         <div>
           <UserCard
-            img={"public/image/dp.jpg"}
+            img={"/image/dp.jpg"}
             userName={"hihihi"}
             width={"width-30"}
           ></UserCard>
         </div>
         <div>
           <UserCard
-            img={"public/image/dp.jpg"}
+            img={"/image/dp.jpg"}
             userName={"hihihi"}
             width={"width-30"}
           ></UserCard>
         </div>
         <div>
           <UserCard
-            img={"public/image/dp.jpg"}
+            img={"/image/dp.jpg"}
             userName={"hihihi"}
             width={"width-30"}
           ></UserCard>
