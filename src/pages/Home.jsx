@@ -11,7 +11,6 @@ import { Loading } from "../component/basic/Loading";
 const Home = () => {
   // 게시물 받아오는 함수
   const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
-
   // 무한 스크롤 구현 부분
   const {
     isLoading,
@@ -99,6 +98,7 @@ const Home = () => {
       onScroll={handleScroll}
       style={{ height: "100vh", overflow: "auto" }}
     >
+      <button onClick={() => {console.log(feedList)}}>asddddddddddddddddddddddddddddddddf</button>
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}
