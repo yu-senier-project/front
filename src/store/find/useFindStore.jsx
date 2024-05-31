@@ -12,7 +12,7 @@ const useFindStore = create((set) => ({
     //주어진 이메일로 ID를 확인하는 함수
     setCheckId: async (email) => {
         try {
-            const response = await axios.get(`http://13.51.99.142:8080/api/v1/auth/nickname-inquiry?email=${email}`);
+            const response = await axios.get(`http://43.203.69.159/api/v1/auth/nickname-inquiry?email=${email}`);
             set({ checkId: response.data.nickname });
             console.log(response.data.nickname);
         } catch (error) {
