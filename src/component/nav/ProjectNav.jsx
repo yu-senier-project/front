@@ -38,13 +38,17 @@ export const ProjectNav = () => {
               <p>캘린더</p>
             </div>
           </Link>
-          <Link to={"/Message"}>
+          <Link
+            to={`/ProjectHome/${projectId}/Gantt?memberId=${managerId}&title=${title}`}
+          >
             <div className="SmallNav-menu">
               <FaChartGantt className="icon" />
               <p>간트차트</p>
             </div>
           </Link>
-          <Link to={"/search"}>
+          <Link
+            to={`/ProjectHome/${projectId}/Post?memberId=${managerId}&title=${title}`}
+          >
             <div className="SmallNav-menu">
               <MdDynamicFeed className="icon" />
               <p>게시물</p>
