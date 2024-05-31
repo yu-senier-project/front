@@ -4,7 +4,7 @@ import axios from "axios";
 export const BaseUrl = "http://13.51.99.142:8080";
 
 const apiClient = axios.create({
-  baseURL: "http://13.51.99.142:8080",
+  baseURL: "https://c-ns.site:443",
   headers: {
     "Content-Type": "application/json",
   },

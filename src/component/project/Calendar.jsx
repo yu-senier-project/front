@@ -8,6 +8,7 @@ import useProjectStore from "../../store/project/useProjectStore";
 import { useGetPlanList } from "../../react-query/useProject";
 import { PlanDetail } from "./PlanDetail";
 import { useSearchParams } from "react-router-dom";
+import { useUpdatePlanDate } from "../../react-query/useProject";
 
 const FullCalendarContainer = styled.div`
   width: 100%;
@@ -104,6 +105,9 @@ export const Calendar = () => {
     }
   }, [managerId, setManagerId]);
 
+  // 일정 날짜 변경하는 mutate
+  const { mutate, status } = useUpdatePlanDate(projectId);
+
   // 일정 생성 버튼 눌렀는지 or 날짜를 클릭해도 뜨게
   const [onCreate, setOnCreate] = useState(false);
 
@@ -154,16 +158,6 @@ export const Calendar = () => {
 
     setStart(arg.dateStr);
     setEnd(arg.dateStr);
-    // const title = prompt("Enter event title:");
-    // if (title) {
-    //   const newEvent = {
-    //     id: String(events.length + 1),
-    //     title,
-    //     start: arg.date,
-    //     end: arg.date,
-    //   };
-    //   setEvents([...events, newEvent]);
-    // }
   };
 
   // 이벤트 클릭했을 떄
@@ -172,7 +166,36 @@ export const Calendar = () => {
     setDetail(true);
   };
 
+  // 일정 이동했을때
   const handleEventDrop = (info) => {
+    const currentEvent = events.filter((event) => event.id == info.event.id)[0];
+    const preStart = currentEvent.start.split(" ")[1];
+    const preEnd = currentEvent.end.split(" ")[1];
+
+    const start = new Date(info.event.start);
+    const end = new Date(info.event.end);
+
+    const startYear = start.getFullYear();
+    const startMonth =
+      start.getMonth() + 1 < 10
+        ? `0${start.getMonth() + 1}`
+        : start.getMonth() + 1;
+    const startDay =
+      start.getDate() < 10 ? `0${start.getDate()}` : start.getDate();
+
+    const endYear = end.getFullYear();
+    const endMonth =
+      end.getMonth() + 1 < 10 ? `0${end.getMonth() + 1}` : end.getMonth() + 1;
+    const endDay = end.getDate() < 10 ? `0${end.getDate()}` : end.getDate();
+
+    const startedAt = `${startYear}-${startMonth}-${startDay} ${preStart}`;
+    const endedAt = `${endYear}-${endMonth}-${endDay} ${preEnd}`;
+    const data = {
+      startedAt,
+      endedAt,
+    };
+    mutate({ planId: info.event.id, data });
+
     const updatedEvents = events.map((event) =>
       event.id === info.event.id
         ? { ...event, start: info.event.start, end: info.event.end }

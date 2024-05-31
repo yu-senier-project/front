@@ -62,7 +62,7 @@ const ChatInput = ({
           profile:
             previousComments.data.length !== 0
               ? previousComments?.data[0].postMember.profile
-              : "/public/image/dp.jpg",
+              : "/image/dp.jpg",
         },
       };
 
@@ -77,10 +77,6 @@ const ChatInput = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
-    },
-    onError: (err, newComment, rollback) => {
-      console.log(e);
-      rollback();
     },
   });
 
@@ -108,7 +104,7 @@ const ChatInput = ({
           profile:
             previousCommentsReply?.data.length !== 0
               ? previousCommentsReply?.data[0].postMember.profile
-              : "/public/image/dp.jpg",
+              : "/image/dp.jpg",
         },
       };
 

@@ -29,7 +29,20 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
   //스케쥴 생성 단계
   const [stage, setStage] = useState(1);
 
+  // 일정 참여자
+  const [originParticipantList, setOriginParticipantList] = useState(
+    event.participants
+  );
   const [participantList, setParticipantList] = useState(event.participants);
+
+  // 원래 일정 참여자가 바뀌었는지 확인하는 함수
+  const arraysEqual = (a, b) => {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i].memberId !== b[i].memberId) return false;
+    }
+    return true;
+  };
 
   // 시간 배열
   const [hours, setHours] = useState([]);
@@ -58,10 +71,10 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
   const [date, setDate] = useState(event.today ?? event.start);
 
   // 시간 선택 상태
-  const [startHour, setStartHour] = useState(0);
-  const [startMinute, setStartMinute] = useState("00");
-  const [endHour, setEndHour] = useState(0);
-  const [endMinute, setEndMinute] = useState("00");
+  const [startHour, setStartHour] = useState(event.start.slice(0, 2));
+  const [startMinute, setStartMinute] = useState(event.start.slice(3));
+  const [endHour, setEndHour] = useState(event.end.slice(0, 2));
+  const [endMinute, setEndMinute] = useState(event.end.slice(3));
 
   // 일저 생성 함수
   const onSubmit = () => {
@@ -80,8 +93,12 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
       }:${endMinute}`;
     }
 
-    console.log(participantList);
-    inviteList = participantList.map((user) => user.memberId);
+    let bool = arraysEqual(originParticipantList, participantList);
+    if (!bool) {
+      inviteList = participantList.map((user) => user.memberId);
+    } else {
+      inviteList = [];
+    }
 
     const data = {
       planName,
@@ -91,6 +108,7 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
       inviteList,
     };
 
+    console.log(data);
     mutate(data);
     setOnUpdate(false);
   };
@@ -112,7 +130,7 @@ export const UpdatePlan = ({ setOnUpdate, start, end, event }) => {
       <div className="CreateSchedule-wrap">
         {stage === 1 ? (
           <div>
-            <h4>새 일정 추가</h4>
+            <h4>일정 변경</h4>
             <div className="CreateSchedule-title">
               <input
                 type="text"

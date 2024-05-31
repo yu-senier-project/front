@@ -6,7 +6,6 @@ import PwInit from "./pages/Auth/PwInit";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SmallNav from "./component/nav/SmallNav";
-import Message from "./pages/Message/Message";
 import IdCheck from "./pages/Auth/IdCheck";
 import useCreateFeed from "./store/feed/useCreateFeed";
 import CreateFeed from "./component/feed/create/CreateFeed";
@@ -19,8 +18,15 @@ import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+
 import ProjectGantt from "./pages/project/ProjectGantt";
 import ProJectPost from "./pages/project/ProjectPost";
+
+import { UpdateProject } from "./pages/project/UpdateProject";
+import { UpdateParticipants } from "./pages/project/UpdateParticipants";
+import { Todo } from "./pages/project/Todo";
+
+
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
@@ -33,8 +39,8 @@ function App() {
       {toggle && <CreateFeed />}
       <Routes>
         <Route path="/" element={<Login />} />
-
         <Route path="/" element={<SmallNav />}>
+
           <Route path="Id" element={<IdFind />} />
           <Route path="CheckId" element={<IdCheck />} />
           <Route path="Password" element={<PwInitCheckId />} />
@@ -49,6 +55,14 @@ function App() {
         </Route>
 
         <Route path="ProjectHome" element={<ProjectNav />}>
+
+     
+       
+        <Route path="/ProjectHome" element={<ProjectNav></ProjectNav>}>
+          <Route path="InfoUpdate" element={<UpdateProject></UpdateProject>} />
+          <Route path="Todo/:projectId" element={<Todo></Todo>} />
+          <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
+
           <Route path=":projectId" element={<ProjectCalendar />} />
           <Route path=":projectId/Gantt" element={<ProjectGantt />} />
           <Route path=":projectId/Post" element={<ProJectPost />} />

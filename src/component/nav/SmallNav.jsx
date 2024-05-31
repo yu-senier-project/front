@@ -18,10 +18,13 @@ import { FiHome } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaRegSquarePlus } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const SmallNav = () => {
+  const nav = useNavigate();
   const { setToggle } = useCreateFeed((state) => state);
   const onCreate = () => {
+    nav("/Home");
     setToggle();
   };
   const myId = localStorage.getItem("memberId");
@@ -70,7 +73,14 @@ const SmallNav = () => {
           <FontAwesomeIcon icon={faGear} className="icon" />
           <p>설정</p>
         </div>
-        <button onClick={logout}>로그아웃</button>
+        <button
+          onClick={() => {
+            logout();
+            nav("/");
+          }}
+        >
+          로그아웃
+        </button>
       </div>
       <Outlet />
     </div>

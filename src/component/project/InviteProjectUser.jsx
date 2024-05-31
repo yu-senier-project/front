@@ -7,11 +7,12 @@ import useProjectStore from "../../store/project/useProjectStore";
 export const InviteProjectUser = ({ setParticipantList, participantList }) => {
   const { projectId } = useProjectStore();
   const { data, isLoading } = useGetParticipant(projectId);
+
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     if (data) {
-      let list = data?.data.filter((user) => {
+      let list = data?.data.memberList.filter((user) => {
         return !participantList.some(
           (participant) => participant.nickname === user.nickname
         );

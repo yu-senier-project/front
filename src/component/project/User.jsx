@@ -19,7 +19,7 @@ export const User = ({
 
   const imgClassName = `User-img width-${imgWidht} height-${imgHeight}`;
 
-  const imgSrc = profile ?? "/public/image/dp.jpg";
+  const imgSrc = profile ?? "/image/dp.jpg";
 
   return (
     <div className="User">

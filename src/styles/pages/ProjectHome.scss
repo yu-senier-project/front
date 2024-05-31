@@ -79,6 +79,10 @@
       height: 15%;
     }
   }
+
+  &:hover {
+    box-shadow: 2px 2px 2px 2px lightgrey;
+  }
 }
 
 .ProjectHome-projectSetting {
