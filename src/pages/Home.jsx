@@ -98,7 +98,6 @@ const Home = () => {
       onScroll={handleScroll}
       style={{ height: "100vh", overflow: "auto" }}
     >
-      <button onClick={() => {console.log(feedList)}}>asddddddddddddddddddddddddddddddddf</button>
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}

@@ -347,14 +347,14 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
-        <button onClick={async () => {
+        {/* <button onClick={async () => {
     try {
         const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/image`);
         console.log(response, selectedRoom);
     } catch (error) {
         console.error("Error fetching image:", error);
     }
-}} >test</button>
+}} >test</button> */}
 
       </div>
     </div>

@@ -52,7 +52,7 @@ const SearchInput = ({ onSearch, onButtonClick }) => {
       <div id="searchIcon-deleteBtn">
         <CloseButton onCloseButton={onDelete} />
       </div>
-      <button onClick={handleButtonClick}>콘솔에 출력</button>
+      
     </div>
   );
 };
