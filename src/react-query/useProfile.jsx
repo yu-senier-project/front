@@ -15,6 +15,7 @@ import {
   deleteProfileImage,
   getMemberLikeFeed,
   getMemberFeed,
+  updateCompany,
 } from "../apis/profileApis";
 
 // 회원 정보 받아 오기
@@ -246,4 +247,36 @@ export const useMemberDataUpdate = (memberId) => {
   });
 
   return { mutate, status };
+};
+
+// 회원 회사나 직무 수정
+export const useUpdateCompany = (memberId) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateCompany,
+    onError: (e) => {
+      console.log(e);
+      alert(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["memberData", memberId]);
+    },
+    onMutate: (newData) => {
+      const prevData = queryClient.getQueryData(["memberData", memberId]);
+
+      // const data = {
+      //   birth: prevData.data.birth,
+      //   companyName: prevData.data.companyName,
+      //   id: prevData.data.id,
+      //   introduction: newData.introduction,
+      //   nickname: prevData.data.nickname,
+      //   position: prevData.data.position,
+      //   profile: prevData.data.profile,
+      // };
+
+      // queryClient.setQueryData(["memberData", memberId], { data: data });
+    },
+  });
+
+  return mutation;
 };

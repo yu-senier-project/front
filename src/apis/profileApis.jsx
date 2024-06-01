@@ -100,3 +100,49 @@ export const deleteProfileImage = async () => {
     console.log(error);
   }
 };
+
+// 회사 검색 api
+export const getCompany = async (companyName) => {
+  return apiClient.get(`/api/v1/company/search?keyword=${companyName}`);
+};
+
+// 회사 이메일 가져오는 api
+export const getCompanyEmail = async (companyName) => {
+  return apiClient.get(`/api/v1/company/${companyName}/email`);
+};
+
+// 회사 이메일 요청
+export const getEmail = async (email) => {
+  return apiClient.get(`/api/v1/email-auth/request/${email}`);
+};
+
+// 이메일 인증
+export const postEmailAuthNum = async (data) => {
+  try {
+    const response = await apiClient.post(`/api/v1/email-auth/confirm`, data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// 회사나 직무 수정
+export const updateCompany = async (data) => {
+  try {
+    const response = await apiClient.put(`/api/v1/member/company`, data);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      // 서버에서 반환된 에러
+      throw new Error(
+        error.response.data.message || "서버 에러가 발생했습니다."
+      );
+    } else if (error.request) {
+      // 요청이 전송되었지만 응답이 없는 경우
+      throw new Error("서버로부터 응답이 없습니다. 나중에 다시 시도해주세요.");
+    } else {
+      // 요청 설정 중에 에러가 발생한 경우
+      throw new Error("요청을 처리하는 중에 에러가 발생했습니다.");
+    }
+  }
+};
