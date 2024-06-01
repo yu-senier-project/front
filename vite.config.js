@@ -10,6 +10,9 @@ export default defineConfig({
     host: "0.0.0.0", // 1
     port: 5173,      // 2
   },
+    build: {
+    chunkSizeWarningLimit: 1600,
+  },
     plugins: [react()],
     resolve: {
         alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
