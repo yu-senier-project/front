@@ -29,11 +29,12 @@ const Home = () => {
         ? lastPage.data[lastPage.data.length - 1].id ?? false
         : false;
     },
-    staleTime: 1000 * 60 * 5,
-    retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 10 * 5,
+    gcTime: 1000 * 10 * 5,
+    retry: 3,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) {
@@ -56,6 +57,8 @@ const Home = () => {
 
   list = list?.map((item1) => {
     return item1.map((item) => ({
+      mentions: item.mentions,
+      hashtags: item.hashtags,
       memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
@@ -79,6 +82,8 @@ const Home = () => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    mentions: item.mentions,
+    hashtags: item.hashtags,
     memberId: item.memberId,
     id: item.id,
     content: item.content,

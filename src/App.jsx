@@ -35,7 +35,6 @@ function App() {
   const { isLogin } = useLoginStore((state) => state);
   return (
     <>
-      <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
       <BrowserRouter>
         {toggle && <CreateFeed />}
         <Routes>

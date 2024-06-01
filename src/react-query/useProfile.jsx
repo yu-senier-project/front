@@ -111,6 +111,7 @@ export const usePostProfileImage = (memberId) => {
     },
     onSuccess: (e) => {
       console.log(e);
+      queryClient.invalidateQueries(["feeds"]);
       queryClient.invalidateQueries(["memberData", memberId]);
     },
   });
@@ -128,6 +129,7 @@ export const useDeleteProfileImage = (memberId) => {
     },
     onSuccess: (e) => {
       console.log(e);
+      queryClient.invalidateQueries(["feeds"]);
       queryClient.invalidateQueries(["memberData", memberId]);
     },
     onMutate: (data) => {
