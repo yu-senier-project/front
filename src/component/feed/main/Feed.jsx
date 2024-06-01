@@ -132,6 +132,8 @@ const Feed = ({ feedList }) => {
                 setFalseLike={setFalseLike}
               ></Buttons>
               <Texts
+                hashtags={feedList.hashtags}
+                mentions={feedList.mentions}
                 comment={feedList.content}
                 loveNum={feedList.loveNum}
                 nickname={feedList.nickname}
@@ -182,9 +184,11 @@ const Feed = ({ feedList }) => {
               setFalseLike={setFalseLike}
             ></Buttons>
             <Texts
+              hashtags={feedList.hashtags}
+              mentions={feedList.mentions}
               comment={""}
               loveNum={feedList.loveNum}
-              nicknamse={""}
+              nickname={""}
               falseLoveNum={falseLoveNum}
             ></Texts>
             {feedList.isCommentEnabled ? (

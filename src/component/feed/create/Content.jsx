@@ -14,7 +14,11 @@ const Content = ({
   inputRef,
 }) => {
   // 멘션하는지 확인하는 부분
-  const img = localStorage.getItem("profile") || "/image/dp.jpg";
+
+  const img =
+    localStorage.getItem("profile") == "null"
+      ? "/image/dp.jpg"
+      : localStorage.getItem("profile");
 
   return (
     <div className="Content">

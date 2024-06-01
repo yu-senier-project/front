@@ -74,7 +74,8 @@ export const postProfileImage = async (data) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response);
+    console.log(response.data.profile);
+    localStorage.setItem("profile", response.data.profile);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -95,6 +96,7 @@ export const deleteResume = async () => {
 export const deleteProfileImage = async () => {
   try {
     const response = await apiClient.delete(`/api/v1/member/profile`);
+    localStorage.setItem("profile", null);
     return response.data;
   } catch (error) {
     console.log(error);
