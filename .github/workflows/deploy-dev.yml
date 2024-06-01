@@ -13,21 +13,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-  # DockerHub Login (3)
+      # DockerHub Login (3)
       - name: docker login 
         uses: docker/login-action@v2
         with: 
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v3.0.0
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cns-front
-          labels: latest
+        
+      # Docker 이미지 Build (2)
+      - name: docker image build
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/cns-front:latest .
+      
   # run application
       - name : run application via ssh
         uses: appleboy/ssh-action@master
