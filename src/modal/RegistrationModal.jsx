@@ -131,7 +131,7 @@ function RegistrationModal({ open, handleClose }) {
       alert("이메일을 먼저 전송하세요.");
       return;
     }
-    checkAuthCode(formData, isDuplicate, isSend, isActive)
+    checkAuthCode(formData, isDuplicate, isSend, isActive, companyEmail)
       .then((response) => {
         if (response.statusCode === 200) {
           const data = {
@@ -219,7 +219,7 @@ function RegistrationModal({ open, handleClose }) {
           months={months}
           days={days}
           setModalStep={setModalStep}
-          setIsDuplicate={setIsDuplicate} // Pass this prop to control the duplicate state
+          setIsDuplicate={setIsDuplicate}
           handleCloseWithReset={handleCloseWithReset}
         />
       );

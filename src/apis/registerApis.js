@@ -5,7 +5,8 @@ export const checkAuthCode = async (
   formData,
   isDuplicate,
   isSend,
-  isActive
+  isActive,
+  companyEmail
 ) => {
   if (!isDuplicate) {
     alert("ID 중복확인을 진행해 주세요");
@@ -18,7 +19,7 @@ export const checkAuthCode = async (
   }
 
   const data = {
-    email: formData.email + "@yu.ac.kr",
+    email: formData.email + "@" + companyEmail,
     authCode: formData.authCode,
   };
   console.log(data);
