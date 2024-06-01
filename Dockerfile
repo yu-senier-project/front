@@ -8,4 +8,6 @@ RUN npm install
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
 COPY . .
 
+EXPOSE 5173
+
 CMD ["npm", "run","dev"]
