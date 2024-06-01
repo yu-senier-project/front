@@ -33,6 +33,7 @@ export const ProfileLikeFeedList = ({ memberId }) => {
       fileCnt: item.fileCnt,
       createdAt: item.createdAt,
       loveNum: item.likeCnt,
+      memberId: item.postMember?.id,
       nickname: item.postMember?.nickname,
       commentCnt: item.commentCnt,
       liked: item.liked,
@@ -49,6 +50,7 @@ export const ProfileLikeFeedList = ({ memberId }) => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,

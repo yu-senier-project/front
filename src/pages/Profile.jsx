@@ -153,6 +153,7 @@ export const Profile = () => {
       {/* 소속 변경 버튼 눌렀는지 */}
       {onChangeCompany ? (
         <ProfileUpdateCompanyJob
+          data={memberData}
           setOnChangeCompany={setOnChangeCompany}
         ></ProfileUpdateCompanyJob>
       ) : null}
