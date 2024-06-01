@@ -1,0 +1,38 @@
+name: deploy for dev
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+  # DockerHub Login (3)
+      - name: docker login 
+        uses: docker/login-action@v2
+        with: 
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cns-front
+          labels: latest
+  # run application
+      - name : run application via ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CNS_DEV_IP }}
+          username: ${{ secrets.CNS_DEV_USERNAME }}
+          key: ${{ secrets.CNS_DEV_SSH_KEY }}
+          script: ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}
