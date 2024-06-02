@@ -70,7 +70,11 @@ const Feed = ({ feedList }) => {
   });
 
   const handleOnDelete = () => {
-    mutate(feedList.id);
+    const bool = window.confirm("정말로 삭제하시겠습니까?");
+    if (bool) {
+      mutate(feedList.id);
+    }
+
     setIsSettingOpen(false);
   };
 
@@ -171,7 +175,11 @@ const Feed = ({ feedList }) => {
               style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
               className="Feed-content"
             >
-              {renderContent(feedList.content)}
+              {renderContent(
+                feedList.content,
+                feedList.hashtags,
+                feedList.mentions
+              )}
             </p>
             <Buttons
               isCommentEnabled={feedList.isCommentEnabled}
@@ -184,8 +192,6 @@ const Feed = ({ feedList }) => {
               setFalseLike={setFalseLike}
             ></Buttons>
             <Texts
-              hashtags={feedList.hashtags}
-              mentions={feedList.mentions}
               comment={""}
               loveNum={feedList.loveNum}
               nickname={""}
