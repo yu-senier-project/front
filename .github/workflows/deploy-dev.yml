@@ -13,9 +13,6 @@ jobs:
       # repository checkout
       - name: checkout
         uses: actions/checkout@v4
-        
-      - name: Set environment variable
-        run: echo "VITE_BASEURL=${{ secrets.VITE_BASEURL }}" >> $GITHUB_ENV
 
       # DockerHub Login
       - name: docker login 
@@ -39,4 +36,6 @@ jobs:
           host: ${{ secrets.CNS_DEV_IP }}
           username: ${{ secrets.CNS_DEV_USERNAME }}
           key: ${{ secrets.CNS_DEV_SSH_KEY }}
-          script: ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}
+          script: |
+            echo "VITE_BASEURL=${{ secrets.VITE_BASEURL }}" >> .env
+            ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}
