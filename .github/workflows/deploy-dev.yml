@@ -14,6 +14,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "VITE_BASEURL=$VITE_BASEURL" >> .env
+        env:
+          VITE_BASEURL: ${{ secrets.VITE_BASEURL }}
+
       # DockerHub Login
       - name: docker login 
         uses: docker/login-action@v2
@@ -36,6 +42,4 @@ jobs:
           host: ${{ secrets.CNS_DEV_IP }}
           username: ${{ secrets.CNS_DEV_USERNAME }}
           key: ${{ secrets.CNS_DEV_SSH_KEY }}
-          script: |
-            echo "VITE_BASEURL=${{ secrets.VITE_BASEURL }}" >> .env
-            ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}
+          script: ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}
