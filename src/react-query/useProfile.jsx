@@ -175,9 +175,9 @@ export const useGetMemberFeed = (memberId, filterType, startDate, endDate) => {
     },
     staleTime: 1000 * 60 * 5,
     retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   return {
@@ -204,6 +204,7 @@ export const useGetLikeFeed = (memberId) => {
     queryFn: ({ pageParam = 0 }) => getMemberLikeFeed(memberId, pageParam),
     getNextPageParam: (lastPage) => {
       if (lastPage && lastPage.data.length > 0) {
+        console.log(lastPage.data[lastPage.data.length - 1].id);
         return lastPage.data[lastPage.data.length - 1].id;
       } else {
         return false;
@@ -211,9 +212,9 @@ export const useGetLikeFeed = (memberId) => {
     },
     staleTime: 1000 * 60 * 5,
     retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   return { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage };

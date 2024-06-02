@@ -417,11 +417,13 @@ export const useCreateTodo = (projectId) => {
       const prev = queryClient.getQueryData(["myTodos", projectId]);
       console.log(prev);
       let prevObj = prev?.data.todoList ?? [];
+      console.log(prevObj);
       prevObj = [
         {
           content: data.content,
           state: data.state,
-          id: prevObj[prevObj.length - 1].id + 1,
+          // id: prevObj[prevObj.length - 1].id + 1,
+          id: 0,
         },
         ...prevObj,
       ];

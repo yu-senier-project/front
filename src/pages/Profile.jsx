@@ -97,7 +97,11 @@ export const Profile = () => {
         setImageEdit={setImageEdit}
         setOnResume={setOnResume}
       />
-      <ProfileNav selectMenu={selectMenu} setSelectMenu={setSelectMenu} />
+      <ProfileNav
+        selectMenu={selectMenu}
+        setSelectMenu={setSelectMenu}
+        nickname={memberData.data.nickname}
+      />
       {/* 내 게시물에만 필터 넣기  */}
       {selectMenu == 1 ? (
         <ProfileFilter

@@ -58,7 +58,7 @@ export const ProjectHome = () => {
               <div className="ProjectHome-projectSetting">
                 {/* <HiEllipsisVertical size={25} /> */}
               </div>
-              <p>{project.projectName}</p>
+              <p className="ProjectHome-title-p">{project.projectName}</p>
               <p>{project.detail}</p>
               <p>담당자 : {project.postMember.nickname}</p>
             </div>
