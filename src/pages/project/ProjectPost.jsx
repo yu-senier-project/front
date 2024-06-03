@@ -99,6 +99,20 @@ export default function ProjectPost() {
     };
   }, [loaderRef, hasMore, loadingMore, posts]);
 
+  // 게시물 생성시 날짜를 배열형태로 변환
+  const dateToArray = (date) => {
+    return [
+      date.getFullYear(),
+      date.getMonth() + 1,
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds() * 1000000,
+    ];
+  };
+
+  // 날짜를 한글로 바꾸기 위한 데이터형태로 변환
   const parseDate = (dateArray) => {
     const [year, month, day, hour, minute, second, millisecond] = dateArray;
     return new Date(
@@ -108,50 +122,50 @@ export default function ProjectPost() {
       hour,
       minute,
       second,
-      millisecond / 1000000
+      millisecond / 1000000 // 밀리초로 변환
     );
   };
-
+  
+  // 얼마전에 생성하였는지 표시하기 위한 함수
   const formatDistanceToNowInKorean = (date) => {
     const distance = formatDistanceToNow(date, { addSuffix: true });
     const translations = {
-      "about 1 hour ago": "1시간 전",
+      "about 1 hour ago": "약 1시간 전",
+      "about 1 minute ago": "약 1분 전",
+      "about 1 month ago": "약 1개월 전",
+      "about 1 year ago": "약 1년 전",
+      "about 1 day ago": "약 1일 전",
+      "less than a minute ago": "방금 전",
       "hours ago": "시간 전",
-      "minute ago": "분 전",
       "minutes ago": "분 전",
-      "day ago": "일 전",
+      "minute ago": "분 전",
       "days ago": "일 전",
-      "month ago": "개월 전",
       "months ago": "개월 전",
-      "year ago": "년 전",
       "years ago": "년 전",
     };
-    const translated = distance
-      .replace(/about /g, "")
-      .replace(/ hours? ago/g, translations["hours ago"])
-      .replace(/ minutes? ago/g, translations["minutes ago"])
-      .replace(/ days? ago/g, translations["days ago"])
-      .replace(/ months? ago/g, translations["months ago"])
-      .replace(/ years? ago/g, translations["years ago"])
-      .replace(/ minute ago/g, translations["minute ago"])
-      .replace(/ day ago/g, translations["day ago"])
-      .replace(/ month ago/g, translations["month ago"])
-      .replace(/ year ago/g, translations["year ago"]);
-
+  
+    let translated = distance;
+  
+    for (const [key, value] of Object.entries(translations)) {
+      translated = translated.replace(key, value);
+    }
+  
     return translated;
   };
-
   const createPost = async (content) => {
     try {
       await apiClient.post(`/api/v1/project/${projectId}/post`, { content });
       console.log("Post created");
       setPostContent("");
-
+  
+      // 현재 날짜를 배열 형태로 변환
+      const createdAtArray = dateToArray(new Date());
+  
       // 서버에서 데이터를 받지 않으므로 임시로 생성
       const newPost = {
         id: new Date().getTime(), // 임시 ID 생성
         content: content,
-        createdAt: new Date(),
+        createdAt: createdAtArray, // 배열 형태로 저장
         postMember: {
           id: memberId,
           nickname: localStorage.getItem("userNickName"),
@@ -161,8 +175,9 @@ export default function ProjectPost() {
         checkCnt: 0,
         opinion: null,
       };
+      console.log(newPost)
       setPosts((prevPosts) => [newPost, ...prevPosts]); // 최신 게시글이 맨 위로 오도록 추가
-
+  
       // URL params 유지
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set("title", title);
@@ -232,8 +247,7 @@ export default function ProjectPost() {
   };
 
   const handleEdit = () => {
-    // 수정 로직 추가
-    console.log("Edit post with ID:", currentPostId);
+    console.log(currentPostId)
     handleClose();
   };
 
@@ -265,7 +279,7 @@ export default function ProjectPost() {
             console.log(posts);
           }}
         >
-          <HiOutlineDotsVertical size={20} />
+          <HiOutlineDotsVertical size={20}  />
         </button>
         {title}
       </h2>
@@ -285,6 +299,7 @@ export default function ProjectPost() {
           id="write-area"
           value={postContent}
           onChange={(e) => setPostContent(e.target.value)}
+
         />
       </div>
       <ul className="view-posts">
