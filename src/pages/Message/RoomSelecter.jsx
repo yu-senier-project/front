@@ -24,7 +24,7 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom, open,
                 {rooms.length > 0 ? (
                     rooms.map((room, index) => (
                         <div
-                            key={room.roomId} // div 태그에 key 속성을 추가합니다.
+                            key={index} // div 태그에 key 속성을 추가합니다.
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -38,7 +38,7 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom, open,
                         >
                             <li>
                                 <p>{room.roomName}</p>
-                                <p>{room.lastChat.substring(0, 10)+'...'}</p>
+                                <p>{room.lastChat?room.lastChat.substring(0, 10)+'...':"빈 채팅방"}</p>
                             </li>
                             {room.isRead ? (
                                 <></>
@@ -47,8 +47,8 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom, open,
                                     style={{
                                         height: '10px',
                                         width: '10px',
-                                        backgroundColor: '#123411',
-                                        borderRadius: '50%',
+                                        backgroundColor: 'transparent',
+                                        borderRadius: '100%',
                                     }}
                                 ></div>
                             )}

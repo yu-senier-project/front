@@ -23,15 +23,15 @@ function processSubscribeQueue() {
 }
 
 function connectStompClient() {
-  console.log("called connectStompClient");
+  // console.log("called connectStompClient");
   if (stompClient.connected) {
-    console.log("Already connected");
+    // console.log("Already connected");
     return;
   }
   const token = localStorage.getItem("accessToken");
   const headers = { Authorization: `Bearer ${token}` };
 
-  console.log("connecting");
+  // console.log("connecting");
   stompClient.connect(
     headers,
     (frame) => {
@@ -44,12 +44,12 @@ function connectStompClient() {
       useConnectionStore.setState({ isConnected: false });
     }
   );
-  console.log("success connect!");
+  // console.log("success connect!");
 }
 
 function handleReceivedMessage(message, roomId) {
   const receivedMessage = JSON.parse(message.body);
-  console.log(`Received message for room ${roomId}:`, receivedMessage);
+  // console.log(`Received message for room ${roomId}:`, receivedMessage);
   useMessageStore.setState((state) => {
     const roomMessages = state.messages[roomId] || [];
     if (
@@ -64,7 +64,7 @@ function handleReceivedMessage(message, roomId) {
       ...state.messages,
       [roomId]: [...roomMessages, receivedMessage],
     };
-    console.log("Updated Messages:", updatedMessages); // 상태 업데이트 확인
+    // console.log("Updated Messages:", updatedMessages); // 상태 업데이트 확인
     return {
       messages: updatedMessages,
     };
@@ -74,11 +74,11 @@ function handleReceivedMessage(message, roomId) {
 function subscribeToRoom(roomId) {
   const isSubscribed = useMessageStore.getState().isSubscribedToRoom(roomId);
   if (isSubscribed) {
-    console.log(`Already subscribed to room ${roomId}`);
+    // console.log(`Already subscribed to room ${roomId}`);
     return;
   }
   if (!stompClient.connected) {
-    console.error("WebSocket is not connected, queuing subscription...");
+    // console.error("WebSocket is not connected, queuing subscription...");
     subscribeQueue.push({
       roomId,
       callback: (message) => handleReceivedMessage(message, roomId),
@@ -86,10 +86,10 @@ function subscribeToRoom(roomId) {
     connectStompClient();
     return;
   }
-  console.log(`Subscribing to room ${roomId}`);
+  // console.log(`Subscribing to room ${roomId}`);
   stompClient.subscribe(`/sub/chat-room/${roomId}`, (message) => {
     const receivedMessage = JSON.parse(message.body);
-    console.log("Received message:", receivedMessage);
+    // console.log("Received message:", receivedMessage);
     useMessageStore.setState((state) => {
       const roomMessages = state.messages[roomId] || [];
       if (
@@ -104,7 +104,7 @@ function subscribeToRoom(roomId) {
         ...state.messages,
         [roomId]: [...roomMessages, receivedMessage],
       };
-      console.log("Updated Messages:", updatedMessages); // 상태 업데이트 확인
+      // console.log("Updated Messages:", updatedMessages); // 상태 업데이트 확인
       return {
         messages: updatedMessages,
       };
@@ -142,52 +142,54 @@ const useMessageStore = create((set, get) => ({
 
   addRoom: async (roomName, inviteList) => {
     try {
+
       const memberId = localStorage.getItem("memberId");
       const data = {
         roomName: roomName,
         inviteList: inviteList,
       };
+      // console.log(data)
       const response = await apiClient.post(
         `/api/v1/chat-room/create?memberId=${memberId}`,
         data
-      );
-      console.log(response);
+      );  
+      return response    
     } catch (error) {
-      console.error("Error adding chat room:", error);
+      // console.error("Error adding chat room:", error);
+      throw error
     }
   },
 
   fetchRooms: async (memberId, pageNumber) => {
     try {
-      connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
-      console.log("방 받아오는중");
-      set((state) => {
-        return { rooms: [] };
-      });
-
-      set((state) => ({
-        messages: [],
-      }));
+      connectStompClient(); // 채팅방 목록 받아올 때 웹소켓 연결 시도
+      
+      set((state) => ({ rooms: [] }));
+      set((state) => ({ messages: [] }));
+      
       const response = await apiClient.get(
         `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
       );
-      console.log(response);
+      // console.log("방 받아오는 중");
+      if (response.status === 204) {
+        console.log(response)
+        // 더 이상 방이 없는 경우
+        // console.log('더이상 방이없음')
+        set((state) => ({ roomNumber: state.roomNumber - 1 }));
+        return { rooms: allRooms };
+      }
+
       set((state) => {
         // 기존 방 ID를 Set으로 저장
         const existingRoomIds = new Set(state.rooms.map((room) => room.roomId));
-
         // 새로 받아온 방 정보에서 기존 방 ID를 제외한 새 방 정보만 필터링
         const newRooms = response.data.filter(
           (room) => !existingRoomIds.has(room.roomId)
         );
-
         // 기존 방 정보와 새 방 정보를 합치고 time 값을 기준으로 내림차순 정렬
         const allRooms = [...state.rooms, ...newRooms].sort(
           (a, b) => b.lastChatSendAt - a.lastChatSendAt
         );
-
-        // 상태 업데이트
-        console.log("방 다받아옴");
         return { rooms: allRooms };
       });
     } catch (error) {

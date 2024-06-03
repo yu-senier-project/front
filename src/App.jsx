@@ -33,7 +33,7 @@ function App() {
         <Route path="/CheckId" element={<IdCheck />} />
         <Route path="/Password" element={<PwInitCheckId />} />
         <Route path="/PasswordInit" element={<PwInit />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/Home" element={<Search />} />
         <Route path="/Search" element={<Search />} />
         <Route path="/Message" element={<Message />} />
       </Routes>

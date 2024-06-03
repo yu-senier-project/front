@@ -47,7 +47,7 @@ export default function Message() {
     console.log("close");
     setCreateOpen(false);
   };
-
+  const [hasReloaded, setHasReloaded] = useState(false); // 새로고침을 위한 상태
   const [inviteOpen, setInviteOpen] = useState(false);
   const handleInviteOpen = () => setInviteOpen(true);
   const handleInviteClose = () => setInviteOpen(false);
@@ -56,41 +56,49 @@ export default function Message() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
-
-  useEffect(() => {
-    console.log(isLogin, memberId);
-    if (isLogin && memberId) {
-      fetchRooms(memberId, roomNumber);
-    }
-  }, [isLogin, memberId, roomNumber, fetchRooms]);
-
-  useEffect(() => {
-    if (selectedRoom && memberId) {
-      setMessages([]);
-      console.log("my name is ohdohyun");
-      fetchMessages(selectedRoom);
-    }
-  }, [selectedRoom, fetchMessages]);
-
-  // useEffect(() => {
-  //   lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages, selectedRoom]);
-
   const handleConnect = () => {
     if (!isConnected) {
       connectStompClient();
     }
   };
+  useEffect(() => {
+    // console.log(isLogin, memberId);
+    if (isLogin && memberId) {
+      fetchRooms(memberId, roomNumber);
+      
+    }
+  }, [isLogin, memberId, roomNumber, fetchRooms,rooms]);
+
+  useEffect(() => {
+    if (selectedRoom && memberId) {
+      setMessages([]);
+      fetchMessages(selectedRoom);
+    }
+  }, [selectedRoom, fetchMessages]);
+
+
+  
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem('hasReloaded');
+
+    if (!hasReloaded) {
+      sessionStorage.setItem('hasReloaded', 'true');
+      window.location.reload(true);
+    }
+  }, []);
+
 
   const handleSelectRoom = (roomId) => {
     setSelectedRoom(roomId);
   };
 
-  const handleAddRoom = (newRoomName) => {
+  const handleAddRoom = async (newRoomName) => {
     if (newRoomName.trim() && memberId) {
-      addRoom(newRoomName, memberId);
+        await addRoom(newRoomName, memberId);
+        fetchRooms(memberId, roomNumber);
     }
-  };
+};
+
 
   const handleLoadMore = () => {
     const nextRoomNumber = roomNumber + 1;
@@ -345,6 +353,7 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
+        
       </div>
     </div>
   );
