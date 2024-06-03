@@ -55,7 +55,8 @@ const Home = () => {
   // 화면 끝에 도달했는지 확인하는 함수
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight) {
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
+      console.log("끝");
       if (hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
       }
