@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useGetMyTodo } from "../../react-query/useProject";
+import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { TodoCreate } from "./TodoCreate";
 import { TodoItem } from "./TodoItem";
@@ -19,36 +18,6 @@ export const MyTodo = ({
   setTodos,
 }) => {
   const { mutate: updateMutate } = useUpdateTodoState(projectId);
-  console.log(todos);
-
-  // const { data, isLoading } = useGetMyTodo(projectId);
-  // const [todos, setTodos] = useState({
-  //   BEFORE: [],
-  //   ONGOING: [],
-  //   AFTER: [],
-  // });
-
-  // // 할일 데이터 저장
-  // useEffect(() => {
-  //   const newObj = {
-  //     BEFORE: [],
-  //     ONGOING: [],
-  //     AFTER: [],
-  //   };
-  //   if (data && data.data && data.data.todoList) {
-  //     for (let todo of data.data.todoList) {
-  //       const type = todo.state;
-  //       newObj[type] = [
-  //         ...newObj[type],
-  //         { id: todo.id, content: todo.content },
-  //       ];
-  //     }
-  //     for (let key in newObj) {
-  //       newObj[key].sort((a, b) => b.id - a.id);
-  //     }
-  //   }
-  //   setTodos(newObj);
-  // }, [data]);
 
   // 버튼 스타일 지정하는 함수
   const buttonStyles = (type) => ({
@@ -64,7 +33,7 @@ export const MyTodo = ({
     cursor: "pointer",
   });
 
-  // 드래그를 놨을때 실행할 함수
+  // 드래그를 놨을 때 실행할 함수
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -88,27 +57,26 @@ export const MyTodo = ({
       const [movedItem] = updatedItems.splice(source.index, 1);
       updatedItems.splice(destination.index, 0, movedItem);
       newTodos[start] = updatedItems;
+      setTodos(newTodos);
     } else {
       const startItems = Array.from(newTodos[start]);
-
       const [movedItem] = startItems.splice(source.index, 1);
-      console.log(movedItem); // 이동하는 친구
       const finishItems = Array.from(newTodos[finish]);
       finishItems.splice(destination.index, 0, movedItem);
+      console.log(finishItems);
       newTodos[start] = startItems;
       newTodos[finish] = finishItems;
+      setTodos(newTodos);
       const data = { state: destination.droppableId };
       updateMutate({ taskId: movedItem.id, data });
     }
-
-    setTodos(newTodos);
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="MyTodo">
-        <p style={{ marginBottom: "10px", fontWeight: "boldt" }}>나의 할 일</p>
-        <div className="Todo-wrap">
+    <div className="MyTodo">
+      <p style={{ marginBottom: "10px", fontWeight: "bold" }}>나의 할 일</p>
+      <div className="Todo-wrap">
+        <DragDropContext onDragEnd={onDragEnd}>
           {["BEFORE", "ONGOING", "AFTER"].map((type) => (
             <Droppable droppableId={type} key={type}>
               {(provided) => (
@@ -116,6 +84,7 @@ export const MyTodo = ({
                   className={`Todo-${type}`}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
+                  style={{ minHeight: "100px" }} // 최소 높이 설정
                 >
                   <div className={`Todo-${type}-title`}>
                     {type === "BEFORE" && <TodoWillIcon />}
@@ -140,6 +109,10 @@ export const MyTodo = ({
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              marginBottom: "10px", // 스타일 조정
+                            }}
                           >
                             <TodoItem
                               todos={todos}
@@ -160,8 +133,8 @@ export const MyTodo = ({
               )}
             </Droppable>
           ))}
-        </div>
+        </DragDropContext>
       </div>
-    </DragDropContext>
+    </div>
   );
 };
