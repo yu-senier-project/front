@@ -55,6 +55,12 @@ export default function ProjectGantt() {
       gantt.config.drag_progress = false; //
       gantt.config.drag_move = false; // 드래그를 통한 수정 제거
 
+      gantt.attachEvent("onTaskDblClick", function (id, e) {
+        const task = Gantt.getTask(id);
+        setSelectedTask(task);
+        setIsModalOpen(true);
+        return false; // 기본 모달 방지
+      });
       //날짜 형식 24 May 02
       gantt.templates.date_scale = function (date) {
         return gantt.date.date_to_str("%y %M %d")(date);
@@ -97,13 +103,6 @@ export default function ProjectGantt() {
         </div>
       </div>
       <div className="gantt" ref={ganttContainer} id="gantt_here"></div>
-      <button
-        onClick={() => {
-          console.log(tasks);
-        }}
-      >
-        asdfasfasdfasdfasdfasfd
-      </button>
     </div>
   );
 }

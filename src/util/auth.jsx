@@ -24,7 +24,7 @@ export function refreshAccessTokenInterceptor() {
 
     try {
       const response = await axios.post(
-        "http://43.203.69.159:8080/api/v1/auth/refresh",
+        "http://43.203.69.159:80/api/v1/auth/refresh",
         {},
         {
           headers: { refreshToken },
