@@ -80,18 +80,17 @@ export const MyTodo = ({
           {["BEFORE", "ONGOING", "AFTER"].map((type) => (
             <Droppable droppableId={type} key={type}>
               {(provided) => (
-                <div
-                  className={`Todo-${type}`}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{ minHeight: "100px" }} // 최소 높이 설정
-                >
+                <div className={`Todo-${type}`}>
                   <div className={`Todo-${type}-title`}>
                     {type === "BEFORE" && <TodoWillIcon />}
                     {type === "ONGOING" && <TodoIngIcon />}
                     {type === "AFTER" && <TodoDoneIcon />}
                   </div>
-                  <div className={`Todo-${type}-list`}>
+                  <div
+                    className={`Todo-${type}-list`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
                     <button
                       onClick={() => onCreateClick(type)}
                       style={buttonStyles(type)}
@@ -99,35 +98,36 @@ export const MyTodo = ({
                       + 새로 만들기
                     </button>
                     {todos[type].map((item, index) => (
-                      <Draggable
-                        key={item.id.toString()}
-                        draggableId={item.id.toString()}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              marginBottom: "10px", // 스타일 조정
-                            }}
-                          >
-                            <TodoItem
-                              todos={todos}
-                              setTodos={setTodos}
-                              projectId={projectId}
-                              id={item.id.toString()}
-                              type={type}
-                              content={item.content}
-                              my={true}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
+                      <div className="">
+                        <Draggable
+                          key={item.id.toString()}
+                          draggableId={item.id.toString()}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={{
+                                ...provided.draggableProps.style,
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <TodoItem
+                                todos={todos}
+                                setTodos={setTodos}
+                                projectId={projectId}
+                                id={item.id.toString()}
+                                type={type}
+                                content={item.content}
+                                my={true}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      </div>
                     ))}
-                    {provided.placeholder}
                   </div>
                 </div>
               )}
