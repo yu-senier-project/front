@@ -13,6 +13,7 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { ProjectHome } from "./pages/project/ProjectHome";
 import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
@@ -25,6 +26,7 @@ import ProJectPost from "./pages/project/ProjectPost";
 import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
+
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -39,6 +41,7 @@ function App() {
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<Login />} />
+
           <Route path="/" element={<SmallNav />}>
             <Route path="Id" element={<IdFind />} />
             <Route path="CheckId" element={<IdCheck />} />
@@ -59,9 +62,11 @@ function App() {
             <Route path=":projectId" element={<ProjectCalendar />} />
             <Route path=":projectId/Gantt" element={<ProjectGantt />} />
             <Route path=":projectId/Post" element={<ProJectPost />} />
+
           </Route>
         </Routes>
       </BrowserRouter>
+
     </>
   );
 }

@@ -12,7 +12,9 @@ export const InviteProjectUser = ({ setParticipantList, participantList }) => {
 
   useEffect(() => {
     if (data) {
+
       let list = data?.data.memberList.filter((user) => {
+
         return !participantList.some(
           (participant) => participant.nickname === user.nickname
         );
