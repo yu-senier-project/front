@@ -94,42 +94,42 @@ export const Todo = () => {
   }, []);
 
   return (
-    <DragDropContext>
-      <div className="Todo">
-        {onPlusUser ? (
-          <TodoPlusUser
-            projectId={projectId}
-            setOnPlusUser={setOnPlusUser}
-          ></TodoPlusUser>
-        ) : null}
-        {onCreate ? (
-          <TodoCreate
-            setOnCreate={setOnCreate}
-            createType={createType}
-            setCreateType={setCreateType}
-            projectId={projectId}
-          />
-        ) : null}
-        <MyTodo
-          onCreateClick={onCreateClick}
+    // <DragDropContext>
+    <div className="Todo">
+      {onPlusUser ? (
+        <TodoPlusUser
           projectId={projectId}
-          todos={todos}
-          setTodos={setTodos}
-        ></MyTodo>
-        {otherUserTodos?.map((todo) => (
-          <OtherTodo nickname={todo.nickname} todoList={todo.todoList} />
-        ))}
+          setOnPlusUser={setOnPlusUser}
+        ></TodoPlusUser>
+      ) : null}
+      {onCreate ? (
+        <TodoCreate
+          setOnCreate={setOnCreate}
+          createType={createType}
+          setCreateType={setCreateType}
+          projectId={projectId}
+        />
+      ) : null}
+      <MyTodo
+        onCreateClick={onCreateClick}
+        projectId={projectId}
+        todos={todos}
+        setTodos={setTodos}
+      ></MyTodo>
+      {otherUserTodos?.map((todo) => (
+        <OtherTodo nickname={todo.nickname} todoList={todo.todoList} />
+      ))}
 
-        <button
-          className="Todo-plusBtn"
-          onClick={() => {
-            setOnPlusUser(true);
-          }}
-        >
-          + 사용자 추가하기
-        </button>
-      </div>
-    </DragDropContext>
+      <button
+        className="Todo-plusBtn"
+        onClick={() => {
+          setOnPlusUser(true);
+        }}
+      >
+        + 사용자 추가하기
+      </button>
+    </div>
+    // </DragDropContext>
   );
 };
 

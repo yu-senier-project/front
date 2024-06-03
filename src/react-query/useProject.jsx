@@ -495,7 +495,7 @@ export const useUpdateTodoState = (projectId) => {
       // const prevData = queryClient.getQueryData(["myTodos", projectId]);
       // let todoList = prevData.data.todoList;
       // todoList = todoList.map((todo) => {
-      //   if (todo.id == taskId) {
+      //   if (todo.id == data.taskId) {
       //     todo.state = data.state;
       //     return todo;
       //   } else {

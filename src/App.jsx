@@ -19,6 +19,7 @@ import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+import { NotFound } from "./pages/NotFound";
 
 import ProjectGantt from "./pages/project/ProjectGantt";
 import ProJectPost from "./pages/project/ProjectPost";
@@ -64,6 +65,7 @@ function App() {
             <Route path=":projectId/Post" element={<ProJectPost />} />
 
           </Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
 
