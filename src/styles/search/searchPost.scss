@@ -23,6 +23,8 @@
         width: 100px;
         height: 90px;
         background-color: transparent;
+        position: relative;
+        z-index: -110;
       }
     }
   }
@@ -79,41 +81,41 @@
     }
   }
   .search_post:nth-child(1) {
-    background-color: #ffdfd3; /* Pastel Pink */
+    background-color: #ffdfd3; 
   }
   
   .search_post:nth-child(2) {
-    background-color: #d4f1f4; /* Pastel Light Blue */
+    background-color: #d4f1f4; 
   }
   
   .search_post:nth-child(3) {
-    background-color: #c1e1c1; /* Pastel Green */
+    background-color: #c1e1c1; 
   }
   
   .search_post:nth-child(4) {
-    background-color: #f9e2af; /* Pastel Yellow */
+    background-color: #f9e2af; 
   }
   
   .search_post:nth-child(5) {
-    background-color: #e4c1f9; /* Pastel Purple */
+    background-color: #e4c1f9; 
   }
   
   .search_post:nth-child(6) {
-    background-color: #fbdce2; /* Pastel Peach */
+    background-color: #fbdce2; 
   }
   
   .search_post:nth-child(7) {
-    background-color: #d3e0ea; /* Pastel Blue */
+    background-color: #d3e0ea; 
   }
   
   .search_post:nth-child(8) {
-    background-color: #fee9b2; /* Pastel Orange */
+    background-color: #fee9b2; 
   }
   
   .search_post:nth-child(9) {
-    background-color: #c2f0fc; /* Pastel Cyan */
+    background-color: #c2f0fc; 
   }
   
-  .search_post:nth-child(10) {
-    background-color: #f5c6ec; /* Pastel Magenta */
+  .search_post:nth-child(10) {                                                                                                                                                                                                                                             
+    background-color: #f5c6ec; 
   }
