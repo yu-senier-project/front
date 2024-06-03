@@ -31,11 +31,10 @@ export const MentionTextarea = ({
   }, []);
 
   useEffect(() => {
-    console.log(hashList?.current);
     //없는 해시태그 입력시
     if (hashValue !== "") {
       if (value[value.length - 1] == " ") {
-        hashList.current.push(`#${hashValue}`);
+        hashList.current.push(`${hashValue}`);
         setHashValue("");
         setOnHash(false);
       }
@@ -120,7 +119,7 @@ export const MentionTextarea = ({
   };
 
   const onHashClick = (hash) => {
-    hashList.current.push(`#${hash}`);
+    hashList.current.push(`${hash}`);
     let newValue = value.substring(0, currentCusor) + hash;
     setHashValue("");
     setOnHash(false);

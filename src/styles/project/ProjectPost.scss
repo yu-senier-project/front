@@ -1,0 +1,84 @@
+.project-post {
+    display: grid;
+    place-items: center;
+
+    // width: 100%;
+    button {
+        border: none;
+        background-color: transparent;
+    }
+
+    .create-post {
+        background-color: rgb(212, 212, 212);
+        padding: 10px;
+        border-radius: 20px;
+        width: 30%;
+        height: 20vh;
+
+        .create-top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            button {
+                background-color: #71C9CE;
+                border-radius: 50px;
+                width: 50px;
+                height: 30px;
+            }
+
+            button:hover {
+                background-color: #63afb3;
+            }
+
+            button:active {
+                background-color: #71C9CE;
+
+            }
+        }
+
+        #write-area {
+            border: none;
+            width: 100%;
+            height: 60%;
+            border-radius: 20px;
+        }
+
+    }
+
+    ul.view-posts {
+        width: 95%;
+        margin: 0px auto;
+        padding: 0px;
+        display: grid;
+        place-items: center;
+
+        li.view-post {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 20px;
+            width: 30%;
+            height: 20vh;
+
+            .reaction-area {
+                display: flex;
+                position: relative;
+                justify-content: space-between;
+                background-color: rgb(53, 241, 138);
+                padding: 10px;
+                border-radius: 20px;
+                margin-top: 60px;
+                
+               .actived{
+                color : red
+               }
+ 
+ 
+            }
+
+
+        }
+
+    }
+}

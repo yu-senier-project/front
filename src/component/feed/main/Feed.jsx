@@ -11,6 +11,7 @@ import { UpdateFeed } from "../delete/UpdateFeed";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
+import { renderContent } from "../../../util/MentionHashText";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -69,7 +70,11 @@ const Feed = ({ feedList }) => {
   });
 
   const handleOnDelete = () => {
-    mutate(feedList.id);
+    const bool = window.confirm("정말로 삭제하시겠습니까?");
+    if (bool) {
+      mutate(feedList.id);
+    }
+
     setIsSettingOpen(false);
   };
 
@@ -107,6 +112,7 @@ const Feed = ({ feedList }) => {
         </div>
       ) : null}
       <UserInfo
+        id={feedList.memberId}
         profile={feedList.profile}
         clock={feedList.createdAt}
         username={feedList.nickname}
@@ -120,6 +126,7 @@ const Feed = ({ feedList }) => {
             <div className="main-img">
               <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
               <Buttons
+                isCommentEnabled={feedList.isCommentEnabled}
                 handleChatButtonClick={handleChatButtonClick}
                 postId={feedList.id}
                 like={feedList.liked}
@@ -129,6 +136,8 @@ const Feed = ({ feedList }) => {
                 setFalseLike={setFalseLike}
               ></Buttons>
               <Texts
+                hashtags={feedList.hashtags}
+                mentions={feedList.mentions}
                 comment={feedList.content}
                 loveNum={feedList.loveNum}
                 nickname={feedList.nickname}
@@ -144,6 +153,7 @@ const Feed = ({ feedList }) => {
             <div>
               {isChatOpen ? (
                 <ChatModal
+                  profile={feedList.profile}
                   handleUpdateButtonClick={handleUpdateButtonClick}
                   handleOnDelete={handleOnDelete}
                   imgList={imgList}
@@ -165,9 +175,15 @@ const Feed = ({ feedList }) => {
               style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
               className="Feed-content"
             >
-              {feedList.content}
+              {renderContent(
+                feedList.content,
+                feedList.hashtags,
+                feedList.mentions
+              )}
             </p>
             <Buttons
+              isCommentEnabled={feedList.isCommentEnabled}
+              handleChatButtonClick={handleChatButtonClick}
               postId={feedList.id}
               like={feedList.liked}
               setFalseLoveNum={setFalseLoveNum}
@@ -178,7 +194,7 @@ const Feed = ({ feedList }) => {
             <Texts
               comment={""}
               loveNum={feedList.loveNum}
-              nicknamse={""}
+              nickname={""}
               falseLoveNum={falseLoveNum}
             ></Texts>
             {feedList.isCommentEnabled ? (
@@ -191,6 +207,7 @@ const Feed = ({ feedList }) => {
           <div>
             {isChatOpen ? (
               <ChatModal
+                profile={feedList.profile}
                 handleUpdateButtonClick={handleUpdateButtonClick}
                 handleOnDelete={handleOnDelete}
                 imgList={imgList}

@@ -10,7 +10,11 @@ import { useState } from "react";
 import { Loading } from "../component/basic/Loading";
 const Home = () => {
   // 게시물 받아오는 함수
-  const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
+  const fetchFeeds = ({ pageParam = { lastId: 0, nextPage: 1 } }) => {
+    const { lastId, nextPage } = pageParam;
+    console.log(nextPage);
+    return getAllFeed(lastId, nextPage);
+  };
 
   // 무한 스크롤 구현 부분
   const {
@@ -25,15 +29,17 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      return lastPage
-        ? lastPage.data[lastPage.data.length - 1].id ?? false
-        : false;
+      const lastId = lastPage ? lastPage.data[lastPage.data.length - 1].id : 0;
+      const nextPage = pages.length + 1;
+      console.log(lastId, nextPage);
+      return { lastId, nextPage };
     },
-    staleTime: 1000 * 60 * 5,
-    retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 10 * 5,
+    gcTime: 1000 * 10 * 5,
+    retry: 3,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) {
@@ -56,6 +62,9 @@ const Home = () => {
 
   list = list?.map((item1) => {
     return item1.map((item) => ({
+      mentions: item.mentions,
+      hashtags: item.hashtags,
+      memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
       isCommentEnabled: item.isCommentEnabled,
@@ -69,6 +78,8 @@ const Home = () => {
     }));
   });
 
+  console.log(list);
+
   let spreadList;
   spreadList = [...list[0]];
   if (list.length > 1) {
@@ -78,6 +89,9 @@ const Home = () => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    mentions: item.mentions,
+    hashtags: item.hashtags,
+    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,

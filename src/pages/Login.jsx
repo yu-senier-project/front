@@ -1,10 +1,10 @@
 // login.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../component/basic/Button";
 import Input from "../component/basic/Input";
 import "../styles/login.css";
 import { useNavigate } from "react-router-dom";
-import { login } from "../util/auth";
+import { login, logout } from "../util/auth";
 import useLoginStore from "../store/login/useLoginStore";
 import RegistrationModal from "../modal/RegistrationModal";
 
@@ -21,6 +21,7 @@ const style = {
 };
 
 export default function Login() {
+  // logout();
   const [formData, setFormData] = useState({ id: "", password: "" });
   const { setIsLogin } = useLoginStore((state) => state);
   const [open, setOpen] = useState(false);
@@ -47,6 +48,10 @@ export default function Login() {
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   return (
     <div id="login_container">

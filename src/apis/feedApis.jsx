@@ -1,9 +1,9 @@
 import apiClient from "../util/BaseUrl";
 
 // 모든 게시물 가져오는 api
-export const getAllFeed = async (cursorValue) => {
+export const getAllFeed = async (cursorValue, page) => {
   let data = await apiClient.get(
-    `/api/v1/post/home?cursorValue=${cursorValue}`
+    `/api/v1/post/home?cursorValue=${cursorValue}&page=${page}`
   );
   return data;
 };

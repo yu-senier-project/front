@@ -10,8 +10,10 @@ import { useEffect, useRef, useState } from "react";
 import { Setting } from "../basic/Setting";
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
+import { renderContent } from "../../util/MentionHashText";
 
 const ChatModal = ({
+  profile,
   handleUpdateButtonClick,
   handleOnDelete,
   feedList,
@@ -53,7 +55,8 @@ const ChatModal = ({
 
   // 모달 바깥 클릭했을 때 닫는 코드
   const handleClickBackground = (e) => {
-    if (e.target !== backgroundRef.current && onSetting) {
+    if (e.target == backgroundRef.current) {
+      handleChatButtonClick();
       setOnSetting(false);
     }
   };
@@ -64,11 +67,12 @@ const ChatModal = ({
     <div
       className="ChatModal ChatModal-animation"
       onClick={handleClickBackground}
+      ref={backgroundRef}
     >
       <div className="ChatModal-wrap">
         <div className="Feed-userInfo ChatModalUser">
           {onSetting ? (
-            <div className="ChatModal-Setting" ref={backgroundRef}>
+            <div className="ChatModal-Setting">
               <Setting
                 width={150}
                 settingTitleList={[
@@ -85,6 +89,8 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
+            id={feedList.memberId}
+            profile={profile}
             clock={feedList.createdAt}
             username={feedList.nickname}
             Icon={faX}
@@ -123,7 +129,7 @@ const ChatModal = ({
                       className="Texts-content"
                       style={{ whiteSpace: "pre-wrap" }}
                     >
-                      {feedList.content}
+                      {renderContent(feedList.content)}
                     </span>
                   </div>
                 )}
@@ -140,7 +146,7 @@ const ChatModal = ({
                   overflow: "scroll",
                 }}
               >
-                {feedList.content}
+                {renderContent(feedList.content)}
               </p>
               <Buttons
                 postId={feedList.id}

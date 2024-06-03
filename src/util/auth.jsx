@@ -1,4 +1,5 @@
 // auth.jsx
+import axios from "axios";
 import apiClient from "./BaseUrl";
 
 export function refreshAccessTokenInterceptor() {
@@ -14,16 +15,51 @@ export function refreshAccessTokenInterceptor() {
 
   // 토큰 재발급 함수
   async function refreshAccessToken() {
-    console.log("토큰 재발급");
+    console.log("토큰 재발급 시작");
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      console.error("리프레시 토큰이 존재하지 않습니다.");
+      return null;
+    }
 
-    // 새 토큰 발급 요청
-    const response = await apiClient.post("/api/v1/auth/refresh");
-    const newAccessToken = response.headers.authorization.replace(
-      "Bearer ",
-      ""
-    );
-    localStorage.setItem("accessToken", newAccessToken);
-    return newAccessToken;
+    try {
+      const response = await axios.post(
+        "http://43.203.69.159:80/api/v1/auth/refresh",
+        {},
+        {
+          headers: { refreshToken },
+        }
+      );
+
+      if (
+        !response.headers ||
+        !response.headers.authorization ||
+        !response.headers.refreshtoken
+      ) {
+        console.error(
+          "응답에서 필요한 헤더가 누락되었습니다.",
+          response.headers
+        );
+        return null;
+      }
+
+      const newAccessToken = response.headers.authorization.replace(
+        "Bearer ",
+        ""
+      );
+      const newRefreshToken = response.headers.refreshtoken.replace(
+        "Bearer ",
+        ""
+      );
+      localStorage.setItem("accessToken", newAccessToken);
+      localStorage.setItem("refreshToken", newRefreshToken);
+
+      console.log("토큰 재발급 성공", newAccessToken);
+      return newAccessToken;
+    } catch (error) {
+      console.error("토큰 재발급 실패:", error);
+      return null;
+    }
   }
 
   // 응답 인터셉터 설정
@@ -37,12 +73,11 @@ export function refreshAccessTokenInterceptor() {
       if (response && response.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           console.log("토큰 재발급 중");
-          // 토큰 재발급 중인 경우 기다림
           return new Promise((resolve) => {
-            refreshSubscribers.push((newAccessToken) => {
+            refreshSubscribers.push((accessToken) => {
               originalRequest.headers[
                 "Authorization"
-              ] = `Bearer ${newAccessToken}`;
+              ] = `Bearer ${accessToken}`;
               resolve(apiClient(originalRequest));
             });
           });
@@ -56,6 +91,8 @@ export function refreshAccessTokenInterceptor() {
         try {
           console.log("@@");
           const newAccessToken = await refreshAccessToken();
+          // console.log("토큰 갱신 완료", newAccessToken);
+
           isRefreshing = false; // 재발급 완료 후 상태 변경
           onRefreshed(newAccessToken);
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -91,14 +128,14 @@ export async function login(data) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
       } else {
+        console.log(token1, token2);
         console.error("토큰이 없습니다.");
         return false;
       }
 
       // 사용자 데이터 저장
       localStorage.setItem("userNickName", data.nickname);
-      localStorage.setItem("userPassword", data.password);
-      console.log(response.data);
+      localStorage.setItem("profile", response.data.profile);
       localStorage.setItem("memberId", response.data["memberId"]);
       return true;
     } else {
@@ -114,11 +151,16 @@ export async function login(data) {
 export async function logout() {
   try {
     // 로컬 스토리지 및 세션 스토리지 비우기
-    localStorage.clear();
+    localStorage.removeItem("userNickName");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("login");
+    localStorage.removeItem("memberId");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("profile");
     sessionStorage.clear();
 
     // 루트로 리다이렉트
-    window.location.href = "/";
+    // window.location.href = "/";
   } catch (error) {
     console.error("로그아웃 오류:", error);
     alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
