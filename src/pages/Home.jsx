@@ -29,7 +29,12 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      const lastId = lastPage ? lastPage.data[lastPage.data.length - 1].id : 0;
+      console.log(lastPage);
+
+      const lastId =
+        lastPage.data.length != 0
+          ? lastPage.data[lastPage.data.length - 1].id
+          : 0;
       const nextPage = pages.length + 1;
       console.log(lastId, nextPage);
       return { lastId, nextPage };
