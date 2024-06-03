@@ -50,7 +50,6 @@ export default function Login() {
   };
 
   const onEnterClick = (e) => {
-    console.log(e);
     if (e.key == "Enter") {
       handleLogin();
     }

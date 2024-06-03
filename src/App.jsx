@@ -36,7 +36,6 @@ function App() {
   const { isLogin } = useLoginStore((state) => state);
   return (
     <>
-      <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools>
       <BrowserRouter>
         {toggle && <CreateFeed />}
         <Routes>
@@ -64,6 +63,7 @@ function App() {
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
+        {/* <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools> */}
       </BrowserRouter>
     </>
   );
