@@ -19,6 +19,7 @@ import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+import SearchPost from "./component/search/SearchPost";
 import { NotFound } from "./pages/NotFound";
 
 import ProjectGantt from "./pages/project/ProjectGantt";
@@ -50,6 +51,7 @@ function App() {
             <Route path="PasswordInit" element={<PwInit />} />
             <Route path="Home" element={<Home />} />
             <Route path="Search" element={<Search />} />
+            <Route path="SearchPost" element={<SearchPost/>}/>
             <Route path="Project" element={<ProjectHome />} />
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
