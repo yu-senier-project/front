@@ -64,6 +64,10 @@
   padding: 10px;
   border-radius: 10px;
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .Todo-ONGOING-list {
@@ -74,6 +78,9 @@
   padding: 10px;
   border-radius: 10px;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .Todo-AFTER-list {
@@ -84,6 +91,9 @@
   padding: 10px;
   border-radius: 10px;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .TodoWillIcon {

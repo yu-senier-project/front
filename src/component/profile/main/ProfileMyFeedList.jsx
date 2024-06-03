@@ -80,7 +80,11 @@ export const ProfileMyFeedList = ({ memberId, filterType, start, end }) => {
   }));
 
   return (
-    <div onScroll={handleScroll} style={{ height: "100vh", overflow: "auto" }}>
+    <div
+      className="ProfileMyFeedList"
+      onScroll={handleScroll}
+      style={{ height: "100vh", overflow: "auto" }}
+    >
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}

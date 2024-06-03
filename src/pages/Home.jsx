@@ -12,7 +12,7 @@ const Home = () => {
   // 게시물 받아오는 함수
   const fetchFeeds = ({ pageParam = { lastId: 0, nextPage: 1 } }) => {
     const { lastId, nextPage } = pageParam;
-    console.log(nextPage);
+    console.log(lastId, nextPage);
     return getAllFeed(lastId, nextPage);
   };
 
@@ -29,14 +29,12 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage);
-
       const lastId =
         lastPage.data.length != 0
           ? lastPage.data[lastPage.data.length - 1].id
           : 0;
       const nextPage = pages.length + 1;
-      console.log(lastId, nextPage);
+      // console.log(lastId, nextPage);
       return { lastId, nextPage };
     },
     staleTime: 1000 * 10 * 5,
