@@ -51,7 +51,7 @@
   border-radius: 10px;
   background-color: #eee;
   padding: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .companyResult {
@@ -62,7 +62,6 @@
 
 .companyResult-company {
   width: 85%;
-  overflow: scroll;
 }
 .companyResult-btn {
   text-align: center;
