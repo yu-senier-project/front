@@ -56,7 +56,6 @@ const Home = () => {
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (scrollHeight - scrollTop <= clientHeight + 50) {
-      console.log("끝");
       if (hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
       }

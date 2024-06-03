@@ -25,8 +25,6 @@ export const Profile = () => {
   const { data: memberData, isLoading: memberDataIsLoading } =
     useMemberData(memberId);
 
-  console.log(memberData);
-
   const [profileImg, setProfileImg] = useState(
     memberData?.data?.profile ?? "/image/dp.jpg"
   );
