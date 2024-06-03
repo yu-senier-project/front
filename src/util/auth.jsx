@@ -24,7 +24,7 @@ export function refreshAccessTokenInterceptor() {
 
     try {
       const response = await axios.post(
-        "http://13.51.99.142:8080/api/v1/auth/refresh",
+        "http://43.203.69.159:80/api/v1/auth/refresh",
         {},
         {
           headers: { refreshToken },
@@ -135,8 +135,7 @@ export async function login(data) {
 
       // 사용자 데이터 저장
       localStorage.setItem("userNickName", data.nickname);
-      localStorage.setItem("userPassword", data.password);
-      console.log(response.data);
+      localStorage.setItem("profile", response.data.profile);
       localStorage.setItem("memberId", response.data["memberId"]);
       return true;
     } else {
@@ -152,11 +151,16 @@ export async function login(data) {
 export async function logout() {
   try {
     // 로컬 스토리지 및 세션 스토리지 비우기
-    localStorage.clear();
+    localStorage.removeItem("userNickName");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("login");
+    localStorage.removeItem("memberId");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("profile");
     sessionStorage.clear();
 
     // 루트로 리다이렉트
-    window.location.href = "/";
+    // window.location.href = "/";
   } catch (error) {
     console.error("로그아웃 오류:", error);
     alert("로그아웃에 실패했습니다. 다시 시도해주세요.");

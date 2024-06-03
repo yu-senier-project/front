@@ -139,6 +139,7 @@ const ChatModal = ({
           ) : (
             <div>
               <p
+                className="NoImage-Texts"
                 style={{
                   marginBottom: "10px",
                   whiteSpace: "pre-wrap",

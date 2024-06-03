@@ -1,10 +1,15 @@
 import apiClient from "../util/BaseUrl";
 
 // 모든 게시물 가져오는 api
-export const getAllFeed = async (cursorValue) => {
-  let data = await apiClient.get(
-    `/api/v1/post/home?cursorValue=${cursorValue}`
-  );
+export const getAllFeed = async (cursorValue, page) => {
+  let data;
+  if (cursorValue == 0) {
+    data = await apiClient.get(`/api/v1/post/home?&page=${page}`);
+  } else {
+    data = await apiClient.get(
+      `/api/v1/post/home?cursorValue=${cursorValue}&page=${page}`
+    );
+  }
   return data;
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../../styles/profile/profileNav.scss";
 
-export const ProfileNav = ({ selectMenu, setSelectMenu }) => {
+export const ProfileNav = ({ selectMenu, setSelectMenu, nickname }) => {
   selectMenu; // 내가 작성한 글 calssName
   const myClassName = `${selectMenu == 1 ? "select" : null}`;
 
@@ -26,7 +26,7 @@ export const ProfileNav = ({ selectMenu, setSelectMenu }) => {
     <div className="ProfileNav">
       <ul>
         <li className={myClassName} onClick={onMyClick}>
-          내가 작성한 글
+          {nickname}님 작성한 글
         </li>
         <li className={likeClassName} onClick={onLikeClick}>
           좋아요를 누른 글

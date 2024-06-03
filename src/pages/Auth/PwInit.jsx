@@ -33,8 +33,10 @@ export default function PwInit() {
                 email: email,
                 password: formData.newPassword,
             };
-            axios.put('http://13.51.99.142:8080/api/v1/auth/password-inquiry', data).then((response) => {
+            axios.put('http://43.203.69.159/api/v1/auth/password-inquiry', data).then((response) => {
                 console.log(response.data);
+                alert('비밀번호 변경이 완료되었습니다');
+                navigate('/');
             });
         }
         console.log(formData, email);

@@ -7,10 +7,20 @@ import useProjectStore from "../../store/project/useProjectStore";
 export const InviteProjectUser = ({ setParticipantList, participantList }) => {
   const { projectId } = useProjectStore();
   const { data, isLoading } = useGetParticipant(projectId);
+
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    setUserList(data?.data);
+    if (data) {
+
+      let list = data?.data.memberList.filter((user) => {
+
+        return !participantList.some(
+          (participant) => participant.nickname === user.nickname
+        );
+      });
+      setUserList(list);
+    }
   }, [data]);
 
   // 사용자 추가
@@ -71,7 +81,7 @@ export const InviteProjectUser = ({ setParticipantList, participantList }) => {
       </div>
       <div className="InviteUser-list">
         <div className="InviteUser-list-title">
-          <h5>참여자 : 5명 </h5>
+          <h5>참여자 : {participantList.length}명 </h5>
           <h5 style={{ color: "red", cursor: "pointer" }} onClick={allDelete}>
             전체 삭제
           </h5>

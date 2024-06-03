@@ -25,6 +25,35 @@ export const CreateProject = () => {
 
   // 프로젝트 생성 버튼 눌렀을 때
   const createProject = () => {
+    if (title == "") {
+      alert("프로젝트 제목을 입력하세요");
+      return;
+    }
+    if (detail == "") {
+      alert("프로젝트 설명을 입력하세요");
+      return;
+    }
+    if (goal == "") {
+      alert("프로젝트 목표를 입력하세요");
+      return;
+    }
+    if (startDate == "") {
+      alert("프로젝트 시작날짜를 입력하세요");
+      return;
+    }
+    if (endDate == "") {
+      alert("프로젝트 끝날짜를 입력하세요");
+      return;
+    }
+    if (participants.length == 0) {
+      alert("참여자를 초대하세요");
+      return;
+    }
+    if (managerId == 0) {
+      alert("대표자를 선택하세요");
+      return;
+    }
+
     let memberList = participants.map((user) => user.memberId);
     memberList = memberList.filter((memberId) => managerId != memberId);
 

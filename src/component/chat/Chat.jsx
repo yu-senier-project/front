@@ -39,8 +39,9 @@ const Chat = ({ id, data, isLoading }) => {
                 img={
                   item.postMember.profile !== null
                     ? item.postMember.profile
-                    : "public/image/dp.jpg"
+                    : "/image/dp.jpg"
                 }
+                mentions={item.mentions}
                 commentId={item.commentId}
                 postId={id}
                 userName={item.postMember.nickname}

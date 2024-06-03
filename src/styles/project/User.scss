@@ -20,6 +20,9 @@
 
 .User-name {
   overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .User-button {

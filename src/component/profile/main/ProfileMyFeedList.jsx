@@ -38,7 +38,10 @@ export const ProfileMyFeedList = ({ memberId, filterType, start, end }) => {
   let list = data?.pages.map((item) => item.data);
 
   list = list?.map((item1) => {
-    return item1.map((item) => ({
+    return item1?.map((item) => ({
+      mentions: item.mentions,
+      hashtags: item.hashtags,
+      memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
       isCommentEnabled: item.isCommentEnabled,
@@ -61,6 +64,9 @@ export const ProfileMyFeedList = ({ memberId, filterType, start, end }) => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    mentions: item.mentions,
+    hashtags: item.hashtags,
+    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,
@@ -71,11 +77,14 @@ export const ProfileMyFeedList = ({ memberId, filterType, start, end }) => {
     commentCnt: item.commentCnt,
     liked: item.liked,
     profile: item.profile,
-    hashList: ["#하이요"],
   }));
 
   return (
-    <div onScroll={handleScroll} style={{ height: "100vh", overflow: "auto" }}>
+    <div
+      className="ProfileMyFeedList"
+      onScroll={handleScroll}
+      style={{ height: "100vh", overflowY: "scroll", padding: "20px" }}
+    >
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}

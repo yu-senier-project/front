@@ -1,0 +1,135 @@
+.Todo {
+  padding: 0px 150px;
+  width: 100%;
+}
+
+.Todo-wrap {
+  display: flex;
+  width: 100%;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.Todo-box {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  button {
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+}
+
+.Todo-box > div {
+  width: 30%;
+}
+
+.Todo-BEFORE {
+  width: 30%;
+}
+.Todo-AFTER {
+  width: 30%;
+}
+.Todo-ONGOING {
+  width: 30%;
+}
+
+.Todo-BEFORE-title {
+  border-radius: 10px;
+  background-color: #e7e7e7;
+  padding: 5px;
+}
+
+.Todo-ONGOING-title {
+  border-radius: 10px;
+  background-color: #88c6ff;
+  padding: 5px;
+}
+
+.Todo-AFTER-title {
+  border-radius: 10px;
+  background-color: #ff9e9e;
+  padding: 5px;
+}
+
+.Todo-BEFORE-list {
+  margin-top: 20px;
+  min-height: 350px;
+  height: 350px;
+  background-color: #e7e7e7;
+  padding: 10px;
+  border-radius: 10px;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.Todo-ONGOING-list {
+  margin-top: 20px;
+  min-height: 350px;
+  height: 350px;
+  background-color: #88c6ff;
+  padding: 10px;
+  border-radius: 10px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.Todo-AFTER-list {
+  margin-top: 20px;
+  min-height: 350px;
+  height: 350px;
+  background-color: #ff9e9e;
+  padding: 10px;
+  border-radius: 10px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.TodoWillIcon {
+  width: 90px;
+  display: flex;
+  border-radius: 10px;
+  background-color: #d9d9d9;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.TodoIngIcon {
+  width: 75px;
+  display: flex;
+  border-radius: 10px;
+  background-color: #c5e8ff;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #40a2e3;
+}
+
+.TodoDoneIcon {
+  width: 65px;
+  display: flex;
+  border-radius: 10px;
+  background-color: #ff0404;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #ff9e9e;
+}
+
+.Todo-plusBtn {
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  background-color: #71c9ce;
+}

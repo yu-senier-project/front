@@ -11,6 +11,11 @@
   width: 50%;
   padding: 20px;
   padding-top: 20px;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   input {
     border-radius: 10px;
@@ -27,6 +32,9 @@
   border-left: 1px solid lightgrey;
   padding: 5px 10px;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   table {
     width: 100%;
   }

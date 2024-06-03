@@ -13,9 +13,10 @@
   border-bottom: 1px solid grey;
   width: 100%;
   text-align: center;
-  border-radius: 10px 10px 0px 0px;
+  font-size: 14px;
+
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
 
   &:hover {
     background-color: lightgrey;
@@ -24,6 +25,10 @@
   &:active {
     background-color: grey;
   }
+}
+
+.Setting-list:first-child {
+  border-radius: 10px 10px 0px 0px;
 }
 
 .Setting-list:last-child {

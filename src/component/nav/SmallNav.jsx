@@ -13,27 +13,45 @@ import {
 import useCreateFeed from "../../store/feed/useCreateFeed";
 import CreateFeed from "../feed/create/CreateFeed";
 import { logout } from "../../util/auth";
+import { TiMessages } from "react-icons/ti";
+import { FiHome } from "react-icons/fi";
+import { FaRegUser } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaRegSquarePlus } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 const SmallNav = () => {
+  const nav = useNavigate();
   const { setToggle } = useCreateFeed((state) => state);
   const onCreate = () => {
+    nav("/Home");
     setToggle();
   };
   const myId = localStorage.getItem("memberId");
   return (
     <div>
       <div className="SmallNav">
-        <h1>CNS</h1>
+        <h1
+          style={{
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            nav("/Home");
+          }}
+        >
+          CNS
+        </h1>
         <div className="SmallNav-menuWrap">
           <Link to={"/Home"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faHouse} className="icon" />
+              <FiHome className="icon" />
               <p>홈</p>
             </div>
           </Link>
           <Link to={"/Message"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faMessage} className="icon" />
+              <TiMessages className="icon" />
               <p>메시지</p>
             </div>
           </Link>
@@ -45,28 +63,41 @@ const SmallNav = () => {
           </Link>
           <Link to={"/Project"}>
             <div className="SmallNav-menu">
-              <FontAwesomeIcon icon={faCalendarDays} className="icon" />
+              <FaRegCalendarAlt className="icon" />
               <p>프로젝트</p>
             </div>
           </Link>
-         <Link to={`/Profile/${myId}`}>
-          <div className="SmallNav-menu">
-            <FontAwesomeIcon icon={faUser} className="icon" />
-            <p>프로필</p>
-          </div>
-        </Link>
+          <Link to={`/Profile/${myId}`}>
+            <div className="SmallNav-menu">
+              <FaRegUser className="icon" />
+              <p>프로필</p>
+            </div>
+          </Link>
           <div className="SmallNav-menu" onClick={onCreate}>
-            <FontAwesomeIcon icon={faSquarePlus} className="icon" />
+            <FaRegSquarePlus className="icon" />
             <p>만들기</p>
           </div>
         </div>
 
         <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faGear} className="icon" />
-          <p>설정</p>
-
+          <RiLogoutBoxLine className="icon" />
+          <p
+            onClick={() => {
+              logout();
+              nav("/");
+            }}
+          >
+            로그아웃
+          </p>
         </div>
-        <button onClick={logout}>로그아웃</button>
+        {/* <button
+          onClick={() => {
+            logout();
+            nav("/");
+          }}
+        >
+          로그아웃
+        </button> */}
       </div>
       <Outlet />
     </div>

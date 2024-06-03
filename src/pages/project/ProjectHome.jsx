@@ -44,22 +44,28 @@ export const ProjectHome = () => {
       </div>
       <div className="ProjectHome-projectList">
         {isLoading ? <p>로딩중...</p> : null}
-        {projects?.map((project, idx) => (
-          <div
-            key={project.projectId}
-            className={getClassName(idx)}
-            onClick={() => {
-              nav(`/ProjectHome/${project.projectId}`);
-            }}
-          >
-            <div className="ProjectHome-projectSetting">
-              <HiEllipsisVertical size={25} />
+        {projects?.length != 0 ? (
+          projects?.map((project, idx) => (
+            <div
+              key={project.projectId}
+              className={getClassName(idx)}
+              onClick={() => {
+                nav(
+                  `/ProjectHome/${project.projectId}?memberId=${project.postMember.id}&title=${project.projectName}`
+                );
+              }}
+            >
+              <div className="ProjectHome-projectSetting">
+                {/* <HiEllipsisVertical size={25} /> */}
+              </div>
+              <p className="ProjectHome-title-p">{project.projectName}</p>
+              <p>{project.detail}</p>
+              <p>담당자 : {project.postMember.nickname}</p>
             </div>
-            <p>{project.projectName}</p>
-            <p>{project.detail}</p>
-            <p>담당자 : {project.postMember.nickname}</p>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div>참여중인 프로젝트가 없습니다!</div>
+        )}
       </div>
     </div>
   );

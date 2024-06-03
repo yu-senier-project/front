@@ -27,7 +27,7 @@ export const SearchUser = ({ onMentionClick, metionValue }) => {
   };
 
   useEffect(() => {
-    const timeoutExecute = setTimeout(() => fetchData(), 1000);
+    const timeoutExecute = setTimeout(() => fetchData(), 300);
     return () => clearTimeout(timeoutExecute);
   }, [metionValue]);
 

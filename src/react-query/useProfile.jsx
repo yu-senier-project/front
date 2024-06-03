@@ -15,6 +15,7 @@ import {
   deleteProfileImage,
   getMemberLikeFeed,
   getMemberFeed,
+  updateCompany,
 } from "../apis/profileApis";
 
 // 회원 정보 받아 오기
@@ -110,6 +111,7 @@ export const usePostProfileImage = (memberId) => {
     },
     onSuccess: (e) => {
       console.log(e);
+      queryClient.invalidateQueries(["feeds"]);
       queryClient.invalidateQueries(["memberData", memberId]);
     },
   });
@@ -127,6 +129,7 @@ export const useDeleteProfileImage = (memberId) => {
     },
     onSuccess: (e) => {
       console.log(e);
+      queryClient.invalidateQueries(["feeds"]);
       queryClient.invalidateQueries(["memberData", memberId]);
     },
     onMutate: (data) => {
@@ -149,32 +152,31 @@ export const useGetMemberFeed = (memberId, filterType, startDate, endDate) => {
     status,
   } = useInfiniteQuery({
     queryKey: ["MemberFeeds", memberId, filterType, startDate, endDate],
-    queryFn: ({ pageParam = { pageParam: 0, likeCnt: -1 } }) => {
+    queryFn: ({ pageParam = { pageParam: 0 } }) => {
       return getMemberFeed(
         memberId,
         filterType,
         startDate,
         endDate,
-        pageParam.pageParam,
-        pageParam.likeCnt
+        pageParam.pageParam
       );
     },
     getNextPageParam: (lastPage, pages) => {
-      return lastPage && lastPage.data.length > 0
+      return lastPage &&
+        Array.isArray(lastPage.data) &&
+        lastPage.data.length > 0
         ? {
             pageParam: lastPage.data[lastPage.data.length - 1].id,
-            likeCnt: lastPage.data[lastPage.data.length - 1].likeCnt,
           }
         : {
             pageParam: false,
-            likeCnt: false,
           };
     },
     staleTime: 1000 * 60 * 5,
     retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   return {
@@ -208,9 +210,9 @@ export const useGetLikeFeed = (memberId) => {
     },
     staleTime: 1000 * 60 * 5,
     retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   return { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage };
@@ -246,4 +248,36 @@ export const useMemberDataUpdate = (memberId) => {
   });
 
   return { mutate, status };
+};
+
+// 회원 회사나 직무 수정
+export const useUpdateCompany = (memberId) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateCompany,
+    onError: (e) => {
+      console.log(e);
+      alert(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["memberData", memberId]);
+    },
+    onMutate: (newData) => {
+      const prevData = queryClient.getQueryData(["memberData", memberId]);
+
+      // const data = {
+      //   birth: prevData.data.birth,
+      //   companyName: prevData.data.companyName,
+      //   id: prevData.data.id,
+      //   introduction: newData.introduction,
+      //   nickname: prevData.data.nickname,
+      //   position: prevData.data.position,
+      //   profile: prevData.data.profile,
+      // };
+
+      // queryClient.setQueryData(["memberData", memberId], { data: data });
+    },
+  });
+
+  return mutation;
 };
