@@ -29,10 +29,11 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      const lastId =
-        lastPage.data.length != 0
-          ? lastPage.data[lastPage.data.length - 1].id
-          : 0;
+      if (lastPage.data.length === 0) {
+        // 더 이상 데이터를 가져올 수 없음
+        return undefined;
+      }
+      const lastId = lastPage.data[lastPage.data.length - 1].id;
       const nextPage = pages.length + 1;
       // console.log(lastId, nextPage);
       return { lastId, nextPage };

@@ -152,25 +152,24 @@ export const useGetMemberFeed = (memberId, filterType, startDate, endDate) => {
     status,
   } = useInfiniteQuery({
     queryKey: ["MemberFeeds", memberId, filterType, startDate, endDate],
-    queryFn: ({ pageParam = { pageParam: 0, likeCnt: -1 } }) => {
+    queryFn: ({ pageParam = { pageParam: 0 } }) => {
       return getMemberFeed(
         memberId,
         filterType,
         startDate,
         endDate,
-        pageParam.pageParam,
-        pageParam.likeCnt
+        pageParam.pageParam
       );
     },
     getNextPageParam: (lastPage, pages) => {
-      return lastPage && lastPage.data.length > 0
+      return lastPage &&
+        Array.isArray(lastPage.data) &&
+        lastPage.data.length > 0
         ? {
             pageParam: lastPage.data[lastPage.data.length - 1].id,
-            likeCnt: lastPage.data[lastPage.data.length - 1].likeCnt,
           }
         : {
             pageParam: false,
-            likeCnt: false,
           };
     },
     staleTime: 1000 * 60 * 5,
@@ -204,7 +203,6 @@ export const useGetLikeFeed = (memberId) => {
     queryFn: ({ pageParam = 0 }) => getMemberLikeFeed(memberId, pageParam),
     getNextPageParam: (lastPage) => {
       if (lastPage && lastPage.data.length > 0) {
-        console.log(lastPage.data[lastPage.data.length - 1].id);
         return lastPage.data[lastPage.data.length - 1].id;
       } else {
         return false;
