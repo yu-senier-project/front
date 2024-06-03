@@ -1,10 +1,10 @@
 // baseurl.jsx
 import axios from "axios";
 
-export const BaseUrl = "http://13.51.99.142:8080";
+export const BaseUrl = "http://43.203.69.159:80";
 
 const apiClient = axios.create({
-  baseURL: "http://13.51.99.142:8080",
+  baseURL: "http://43.203.69.159:80",
   headers: {
     "Content-Type": "application/json",
   },

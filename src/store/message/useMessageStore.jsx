@@ -3,7 +3,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import apiClient from "../../util/BaseUrl";
 
-const socketUrl = "http://13.51.99.142:8080/stomp-chat/info";
+const socketUrl = "http://43.203.69.159:80/stomp-chat/info";
 const socket = new SockJS(socketUrl);
 const stompClient = Stomp.over(socket);
 
@@ -23,7 +23,7 @@ function processSubscribeQueue() {
 }
 
 function connectStompClient() {
-  console.log("called connectStompClient")
+  console.log("called connectStompClient");
   if (stompClient.connected) {
     console.log("Already connected");
     return;
@@ -31,7 +31,7 @@ function connectStompClient() {
   const token = localStorage.getItem("accessToken");
   const headers = { Authorization: `Bearer ${token}` };
 
-  console.log('connecting')
+  console.log("connecting");
   stompClient.connect(
     headers,
     (frame) => {
@@ -44,7 +44,7 @@ function connectStompClient() {
       useConnectionStore.setState({ isConnected: false });
     }
   );
-  console.log("success connect!")
+  console.log("success connect!");
 }
 
 function handleReceivedMessage(message, roomId) {
@@ -119,7 +119,7 @@ const useMessageStore = create((set, get) => ({
   roomNumber: 1,
   messages: {},
   subscribedRooms: [],
-  isMessageLoading: false, 
+  isMessageLoading: false,
 
   setRooms: (rooms) => set({ rooms }),
 
@@ -159,45 +159,46 @@ const useMessageStore = create((set, get) => ({
 
   fetchRooms: async (memberId, pageNumber) => {
     try {
-        connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
-        console.log('방 받아오는중');
-        set((state) => {
-          return { rooms:[] };
+      connectStompClient(); // 채팅방 목록 받아올때 웹소켓 연결 시도
+      console.log("방 받아오는중");
+      set((state) => {
+        return { rooms: [] };
       });
 
       set((state) => ({
         messages: [],
       }));
-        const response = await apiClient.get(
-            `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
+      const response = await apiClient.get(
+        `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
+      );
+      console.log(response);
+      set((state) => {
+        // 기존 방 ID를 Set으로 저장
+        const existingRoomIds = new Set(state.rooms.map((room) => room.roomId));
+
+        // 새로 받아온 방 정보에서 기존 방 ID를 제외한 새 방 정보만 필터링
+        const newRooms = response.data.filter(
+          (room) => !existingRoomIds.has(room.roomId)
         );
-        console.log(response);
-        set((state) => {
-            // 기존 방 ID를 Set으로 저장
-            const existingRoomIds = new Set(state.rooms.map((room) => room.roomId));
 
-            // 새로 받아온 방 정보에서 기존 방 ID를 제외한 새 방 정보만 필터링
-            const newRooms = response.data.filter(
-                (room) => !existingRoomIds.has(room.roomId)
-            );
+        // 기존 방 정보와 새 방 정보를 합치고 time 값을 기준으로 내림차순 정렬
+        const allRooms = [...state.rooms, ...newRooms].sort(
+          (a, b) => b.lastChatSendAt - a.lastChatSendAt
+        );
 
-            // 기존 방 정보와 새 방 정보를 합치고 time 값을 기준으로 내림차순 정렬
-            const allRooms = [...state.rooms, ...newRooms].sort((a, b) => b.lastChatSendAt - a.lastChatSendAt);
-
-            // 상태 업데이트  
-            console.log("방 다받아옴");
-            return { rooms: allRooms };
-        });
+        // 상태 업데이트
+        console.log("방 다받아옴");
+        return { rooms: allRooms };
+      });
     } catch (error) {
-        console.error("Error fetching chat rooms:", error);
+      console.error("Error fetching chat rooms:", error);
     }
-},
-
+  },
 
   fetchMessages: async (roomId) => {
     try {
       console.log("메시지 받아오는중...");
-     
+
       const response = await apiClient.get(`/api/v1/chat-room/${roomId}`);
       console.log(response);
       const sortedMessages = response.data.sort(
@@ -218,15 +219,15 @@ const useMessageStore = create((set, get) => ({
         `/api/v1/chat-room/${roomId}?chatId=${chatId}`
       );
       console.log(response);
-  
+
       const existingMessages = new Set(
         (get().messages[roomId] || []).map((msg) => msg.chatId)
       );
-  
+
       const newMessages = response.data
         .filter((msg) => !existingMessages.has(msg.chatId))
         .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  
+
       set((state) => ({
         messages: {
           ...state.messages,
@@ -239,8 +240,7 @@ const useMessageStore = create((set, get) => ({
       set({ isMessageLoading: false });
     }
   },
-  
-  
+
   sendMessage: async (text, roomId) => {
     try {
       const day = new Date();

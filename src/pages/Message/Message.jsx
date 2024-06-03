@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import { CgAddR } from "react-icons/cg";
 import RoomSelecter from "./RoomSelecter";
-import useMessageStore, { connectStompClient } from "../../store/message/useMessageStore";
+import useMessageStore, {
+  connectStompClient,
+} from "../../store/message/useMessageStore";
 import useLoginStore from "../../store/login/useLoginStore";
 import "../../styles/message/roomselecter.scss";
 import "../../styles/message/message.scss";
@@ -15,7 +17,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import apiClient from "../../util/BaseUrl";
 
 export default function Message() {
-  const { isLogin } = useLoginStore();
+  const isLogin = localStorage.getItem("login");
   const {
     fetchRooms,
     rooms,
@@ -165,7 +167,7 @@ export default function Message() {
   const handleScroll = (e) => {
     if (e.target.scrollTop === 0 && !isLoading && selectedRoom) {
       const oldestMessage = messages[selectedRoom][0];
-      console.log(oldestMessage)
+      console.log(oldestMessage);
       if (oldestMessage) {
         fetchMoreMessages(selectedRoom, oldestMessage.chatId);
       }
@@ -177,61 +179,60 @@ export default function Message() {
     Array.isArray(rooms) &&
     rooms.find((room) => room?.roomId === selectedRoom);
 
-    function renderMessageContent(data) {
-      switch (data.messageType) {
-        case "IMAGE":
-          return (
-            <div>
-              <p>{data.from}</p>
-              <img
-                className={
-                  parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                    ? "message_self"
-                    : "message_other"
-                }
-                src={data.content}
-                alt="Message Content"
-                onClick={() => {
-                  console.log(data);
-                }}
-              />
-            </div>
-          );
-        case "FILE":
-          return (
-            <div>
-              <p>{data.from}</p>
-              <a href={data.content} download>
-                <span
-                  className={
-                    parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                      ? "message_self file"
-                      : "message_other file"
-                  }
-                >
-                  파일 다운로드
-                </span>
-              </a>
-            </div>
-          );
-        default:
-          return (
-            <div>
-              <p>{data.from}</p>
+  function renderMessageContent(data) {
+    switch (data.messageType) {
+      case "IMAGE":
+        return (
+          <div>
+            <p>{data.from}</p>
+            <img
+              className={
+                parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                  ? "message_self"
+                  : "message_other"
+              }
+              src={data.content}
+              alt="Message Content"
+              onClick={() => {
+                console.log(data);
+              }}
+            />
+          </div>
+        );
+      case "FILE":
+        return (
+          <div>
+            <p>{data.from}</p>
+            <a href={data.content} download>
               <span
                 className={
                   parseInt(data.memberId, 10) === parseInt(memberId, 10)
-                    ? "message_self"
-                    : "message_other"
+                    ? "message_self file"
+                    : "message_other file"
                 }
               >
-                {data.content}
+                파일 다운로드
               </span>
-            </div>
-          );
-      }
+            </a>
+          </div>
+        );
+      default:
+        return (
+          <div>
+            <p>{data.from}</p>
+            <span
+              className={
+                parseInt(data.memberId, 10) === parseInt(memberId, 10)
+                  ? "message_self"
+                  : "message_other"
+              }
+            >
+              {data.content}
+            </span>
+          </div>
+        );
     }
-    
+  }
 
   return (
     <div className="message_page">
@@ -246,10 +247,7 @@ export default function Message() {
       />
 
       <div className="message_container">
-        <RoomCreateModal
-          open={createOpen}
-          close={handleCreateClose}
-        />
+        <RoomCreateModal open={createOpen} close={handleCreateClose} />
         <MessageInviteModal
           open={inviteOpen}
           handleClose={handleInviteClose}
@@ -347,15 +345,6 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
-        <button onClick={async () => {
-    try {
-        const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/image`);
-        console.log(response, selectedRoom);
-    } catch (error) {
-        console.error("Error fetching image:", error);
-    }
-}} >test</button>
-
       </div>
     </div>
   );

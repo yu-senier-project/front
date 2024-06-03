@@ -7,7 +7,7 @@ import PwInit from "./pages/Auth/PwInit";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SmallNav from "./component/nav/SmallNav";
-// import Message from "./pages/Message/Message";
+import Message from "./pages/Message/Message";
 import IdCheck from "./pages/Auth/IdCheck";
 import useCreateFeed from "./store/feed/useCreateFeed";
 import CreateFeed from "./component/feed/create/CreateFeed";
@@ -20,7 +20,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 refreshAccessTokenInterceptor();
 
 function App() {
-
   const login = localStorage.getItem("login");
   const { toggle } = useCreateFeed((state) => state);
   const { isLogin } = useLoginStore((state) => state);
