@@ -12,7 +12,8 @@ const Home = () => {
   // 게시물 받아오는 함수
   const fetchFeeds = ({ pageParam = { lastId: 0, nextPage: 1 } }) => {
     const { lastId, nextPage } = pageParam;
-    console.log(nextPage);
+
+    console.log(lastId, nextPage);
     return getAllFeed(lastId, nextPage);
   };
 
@@ -29,14 +30,14 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage);
-
       const lastId =
-        lastPage.data.length != 0
+        lastPage && Array.isArray(lastPage.data) && lastPage.data.length > 0
           ? lastPage.data[lastPage.data.length - 1].id
-          : 0;
+          : -1;
+      if (lastId === -1) {
+        return undefined; // 더 이상 페이지가 없음을 나타냅니다.
+      }
       const nextPage = pages.length + 1;
-      console.log(lastId, nextPage);
       return { lastId, nextPage };
     },
     staleTime: 1000 * 10 * 5,
@@ -56,7 +57,6 @@ const Home = () => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (scrollHeight - scrollTop === clientHeight) {
       if (hasNextPage && !isFetchingNextPage) {
-        console.log("게시물 불러오기");
         fetchNextPage();
       }
     }
@@ -82,8 +82,6 @@ const Home = () => {
       profile: item.postMember?.profile,
     }));
   });
-
-  console.log(list);
 
   let spreadList;
   spreadList = [...list[0]];
@@ -117,7 +115,7 @@ const Home = () => {
       style={{ height: "100vh", overflow: "auto" }}
     >
       {feedList?.map((item, idx) => (
-        <Feed feedList={item} key={item.id}></Feed>
+        <Feed feedList={item} key={idx}></Feed>
       ))}
       {isFetchingNextPage && (
         <div style={{ textAlign: "center" }}>게시글 불러오는중 ...</div>

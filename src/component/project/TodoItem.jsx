@@ -120,7 +120,12 @@ export const TodoItem = ({
           position: "relative",
         }}
       >
-        <div style={{ overflow: "scroll", width: "90%" }}>{content}</div>
+        <div
+          className="Todoitem-content"
+          style={{ overflow: "scroll", width: "90%" }}
+        >
+          {content}
+        </div>
 
         {my ? (
           <div

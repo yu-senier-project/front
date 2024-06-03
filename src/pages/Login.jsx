@@ -49,6 +49,12 @@ export default function Login() {
     }
   };
 
+  const onEnterClick = (e) => {
+    if (e.key == "Enter") {
+      handleLogin();
+    }
+  };
+
   useEffect(() => {
     logout();
   }, []);
@@ -67,6 +73,7 @@ export default function Login() {
         onChange={handleInputChange}
       ></Input>
       <Input
+        onkeydown={onEnterClick}
         name="password"
         value={formData.password}
         placeholder={"비밀번호"}
