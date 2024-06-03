@@ -25,6 +25,7 @@ const ChatModal = ({
   setFalseLike,
 }) => {
   // 댓글 정보 가져오는 쿼리
+  console.log(feedList)
   const { data, isLoading, isError } = useQuery({
     queryKey: ["feedComment", feedList.id],
     queryFn: () => {
@@ -89,10 +90,10 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
-            id={feedList.memberId}
+            id={feedList.memberId?feedList.memberId: feedList.postMember.id}
             profile={profile}
             clock={feedList.createdAt}
-            username={feedList.nickname}
+            username={feedList.nickname?feedList.nickname:feedList.postMember.nickname}
             Icon={faX}
             handleSettingButtonClick={handleSettingButtonClick}
           ></UserInfo>
@@ -112,7 +113,7 @@ const ChatModal = ({
                 postId={feedList.id}
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
-                falseLoveNum={falseLoveNum}
+                falseLoveNum={falseLoveNum?falseLoveNum:feedList.likeCnt}
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
               ></Buttons>
