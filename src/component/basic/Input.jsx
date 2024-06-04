@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import "../../styles/basic/Input.css";
-
+import { useState } from "react";
 export default function Input({
   reference, // 페이지 이동시 포커스
   onkeydown, // 키보드 다른거 눌렀을때 버튼
@@ -16,9 +16,11 @@ export default function Input({
   font,
   style,
   name,
+  autocomplete
 }) {
   const className = `Input ${size} ${color} ${border} width-${width} font-${font}`;
   return (
+    
     <input
       className={className}
       type={type}
@@ -30,6 +32,8 @@ export default function Input({
       value={value}
       style={style}
       name={name}
-    ></input>
+      autocomplete ={autocomplete}
+    />
+   
   );
 }

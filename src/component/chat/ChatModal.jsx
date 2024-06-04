@@ -11,6 +11,7 @@ import { Setting } from "../basic/Setting";
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
 import { renderContent } from "../../util/MentionHashText";
+import { useNavigate } from "react-router-dom";
 
 const ChatModal = ({
   profile,
@@ -25,7 +26,6 @@ const ChatModal = ({
   setFalseLike,
 }) => {
   // 댓글 정보 가져오는 쿼리
-  console.log(feedList)
   const { data, isLoading, isError } = useQuery({
     queryKey: ["feedComment", feedList.id],
     queryFn: () => {
@@ -34,6 +34,8 @@ const ChatModal = ({
     onSuccess: (data) => {},
     staleTime: 1000 * 60 * 5,
   });
+
+  const nav = useNavigate();
 
   const onDelete = () => {
     handleChatButtonClick(); // 모달창 닫기
@@ -90,10 +92,14 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
-            id={feedList.memberId?feedList.memberId: feedList.postMember.id}
+            id={feedList.memberId ? feedList.memberId : feedList.postMember.id}
             profile={profile}
             clock={feedList.createdAt}
-            username={feedList.nickname?feedList.nickname:feedList.postMember.nickname}
+            username={
+              feedList.nickname
+                ? feedList.nickname
+                : feedList.postMember.nickname
+            }
             Icon={faX}
             handleSettingButtonClick={handleSettingButtonClick}
           ></UserInfo>
@@ -113,7 +119,7 @@ const ChatModal = ({
                 postId={feedList.id}
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
-                falseLoveNum={falseLoveNum?falseLoveNum:feedList.likeCnt}
+                falseLoveNum={falseLoveNum ? falseLoveNum : feedList.likeCnt}
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
               ></Buttons>
@@ -130,7 +136,12 @@ const ChatModal = ({
                       className="Texts-content"
                       style={{ whiteSpace: "pre-wrap" }}
                     >
-                      {renderContent(feedList.content)}
+                      {renderContent(
+                        feedList.content,
+                        [],
+                        feedList.mentions,
+                        nav
+                      )}
                     </span>
                   </div>
                 )}
@@ -148,7 +159,7 @@ const ChatModal = ({
                   overflow: "scroll",
                 }}
               >
-                {renderContent(feedList.content)}
+                {renderContent(feedList.content, [], feedList.mentions, nav)}
               </p>
               <Buttons
                 postId={feedList.id}

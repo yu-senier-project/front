@@ -29,7 +29,6 @@ import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 
-
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
@@ -43,7 +42,6 @@ function App() {
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<Login />} />
-
           <Route path="/" element={<SmallNav />}>
             <Route path="Id" element={<IdFind />} />
             <Route path="CheckId" element={<IdCheck />} />
@@ -51,7 +49,7 @@ function App() {
             <Route path="PasswordInit" element={<PwInit />} />
             <Route path="Home" element={<Home />} />
             <Route path="Search" element={<Search />} />
-            <Route path="SearchPost" element={<SearchPost/>}/>
+            <Route path="SearchPost" element={<SearchPost />} />
             <Route path="Project" element={<ProjectHome />} />
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
@@ -63,15 +61,17 @@ function App() {
             <Route path="Todo/:projectId" element={<Todo />} />
             <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
             <Route path=":projectId" element={<ProjectCalendar />} />
-            <Route path=":projectId/Gantt" element={<ProjectGantt />} />
-            <Route path=":projectId/Post" element={<ProJectPost />} />
 
+            <Route path="Gantt/:projectId" element={<ProjectGantt />} />
+            <Route path="Post/:projectId" element={<ProJectPost />} />
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
-        {/* <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools> */}
       </BrowserRouter>
-
+      {/* <ReactQueryDevtools
+        initialIsOpen={true}
+        buttonPosition="bottom"
+      ></ReactQueryDevtools> */}
     </>
   );
 }

@@ -7,7 +7,9 @@ import "../../styles/search/searchPost.scss";
 
 export default function SearchPost() {
   const location = useLocation();
+  console.log(location);
   const hashtag = location.state?.hashtag;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -75,7 +77,7 @@ export default function SearchPost() {
 
   useEffect(() => {
     if (activePostId) {
-      const activePost = posts.find(post => post.id === activePostId);
+      const activePost = posts.find((post) => post.id === activePostId);
       if (activePost) {
         setFalseLoveNum(activePost.likeCnt);
         setFalseLike(activePost.liked);
@@ -110,7 +112,9 @@ export default function SearchPost() {
   };
 
   const handleLikeChange = (likeStatus) => {
-    console.log(`Post with id: ${activePostId} like status changed to: ${likeStatus}`);
+    console.log(
+      `Post with id: ${activePostId} like status changed to: ${likeStatus}`
+    );
     // Logic to update like status
   };
 
@@ -119,7 +123,11 @@ export default function SearchPost() {
       {posts.length > 0 ? (
         <div className="search_post_box">
           <div className="search_post_top">
-            <img src="public/image/hashTag.png" className="hashtag_img" alt="Hashtag" />
+            <img
+              src="public/image/hashTag.png"
+              className="hashtag_img"
+              alt="Hashtag"
+            />
             <h1>{hashtag}</h1>
           </div>
           <div>
@@ -158,7 +166,9 @@ export default function SearchPost() {
               falseLike={falseLike}
               setFalseLoveNum={setFalseLoveNum}
               setFalseLike={setFalseLike}
-              handleUpdateButtonClick={() => handleUpdateButtonClick(activePostId)}
+              handleUpdateButtonClick={() =>
+                handleUpdateButtonClick(activePostId)
+              }
               handleOnDelete={() => handleOnDelete(activePostId)}
             />
           )}
