@@ -26,6 +26,7 @@ function StepCompanySelection({
         </button>
       </div>
       <h2 className="title">가입하기</h2>
+     
       <Input size="Large" name="companyName" onChange={handleCompanyName} autocomplete={"off"}  />
       <div className="company-list">
         {companys.length > 0 ? (
