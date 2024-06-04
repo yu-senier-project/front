@@ -134,6 +134,13 @@ export default function ProjectPost() {
     const distance = formatDistanceToNow(date, { addSuffix: true });
     const translations = {
       "about":'',
+      // 'hour':'시간',
+      // 'ago':'전',
+      // 'minute':'분',
+      // 'month': '개월',
+      // 'year':'년',
+      // 'day':'일',
+      // 's':'',
       "about 1 hour ago": "약 1시간 전",
       "about 1 minute ago": "약 1분 전",
       "about 1 month ago": "약 1개월 전",
@@ -287,7 +294,7 @@ export default function ProjectPost() {
             userName={localStorage.getItem("userNickName")}
             width={"width-40"}
             height={"height-40"}
-            img={localStorage.getItem('profile')?localStorage.getItem('profile'):"/public/image/dp.jpg"}
+            img={localStorage.getItem('profile')?localStorage.getItem('profile'):"/image/dp.jpg"}
           />
           <button onClick={() => createPost(postContent)}>작성</button>
         </div>
@@ -317,7 +324,7 @@ export default function ProjectPost() {
                   userName={item.postMember.nickname}
                   width={"width-40"}
                   height={"height-40"}
-                  img={item.postMember.profile?item.postMember.profile:"/public/image/dp.jpg"}
+                  img={item.postMember.profile?item.postMember.profile:"/image/dp.jpg"}
                 />
                 <p style={{ margin: "10px", color: "rgb(210, 210, 210)" }}>
                   {formatDistanceToNowInKorean(parseDate(item.createdAt))}
