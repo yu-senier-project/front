@@ -1,6 +1,6 @@
 // 해시태그랑 멘션 텍스트 스타일링 주는 함수
 import { Link } from "react-router-dom";
-export const renderContent = (text, hashtags, mentions, nav) => {
+export const renderContent = (text, hashtags, mentions, nav, chat) => {
   // 공백을 포함한 분할
   const parts = text?.split(/(\s+)/);
 
@@ -21,18 +21,21 @@ export const renderContent = (text, hashtags, mentions, nav) => {
         </Link>
       );
     } else if (part.startsWith("#")) {
-      return (
-        <span
-          key={index}
-          className="hashHighlight"
-          onClick={() => {
-            onHashClick(part.substr(1));
-          }}
-        >
-          {part}
-        </span>
-      );
+      if (!chat ?? true) {
+        return (
+          <span
+            key={index}
+            className="hashHighlight"
+            onClick={() => {
+              onHashClick(part.substr(1));
+            }}
+          >
+            {part}
+          </span>
+        );
+      }
     }
+
     return part;
   });
 };

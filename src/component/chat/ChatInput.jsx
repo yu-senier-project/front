@@ -71,7 +71,6 @@ const ChatInput = ({
         return { data: [...old.data, newData] };
       });
 
-      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
       return () =>
         queryClient.setQueryData(["feedComment", postId], previousComments);
     },
