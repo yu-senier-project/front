@@ -4,8 +4,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
-  width: 50%;
-  height: 600px;
+  width: 60vw;
+  height: 80vh;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,12 +13,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   .title {
     text-align: start;
     width: 70%;
     margin-top: 0px;
     margin-bottom: 20px;
+    position: fixed;
+    top:5%;
   }
 
   .header {
@@ -26,7 +29,8 @@
     justify-content: space-between;
     width: 100%;
     height: 50px;
-
+    position: fixed;
+    top: 0%;
     .close-button {
       background-color: transparent;
       border: none;
@@ -92,29 +96,40 @@
   }
 
   .name-space {
-    display: flex;
-    justify-content: space-between;
-    width: 51.5%;
+    width: 30vw;
+    position: relative;
+    top: 10px;
+    margin-bottom: 10px;
   }
 
   .position-space {
-    width: 70%;
+    width: 30vw;
+    // margin-bottom: 50px;
+  }
+
+  .next_button {
+    width: 33.7vw;
+    position: fixed;
+    bottom: 0px;
+    // margin-bottom: 10px;
   }
 
   .id-space {
     position: relative;
-    width: 80%;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
 
     Input {
-      width: calc(100% - 80px); // 중복 확인 버튼 크기만큼 너비 조정
+      width: 33.7vw;
+
+      // width: calc(100% - 80px); // 중복 확인 버튼 크기만큼 너비 조정
       padding-right: 70px; // 중복 확인 버튼 공간 확보
     }
 
     .duplication_button {
       position: absolute;
-      right: 40px;
-      top: 45%;
+      width: 6vw;
+      right: 5px;
+      top: 2.5vh;
       transform: translateY(-50%);
       background-color: transparent;
       border: none;
@@ -125,14 +140,14 @@
 
   .password-space {
     display: flex;
-    justify-content: space-between;
-    width: 70%;
-
-    Input {
-      width: calc(50% - 20px); // 양쪽 패딩 합산한 공간 조정
-      margin: 10px 0;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
+    Input{
+      width: 33.7vw;
     }
   }
+
 }
 
 #input-error {
@@ -140,20 +155,18 @@
 }
 
 .auth_container {
-  width: 100%;
+  width: 40vw;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .email_input {
-    width: 70%;
+    width: 33.7vw;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
     border-radius: 5px;
     border: 2px solid #b9b8b8;
-
+    margin-bottom: 20px;
     Input {
       flex: 1;
       border: none;
@@ -166,30 +179,38 @@
       cursor: pointer;
       padding: 5px 10px;
 
-      &:hover {
-        background-color: darken(#60aeb3, 10%);
-      }
-
       &:active {
-        background-color: #71c9ce;
+        background-color: #aaaaaa;
       }
     }
   }
 
   .authcode_input {
-    width: 70%;
+    width: 33.7vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    Input {
+    padding: 0;
+    position: relative; /* 부모 요소를 상대적으로 설정 */
+  
+    input {
       flex: 1;
       margin-right: 10px;
+      margin: 0;
     }
-
+  
     .auth_time {
+      position: absolute; /* 절대 위치 설정 */
+      right: 10px; /* 부모 요소의 오른쪽 끝에 배치 */
+      top: 50%; /* 부모 요소의 중간 높이에 배치 */
+      transform: translateY(-50%); /* 수직 중앙 정렬 */
       color: red;
       white-space: nowrap;
     }
   }
+  
+}
+.error-message{
+  color: red;
+  font-size: 10px;
 }

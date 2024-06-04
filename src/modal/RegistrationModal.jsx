@@ -49,8 +49,8 @@ function RegistrationModal({ open, handleClose }) {
   const [isDuplicate, setIsDuplicate] = useState(false);
 
   const years = Array.from({ length: 2024 - 1900 + 1 }, (v, i) => ({
-    value: 1900 + i,
-    label: `${1900 + i}년`,
+    value: 2024 - i,
+    label: `${2024 - i}년`,
   }));
 
   const months = Array.from({ length: 12 }, (v, i) => ({
@@ -198,6 +198,12 @@ function RegistrationModal({ open, handleClose }) {
           formData={formData}
           setModalStep={setModalStep}
           handleCloseWithReset={handleCloseWithReset}
+          handleDateChange={handleDateChange}
+
+          date={date}
+          years={years}
+          months={months}
+          days={days}
         />
       );
       break;
@@ -212,12 +218,8 @@ function RegistrationModal({ open, handleClose }) {
           isActive={isActive}
           minutes={minutes}
           seconds={seconds}
-          handleDateChange={handleDateChange}
           sendUserInfo={sendUserInfo}
-          date={date}
-          years={years}
-          months={months}
-          days={days}
+         
           setModalStep={setModalStep}
           setIsDuplicate={setIsDuplicate}
           handleCloseWithReset={handleCloseWithReset}
