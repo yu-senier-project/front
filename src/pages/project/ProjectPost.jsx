@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
-import useProjectStore from "../../store/project/useProjectStore";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import "../../styles/project/ProjectPost.scss";
 import apiClient from "../../util/BaseUrl";
@@ -14,6 +13,7 @@ import usePreserveQueryParams from "../../hooks/usePreserveQueryParams";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import EditPostModal from "../../modal/EditPostModal";
 
 export default function ProjectPost() {
   const { projectId } = useParams();
@@ -26,11 +26,14 @@ export default function ProjectPost() {
   const [posts, setPosts] = useState([]);
   const [postContent, setPostContent] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentPostId, setCurrentPostId] = useState(null);
+  const [currentPostId, setCurrentPostId] = useState();
   const memberId = localStorage.getItem("memberId");
   const loaderRef = useRef(null);
   const preserveQueryParams = usePreserveQueryParams();
-
+  const [newPost, setNewPost] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [editContent, setEditContent] = useState("");
+  
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function ProjectPost() {
       }
     };
     fetchData();
-  }, [projectId]);
+  }, [projectId, newPost]);
 
   const loadItems = async () => {
     if (!hasMore || loadingMore) return; // 추가 데이터가 없거나 이미 로딩 중이면 함수 종료
@@ -130,6 +133,7 @@ export default function ProjectPost() {
   const formatDistanceToNowInKorean = (date) => {
     const distance = formatDistanceToNow(date, { addSuffix: true });
     const translations = {
+      "about":'',
       "about 1 hour ago": "약 1시간 전",
       "about 1 minute ago": "약 1분 전",
       "about 1 month ago": "약 1개월 전",
@@ -152,31 +156,14 @@ export default function ProjectPost() {
   
     return translated;
   };
+
   const createPost = async (content) => {
     try {
-      await apiClient.post(`/api/v1/project/${projectId}/post`, { content });
+      const response = await apiClient.post(`/api/v1/project/${projectId}/post`, { content });
       console.log("Post created");
       setPostContent("");
-  
-      // 현재 날짜를 배열 형태로 변환
-      const createdAtArray = dateToArray(new Date());
-  
-      // 서버에서 데이터를 받지 않으므로 임시로 생성
-      const newPost = {
-        id: new Date().getTime(), // 임시 ID 생성
-        content: content,
-        createdAt: createdAtArray, // 배열 형태로 저장
-        postMember: {
-          id: memberId,
-          nickname: localStorage.getItem("userNickName"),
-        },
-        prosCnt: 0,
-        consCnt: 0,
-        checkCnt: 0,
-        opinion: null,
-      };
-      console.log(newPost)
-      setPosts((prevPosts) => [newPost, ...prevPosts]); // 최신 게시글이 맨 위로 오도록 추가
+
+      setNewPost(newPost+1);
   
       // URL params 유지
       const searchParams = new URLSearchParams(window.location.search);
@@ -243,16 +230,26 @@ export default function ProjectPost() {
 
   const handleClose = () => {
     setAnchorEl(null);
-    setCurrentPostId(null);
   };
 
   const handleEdit = () => {
-    console.log(currentPostId)
+    const postToEdit = posts.find(post => post.id === currentPostId);
+    setEditContent(postToEdit.content);
+    setOpenModal(true);
     handleClose();
   };
 
+  const handleSave = async () => {
+    try {
+      await apiClient.patch(`/api/v1/project/${projectId}/post/${currentPostId}`, { content: editContent });
+      setPosts(posts.map(post => post.id === currentPostId ? { ...post, content: editContent } : post));
+      setOpenModal(false);
+    } catch (error) {
+      console.error("Failed to update post:", error);
+    }
+  };
+
   const handleDelete = async () => {
-    // 삭제 로직 추가
     try {
       await apiClient.delete(
         `/api/v1/project/${projectId}/post/${currentPostId}`
@@ -290,7 +287,7 @@ export default function ProjectPost() {
             userName={localStorage.getItem("userNickName")}
             width={"width-40"}
             height={"height-40"}
-            img={"/public/image/dp.jpg"}
+            img={localStorage.getItem('profile')?localStorage.getItem('profile'):"/public/image/dp.jpg"}
           />
           <button onClick={() => createPost(postContent)}>작성</button>
         </div>
@@ -320,7 +317,7 @@ export default function ProjectPost() {
                   userName={item.postMember.nickname}
                   width={"width-40"}
                   height={"height-40"}
-                  img={"/public/image/dp.jpg"}
+                  img={item.postMember.profile?item.postMember.profile:"/public/image/dp.jpg"}
                 />
                 <p style={{ margin: "10px", color: "rgb(210, 210, 210)" }}>
                   {formatDistanceToNowInKorean(parseDate(item.createdAt))}
@@ -398,6 +395,13 @@ export default function ProjectPost() {
       <div ref={loaderRef} style={{ height: "100px", margin: "10px" }}>
         {loadingMore && "게시글 불러오는중..."}
       </div>
+      <EditPostModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        postContent={editContent}
+        setPostContent={setEditContent}
+        handleSave={handleSave}
+      />
     </div>
   );
 }
