@@ -4,18 +4,24 @@ p {
 
 .Texts {
   margin-top: 5px;
+  width: 500px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.Texts-good {
-  margin-top: 10spx;
+.NoImage-Texts {
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .Texts-id {
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 5px;
+  margin-right: 10px;
 }
 
 .Texts-content {
   margin-bottom: 10px;
+  font-size: 16px;
 }

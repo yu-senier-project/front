@@ -6,6 +6,10 @@ import path from 'path';
 
 // Vite 설정 파일
 export default defineConfig({
+    server: {
+    host: "0.0.0.0", // 1
+    port: 5173,      // 2
+  },
     plugins: [react()],
     resolve: {
         alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],

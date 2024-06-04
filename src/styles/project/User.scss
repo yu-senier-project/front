@@ -1,0 +1,41 @@
+.User {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  background-color: lightgrey;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.User-img {
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    vertical-align: middle;
+    object-fit: cover;
+  }
+}
+
+.User-name {
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.User-button {
+}
+
+.User-button-plus {
+  cursor: pointer;
+
+  :active {
+    color: red;
+  }
+}
+
+.User-button-plus:hover {
+  border-bottom: 1px solid black;
+}

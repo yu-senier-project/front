@@ -1,23 +1,17 @@
 .ChatUserCard {
   display: flex;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
+  position: relative;
 
   .ChatUserCard-text {
     margin-left: 15px;
-    font-size: 17px;
+    font-size: 15px;
     overflow-wrap: break-word;
 
     .ChatUserCard-userName {
+      cursor: pointer;
       font-weight: 900;
       margin-right: 10px;
-    }
-  }
-
-  .ChatUserCard-chat {
-    span {
-      font-size: 13px;
-      color: rgb(160, 160, 160);
-      cursor: pointer;
     }
   }
 }
@@ -25,4 +19,45 @@
 #ChatUserCard-img {
   border-radius: 50%;
   cursor: pointer;
+}
+
+.ChatUserCard-HeartBtn {
+  button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    font-size: 16px;
+  }
+}
+
+.ChatUserCard-reply {
+  display: flex;
+  margin-left: 55px;
+}
+
+.ChatUserCard-chat-grey {
+  font-size: 12px;
+  color: rgb(160, 160, 160);
+  cursor: pointer;
+}
+
+.ChatUserCard-setting-btn {
+  cursor: pointer;
+  display: none;
+}
+
+.ChatUserCard:hover .ChatUserCard-setting-btn {
+  display: inline; /* 마우스가 ChatUserCard 위에 있을 때 버튼을 보여줍니다 */
+}
+
+.ChatUserCard-Setting {
+  position: absolute;
+  z-index: 10000;
+}
+
+.ChatReplyUserCard-Setting {
+  position: absolute;
+  left: 140px;
+  top: 30px;
+  z-index: 100;
 }

@@ -1,0 +1,47 @@
+.ProjectCalendar {
+  width: 80%;
+  margin: auto;
+}
+
+.ProjectCalendar-top {
+  position: relative;
+  margin: auto;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  h2 {
+    margin: 0px;
+
+    button {
+      cursor: pointer;
+      background-color: white;
+      border: none;
+      padding: 0px;
+      margin: 0px;
+      padding-right: 10px;
+
+      &:hover {
+        border-bottom: 1px solid black;
+      }
+    }
+  }
+
+  div {
+    button {
+      cursor: pointer;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      background-color: #71c9ce;
+      color: white;
+    }
+  }
+}
+
+.ProjectCalendar-setting {
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+}

@@ -1,0 +1,30 @@
+.SearchUser {
+  position: absolute;
+  width: 220px;
+  height: 200px;
+  overflow: auto;
+  box-shadow: 2px 2px 2px 2px grey;
+  background-color: white;
+  top: -200px;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0px;
+    margin: 0px;
+  }
+
+  li {
+    list-style: none;
+    border-bottom: 1px solid black;
+    padding: 10px;
+    height: 30px;
+    &:hover {
+      background-color: lightgrey;
+    }
+  }
+}
+
+.selected {
+  background-color: lightgrey;
+}

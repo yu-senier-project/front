@@ -1,0 +1,46 @@
+.ProfileUpdate {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+}
+
+.ProfileUpdate-wrap {
+  width: 500px;
+  position: relative;
+  padding: 20px 50px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 2px 2px grey;
+}
+
+.ProfileUpdate-closeBtn {
+  position: absolute;
+  right: 20px;
+}
+
+.ProfileUpdate-img {
+  display: flex;
+
+  justify-content: center;
+
+  div {
+    width: 150px;
+    height: 150px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 100px;
+    }
+  }
+}

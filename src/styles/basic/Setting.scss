@@ -1,0 +1,37 @@
+.Setting {
+  margin: auto;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 10px;
+  // position: absolute;
+  background-color: white;
+  // right: 0px;
+  // // top: 30px;
+  // z-index: 1000;
+}
+
+.Setting-list {
+  border-bottom: 1px solid grey;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+
+  cursor: pointer;
+  padding: 10px;
+
+  &:hover {
+    background-color: lightgrey;
+  }
+
+  &:active {
+    background-color: grey;
+  }
+}
+
+.Setting-list:first-child {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.Setting-list:last-child {
+  border: none;
+  border-radius: 0px 0px 10px 10px;
+}
