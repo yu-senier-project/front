@@ -23,37 +23,15 @@ function RoomSelecter({ selectedRoom, rooms = [], onSelectRoom, onAddRoom, open,
             <ul>
                 {rooms.length > 0 ? (
                     rooms.map((room, index) => (
-                        <div
-                            key={index} // div 태그에 key 속성을 추가합니다.
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                            className={selectedRoom === room.roomId ? 'selected' : ''}
-                            onClick={() => {
-                                onSelectRoom(room.roomId);
-                            }}
-                        >
-                            <li>
-                                <p>{room.roomName}</p>
-                                <p>{room.lastChat?room.lastChat.substring(0, 10)+'...':"빈 채팅방"}</p>
-                            </li>
-                            {room.isRead ? (
-                                <></>
-                            ) : (
-                                <div
-                                    style={{
-                                        height: '10px',
-                                        width: '10px',
-                                        backgroundColor: 'transparent',
-                                        borderRadius: '100%',
-                                    }}
-                                ></div>
-                            )}
+                        <div key={room.roomId} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }} className={selectedRoom === room.roomId ? 'selected' : ''} onClick={() => { onSelectRoom(room.roomId); }}>
+                          <li>
+                            <p>{room.roomName}</p>
+                            <p>{room.lastChat ? room.lastChat.substring(0, 10) + '...' : "빈 채팅방"}</p>
+                          </li>
+                          {room.isRead ? (<></>) : (<div style={{ height: '10px', width: '10px', backgroundColor: 'transparent', borderRadius: '100%', }}></div>)}
                         </div>
-                    ))
+                      ))
+                      
                 ) : (
                     <li>
                         <span>방 목록이 없습니다.</span>

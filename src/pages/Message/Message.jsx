@@ -47,7 +47,7 @@ export default function Message() {
     console.log("close");
     setCreateOpen(false);
   };
-  const [hasReloaded, setHasReloaded] = useState(false); // 새로고침을 위한 상태
+  const [hasReloaded, setHasReloaded] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const handleInviteOpen = () => setInviteOpen(true);
   const handleInviteClose = () => setInviteOpen(false);
@@ -62,13 +62,11 @@ export default function Message() {
     }
   };
   useEffect(() => {
-    // console.log(isLogin, memberId);
     if (isLogin && memberId) {
       fetchRooms(memberId, roomNumber);
-      
     }
-  }, [isLogin, memberId, roomNumber, fetchRooms,rooms]);
-
+  }, [isLogin, memberId, roomNumber]);
+  
   useEffect(() => {
     if (selectedRoom && memberId) {
       setMessages([]);
@@ -84,6 +82,7 @@ export default function Message() {
     if (!hasReloaded) {
       sessionStorage.setItem('hasReloaded', 'true');
       window.location.reload(true);
+      setHasReloaded(true)
     }
   }, []);
 
