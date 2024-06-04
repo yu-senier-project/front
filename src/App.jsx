@@ -38,11 +38,14 @@ function App() {
   const { isLogin } = useLoginStore((state) => state);
   return (
     <>
+      <ReactQueryDevtools
+        initialIsOpen={true}
+        buttonPosition="bottom"
+      ></ReactQueryDevtools>
       <BrowserRouter>
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<Login />} />
-
           <Route path="/" element={<SmallNav />}>
             <Route path="Id" element={<IdFind />} />
             <Route path="CheckId" element={<IdCheck />} />
@@ -50,7 +53,7 @@ function App() {
             <Route path="PasswordInit" element={<PwInit />} />
             <Route path="Home" element={<Home />} />
             <Route path="Search" element={<Search />} />
-            <Route path="SearchPost" element={<SearchPost/>}/>
+            <Route path="SearchPost" element={<SearchPost />} />
             <Route path="Project" element={<ProjectHome />} />
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
@@ -62,15 +65,13 @@ function App() {
             <Route path="Todo/:projectId" element={<Todo />} />
             <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
             <Route path=":projectId" element={<ProjectCalendar />} />
+
             <Route path="Gantt/:projectId" element={<ProjectGantt />} />
             <Route path="Post/:projectId" element={<ProJectPost />} />
-
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
-        {/* <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools> */}
       </BrowserRouter>
-
     </>
   );
 }
