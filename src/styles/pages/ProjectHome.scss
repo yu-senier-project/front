@@ -61,17 +61,13 @@
   position: relative;
 
   p {
-    &:nth-child(2) {
-      font-size: 30px;
-      margin-bottom: 10px;
-      font-weight: bold;
-      overflow: scroll;
-      height: 30%;
-    }
-
     &:nth-child(3) {
-      overflow: scroll;
-      height: 55%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 60%;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
     }
 
     &:nth-child(4) {
@@ -93,4 +89,18 @@
   &:hover {
     border-bottom: 1px solid black;
   }
+}
+
+.ProjectHome::-webkit-scrollbar {
+  display: none;
+}
+
+.ProjectHome-title-p {
+  font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 30%;
 }

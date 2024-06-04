@@ -12,6 +12,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
 import { renderContent } from "../../../util/MentionHashText";
+import { useNavigate } from "react-router-dom";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -23,6 +24,8 @@ const Feed = ({ feedList }) => {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
   });
+
+  const nav = useNavigate();
 
   let imgList = data?.data;
 
@@ -70,7 +73,11 @@ const Feed = ({ feedList }) => {
   });
 
   const handleOnDelete = () => {
-    mutate(feedList.id);
+    const bool = window.confirm("정말로 삭제하시겠습니까?");
+    if (bool) {
+      mutate(feedList.id);
+    }
+
     setIsSettingOpen(false);
   };
 
@@ -132,6 +139,8 @@ const Feed = ({ feedList }) => {
                 setFalseLike={setFalseLike}
               ></Buttons>
               <Texts
+                hashtags={feedList.hashtags}
+                mentions={feedList.mentions}
                 comment={feedList.content}
                 loveNum={feedList.loveNum}
                 nickname={feedList.nickname}
@@ -169,7 +178,12 @@ const Feed = ({ feedList }) => {
               style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
               className="Feed-content"
             >
-              {renderContent(feedList.content)}
+              {renderContent(
+                feedList.content,
+                feedList.hashtags,
+                feedList.mentions,
+                nav
+              )}
             </p>
             <Buttons
               isCommentEnabled={feedList.isCommentEnabled}
@@ -184,7 +198,7 @@ const Feed = ({ feedList }) => {
             <Texts
               comment={""}
               loveNum={feedList.loveNum}
-              nicknamse={""}
+              nickname={""}
               falseLoveNum={falseLoveNum}
             ></Texts>
             {feedList.isCommentEnabled ? (

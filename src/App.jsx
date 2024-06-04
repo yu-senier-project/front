@@ -13,11 +13,15 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { ProjectHome } from "./pages/project/ProjectHome";
 import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+import SearchPost from "./component/search/SearchPost";
+import { NotFound } from "./pages/NotFound";
+
 import ProjectGantt from "./pages/project/ProjectGantt";
 import ProJectPost from "./pages/project/ProjectPost";
 
@@ -38,32 +42,35 @@ function App() {
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<Login />} />
-          {/* SmallNav가 필요한 경로 */}
-          <Route element={<SmallNav />}>
+
+          <Route path="/" element={<SmallNav />}>
+            <Route path="Id" element={<IdFind />} />
+            <Route path="CheckId" element={<IdCheck />} />
+            <Route path="Password" element={<PwInitCheckId />} />
+            <Route path="PasswordInit" element={<PwInit />} />
             <Route path="Home" element={<Home />} />
             <Route path="Search" element={<Search />} />
+            <Route path="SearchPost" element={<SearchPost/>}/>
             <Route path="Project" element={<ProjectHome />} />
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="Profile/:id" element={<Profile />} />
             {/* <Route path="Message" element={<Message />} /> */}
           </Route>
-          {/* SmallNav가 필요 없는 경로 */}
-          <Route path="Id" element={<IdFind />} />
-          <Route path="CheckId" element={<IdCheck />} />
-          <Route path="Password" element={<PwInitCheckId />} />
-          <Route path="PasswordInit" element={<PwInit />} />
           <Route path="/ProjectHome" element={<ProjectNav />}>
             <Route path="InfoUpdate" element={<UpdateProject />} />
             <Route path="Todo/:projectId" element={<Todo />} />
             <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
             <Route path=":projectId" element={<ProjectCalendar />} />
-            <Route path="Gantt/:projectId" element={<ProjectGantt />} />
-            <Route path="Post/:projectId" element={<ProJectPost />} />
+            <Route path=":projectId/Gantt" element={<ProjectGantt />} />
+            <Route path=":projectId/Post" element={<ProJectPost />} />
+
           </Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
+        {/* <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools> */}
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+
     </>
   );
 }

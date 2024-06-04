@@ -28,7 +28,16 @@ export const ProjectNav = () => {
   return (
     <div>
       <div className="SmallNav">
-        <h1>CNS</h1>
+        <h1
+          style={{
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            nav("/Home");
+          }}
+        >
+          CNS
+        </h1>
         <div className="SmallNav-menuWrap">
           <Link
             to={`/ProjectHome/${projectId}?memberId=${managerId}&title=${title}`}

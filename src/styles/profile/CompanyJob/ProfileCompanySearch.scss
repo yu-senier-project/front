@@ -1,0 +1,129 @@
+.ProfileCompanySearch {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+}
+
+.ProfileCompanySearch-wrap {
+  width: 500px;
+  position: relative;
+  padding: 10px 25px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 2px 2px grey;
+  h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.ProfileCompanySearch-input {
+  input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background-color: #eee;
+  }
+}
+
+.ProfileCompanySearch-close {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+
+.ProfileCompanySearch-result {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  background-color: #eee;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.companyResult {
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.companyResult-company {
+  width: 85%;
+}
+.companyResult-btn {
+  text-align: center;
+  width: 15%;
+
+  button {
+    cursor: pointer;
+    background-color: #71c9ce;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 10px;
+  }
+}
+
+.companyResult-select {
+  background-color: lightgrey;
+  button {
+    background-color: #5ca5a9;
+  }
+}
+
+.ProfileCompanySearch-next {
+  button {
+    cursor: pointer;
+    border: none;
+    background-color: #71c9ce;
+    color: white;
+    padding: 8px;
+    width: 100%;
+    border-radius: 10px;
+  }
+}
+
+.ProfileAuth-email {
+  margin-bottom: 10px;
+  input {
+    padding: 5px;
+    outline: none;
+  }
+}
+
+.ProfileAuth-btn {
+  border: none;
+  padding: 5px;
+  // background-color: lightgrey;
+  margin-left: 10px;
+  border-radius: 10px;
+}
+
+.ProfileAuth-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  button {
+    width: 200px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+  }
+}

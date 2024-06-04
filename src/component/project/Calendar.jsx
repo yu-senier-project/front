@@ -85,12 +85,13 @@ const FullCalendarContainer = styled.div`
     margin-bottom: 5px;
     border-radius: 4px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 12px;
     background-color: lightgrey;
     border: none;
     border-left: 5px solid lightblue;
     white-space: nowrap; // 텍스트가 한 줄로 표시되게 설정
-    overflow-x: auto; // 가로 스크롤이 가능하게 설정
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

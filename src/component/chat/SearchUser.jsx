@@ -14,11 +14,12 @@ export const SearchUser = ({ onMentionClick, metionValue }) => {
       let data = await apiClient.get(
         `/api/v1/member/search?nickname=${metionValue}`
       );
+      console.log(data);
       setUsers(
         data.data.map((item) => ({
           userName: item.nickname,
           memberId: item.memberId,
-          img: "image/dp.jpg",
+          img: item.profile ?? "image/dp.jpg",
         }))
       );
     } catch (error) {
@@ -27,7 +28,7 @@ export const SearchUser = ({ onMentionClick, metionValue }) => {
   };
 
   useEffect(() => {
-    const timeoutExecute = setTimeout(() => fetchData(), 1000);
+    const timeoutExecute = setTimeout(() => fetchData(), 300);
     return () => clearTimeout(timeoutExecute);
   }, [metionValue]);
 

@@ -19,6 +19,7 @@ import { FaRegUser } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 const SmallNav = () => {
   const nav = useNavigate();
@@ -31,7 +32,16 @@ const SmallNav = () => {
   return (
     <div>
       <div className="SmallNav">
-        <h1>CNS</h1>
+        <h1
+          style={{
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            nav("/Home");
+          }}
+        >
+          CNS
+        </h1>
         <div className="SmallNav-menuWrap">
           <Link to={"/Home"}>
             <div className="SmallNav-menu">
@@ -70,17 +80,24 @@ const SmallNav = () => {
         </div>
 
         <div className="SmallNav-menu">
-          <FontAwesomeIcon icon={faGear} className="icon" />
-          <p>설정</p>
+          <RiLogoutBoxLine className="icon" />
+          <p
+            onClick={() => {
+              logout();
+              nav("/");
+            }}
+          >
+            로그아웃
+          </p>
         </div>
-        <button
+        {/* <button
           onClick={() => {
             logout();
             nav("/");
           }}
         >
           로그아웃
-        </button>
+        </button> */}
       </div>
       <Outlet />
     </div>

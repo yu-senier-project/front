@@ -39,3 +39,7 @@
   right: -10px;
   z-index: 100;
 }
+
+.Todoitem-content::-webkit-scrollbar {
+  display: none;
+}

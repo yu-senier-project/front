@@ -29,8 +29,6 @@ export const Profile = () => {
     memberData?.data?.profile ?? "/image/dp.jpg"
   );
 
-  console.log(profileImg);
-
   useEffect(() => {
     setProfileImg(memberData?.data?.profile ?? "/image/dp.jpg");
   }, [memberData]);
@@ -97,7 +95,11 @@ export const Profile = () => {
         setImageEdit={setImageEdit}
         setOnResume={setOnResume}
       />
-      <ProfileNav selectMenu={selectMenu} setSelectMenu={setSelectMenu} />
+      <ProfileNav
+        selectMenu={selectMenu}
+        setSelectMenu={setSelectMenu}
+        nickname={memberData?.data.nickname}
+      />
       {/* 내 게시물에만 필터 넣기  */}
       {selectMenu == 1 ? (
         <ProfileFilter
@@ -153,6 +155,7 @@ export const Profile = () => {
       {/* 소속 변경 버튼 눌렀는지 */}
       {onChangeCompany ? (
         <ProfileUpdateCompanyJob
+          data={memberData}
           setOnChangeCompany={setOnChangeCompany}
         ></ProfileUpdateCompanyJob>
       ) : null}
