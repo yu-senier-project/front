@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Loading } from "../basic/Loading";
 import apiClient from "../../util/BaseUrl";
 import ChatModal from "../chat/ChatModal";
@@ -16,32 +16,59 @@ export default function SearchPost() {
   const [falseLoveNum, setFalseLoveNum] = useState(0);
   const [falseLike, setFalseLike] = useState(false);
   const [activePostId, setActivePostId] = useState(null);
-  
+  const [page, setPage] = useState(1); 
+  const [hasMore, setHasMore] = useState(true); 
+
+  const observer = useRef();
+
+  const colors = [
+    '#ffdfd3', '#d4f1f4', '#c1e1c1', '#f9e2af',
+    '#e4c1f9', '#fbdce2', '#d3e0ea', '#fee9b2',
+    '#c2f0fc', '#f5c6ec'
+  ];
+
+  const lastPostElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        const { data } = await apiClient(`/api/v1/hashtag/post?hashtag=${hashtag}`);
+        const response = await apiClient(`/api/v1/hashtag/post?hashtag=${hashtag}&page=${page}&size=10`);
+        const data = response.data;
+        console.log(`Page: ${page}, Fetched ${data.length} posts`);
         
-        const postsWithMedia = await Promise.all(data.map(async (post) => {
-          if (post.fileCnt > 0) {
-            const mediaResponse = await apiClient(`/api/v1/post/${post.id}/media`);
-            return { ...post, media: mediaResponse.data };
-          }
-          return post;
-        }));
-
-        setPosts(postsWithMedia);
+        if (Array.isArray(data)) { // 배열인지 확인
+          const postsWithMedia = await Promise.all(data.map(async (post) => {
+            if (post.fileCnt > 0) {
+              const mediaResponse = await apiClient(`/api/v1/post/${post.id}/media`);
+              return { ...post, media: mediaResponse.data };
+            }
+            return post;
+          }));
+          setPosts(prevPosts => [...prevPosts, ...postsWithMedia]);
+          setHasMore(data.length > 0);
+        } else {
+          setError('Unexpected response format');
+          setHasMore(false);
+        }
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
-     fetchData();
-  }, [hashtag]);
+  
+    fetchData();
+  }, [hashtag, page]);
 
   useEffect(() => {
     if (activePostId) {
@@ -53,7 +80,7 @@ export default function SearchPost() {
     }
   }, [activePostId, posts]);
 
-  if (loading) {
+  if (loading && page === 1) {
     return <Loading />;
   }
 
@@ -92,12 +119,19 @@ export default function SearchPost() {
             <img src="public/image/hashTag.png" className="hashtag_img" alt="Hashtag" />
             <h1>{hashtag}</h1>
           </div>
+          <div>
           <ul className="search_posts">
-            {posts.map(post => (
-              <li key={post.id} className="search_post" onClick={() => handlePostClick(post.id)}>
+            {posts.map((post, index) => (
+              <li 
+                key={index} 
+                className="search_post" 
+                style={{ backgroundColor: colors[index % colors.length] }} // 색상 순환 적용
+                onClick={() => handlePostClick(post.id)}
+                ref={posts.length === index + 1 ? lastPostElementRef : null}
+              >
                 <div className="post-content">
                   {post.fileCnt > 0 && post.media ? (
-                    <img src={post.media[0]?.url || "https://via.placeholder.com/150"} alt="Post Media" className="post-image" />
+                    <img src={post.media[0].uploadFileURL || "https://via.placeholder.com/150"} alt="Post Media" className="post-image" />
                   ) : (
                     <p>{post.content.slice(0, 20) + '...'}</p>
                   )}
@@ -109,10 +143,11 @@ export default function SearchPost() {
               </li>
             ))}
           </ul>
+          </div>
           {activePostId && (
             <ChatModal
               profile={posts.find(post => post.id === activePostId).postMember.profile}
-              imgList={posts.find(post => post.id === activePostId).fileCnt > 0 ? posts.find(post => post.id === activePostId).media.map(media => media.url) : []}
+              imgList={posts.find(post => post.id === activePostId).fileCnt > 0 ? posts.find(post => post.id === activePostId).media : []}
               feedList={posts.find(post => post.id === activePostId)}
               handleChatButtonClick={handleCloseModal}
               falseLoveNum={falseLoveNum}
