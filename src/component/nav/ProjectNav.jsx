@@ -48,7 +48,7 @@ export const ProjectNav = () => {
             </div>
           </Link>
           <Link
-            to={`/ProjectHome/${projectId}/Gantt?memberId=${managerId}&title=${title}`}
+            to={`/ProjectHome/Gantt/${projectId}?memberId=${managerId}&title=${title}`}
           >
             <div className="SmallNav-menu">
               <FaChartGantt className="icon" />
@@ -56,7 +56,7 @@ export const ProjectNav = () => {
             </div>
           </Link>
           <Link
-            to={`/ProjectHome/${projectId}/Post?memberId=${managerId}&title=${title}`}
+            to={`/ProjectHome/Post/${projectId}?memberId=${managerId}&title=${title}`}
           >
             <div className="SmallNav-menu">
               <MdDynamicFeed className="icon" />

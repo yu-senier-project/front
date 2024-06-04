@@ -3,10 +3,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-export default function SelectComponent({ id, placeholder, onChange, data }) {
-  const [value, setValue] = React.useState("");
+export default function SelectComponent({ id, placeholder, value, onChange, data }) {
   const handleChange = (event) => {
-    setValue(event.target.value);
     if (onChange) {
       onChange(event.target.value);
     }

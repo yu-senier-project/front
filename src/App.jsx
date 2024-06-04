@@ -65,8 +65,9 @@ function App() {
             <Route path="Todo/:projectId" element={<Todo />} />
             <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
             <Route path=":projectId" element={<ProjectCalendar />} />
-            <Route path=":projectId/Gantt" element={<ProjectGantt />} />
-            <Route path=":projectId/Post" element={<ProJectPost />} />
+
+            <Route path="Gantt/:projectId" element={<ProjectGantt />} />
+            <Route path="Post/:projectId" element={<ProJectPost />} />
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
