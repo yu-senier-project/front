@@ -54,7 +54,7 @@ function App() {
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="Profile/:id" element={<Profile />} />
-            {/* <Route path="Message" element={<Message />} /> */}
+            <Route path="Message" element={<Message />} />
           </Route>
           <Route path="/ProjectHome" element={<ProjectNav />}>
             <Route path="InfoUpdate" element={<UpdateProject />} />
