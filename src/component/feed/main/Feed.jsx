@@ -12,6 +12,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeedImg, deleteFeed } from "../../../apis/feedApis";
 import { renderContent } from "../../../util/MentionHashText";
+import { useNavigate } from "react-router-dom";
 
 const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
@@ -23,6 +24,8 @@ const Feed = ({ feedList }) => {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
   });
+
+  const nav = useNavigate();
 
   let imgList = data?.data;
 
@@ -178,7 +181,8 @@ const Feed = ({ feedList }) => {
               {renderContent(
                 feedList.content,
                 feedList.hashtags,
-                feedList.mentions
+                feedList.mentions,
+                nav
               )}
             </p>
             <Buttons

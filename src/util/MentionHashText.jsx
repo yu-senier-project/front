@@ -4,6 +4,10 @@ export const renderContent = (text, hashtags, mentions, nav) => {
   // 공백을 포함한 분할
   const parts = text?.split(/(\s+)/);
 
+  const onHashClick = (hash) => {
+    nav(`/SearchPost`, { state: { hashtag: hash } });
+  };
+
   return parts?.map((part, index) => {
     if (part.startsWith("@")) {
       let member = mentions?.find((item) => {
@@ -17,9 +21,14 @@ export const renderContent = (text, hashtags, mentions, nav) => {
         </Link>
       );
     } else if (part.startsWith("#")) {
-      // console.log(part);
       return (
-        <span key={index} className="hashHighlight">
+        <span
+          key={index}
+          className="hashHighlight"
+          onClick={() => {
+            onHashClick(part.substr(1));
+          }}
+        >
           {part}
         </span>
       );
