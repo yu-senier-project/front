@@ -43,10 +43,11 @@ export default function SearchPost() {
       try {
         setLoading(true);
         const response = await apiClient(`/api/v1/hashtag/post?hashtag=${hashtag}&page=${page}&size=10`);
-        const data = response.data;
-        console.log(`Page: ${page}, Fetched ${data.length} posts`);
-        
-        if (Array.isArray(data)) { // 배열인지 확인
+        const { data } = response;
+        console.log(`API Response: `, response); // 응답을 확인하기 위해 콘솔에 출력
+  
+        // 데이터가 배열인지 확인
+        if (Array.isArray(data)) {
           const postsWithMedia = await Promise.all(data.map(async (post) => {
             if (post.fileCnt > 0) {
               const mediaResponse = await apiClient(`/api/v1/post/${post.id}/media`);
@@ -54,11 +55,13 @@ export default function SearchPost() {
             }
             return post;
           }));
+  
           setPosts(prevPosts => [...prevPosts, ...postsWithMedia]);
-          setHasMore(data.length > 0);
+          
+          // 가져온 데이터가 10개 미만이면 더 이상 가져올 데이터가 없다고 설정
+          setHasMore(data.length === 10);
         } else {
           setError('Unexpected response format');
-          setHasMore(false);
         }
       } catch (error) {
         setError(error.message);
@@ -133,7 +136,8 @@ export default function SearchPost() {
                   {post.fileCnt > 0 && post.media ? (
                     <img src={post.media[0].uploadFileURL || "https://via.placeholder.com/150"} alt="Post Media" className="post-image" />
                   ) : (
-                    <p>{post.content.slice(0, 20) + '...'}</p>
+                    <p>{post.content.length > 20 ? post.content.slice(0, 20) + '...' : post.content}</p>
+
                   )}
                 </div>
                 <div className="post-footer">
