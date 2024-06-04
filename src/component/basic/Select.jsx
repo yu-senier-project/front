@@ -1,13 +1,10 @@
-import React from 'react';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import React from "react";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-export default function SelectComponent({ id, placeholder, onChange, data }) {
-  const [value, setValue] = React.useState('');
+export default function SelectComponent({ id, placeholder, value, onChange, data }) {
   const handleChange = (event) => {
-    setValue(event.target.value);
     if (onChange) {
       onChange(event.target.value);
     }
@@ -15,7 +12,6 @@ export default function SelectComponent({ id, placeholder, onChange, data }) {
 
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-      
       <Select
         labelId={`${id}-label`}
         id={id}
@@ -26,8 +22,10 @@ export default function SelectComponent({ id, placeholder, onChange, data }) {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {data.map(item => (
-          <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+        {data.map((item) => (
+          <MenuItem key={item.value} value={item.value}>
+            {item.label}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

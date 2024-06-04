@@ -1,0 +1,45 @@
+name: deploy for dev
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # repository checkout
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "VITE_BASEURL=$VITE_BASEURL" >> .env
+        env:
+          VITE_BASEURL: ${{ secrets.VITE_BASEURL }}
+
+      # DockerHub Login
+      - name: docker login 
+        uses: docker/login-action@v2
+        with: 
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+        
+      # Docker image Build 
+      - name: docker image build
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/cns-front:latest .
+    
+      # Docker Hub push 
+      - name: docker Hub push
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/cns-front:latest
+      
+      # run application
+      - name : run application via ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CNS_DEV_IP }}
+          username: ${{ secrets.CNS_DEV_USERNAME }}
+          key: ${{ secrets.CNS_DEV_SSH_KEY }}
+          script: ${{ secrets.CNS_DEV_DEPLOY_COMMAND }}

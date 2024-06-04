@@ -10,8 +10,11 @@ import { useEffect, useRef, useState } from "react";
 import { Setting } from "../basic/Setting";
 import { getFeedComment } from "../../apis/feedApis";
 import { useQuery } from "@tanstack/react-query";
+import { renderContent } from "../../util/MentionHashText";
+import { useNavigate } from "react-router-dom";
 
 const ChatModal = ({
+  profile,
   handleUpdateButtonClick,
   handleOnDelete,
   feedList,
@@ -31,6 +34,8 @@ const ChatModal = ({
     onSuccess: (data) => {},
     staleTime: 1000 * 60 * 5,
   });
+
+  const nav = useNavigate();
 
   const onDelete = () => {
     handleChatButtonClick(); // 모달창 닫기
@@ -53,7 +58,8 @@ const ChatModal = ({
 
   // 모달 바깥 클릭했을 때 닫는 코드
   const handleClickBackground = (e) => {
-    if (e.target !== backgroundRef.current && onSetting) {
+    if (e.target == backgroundRef.current) {
+      handleChatButtonClick();
       setOnSetting(false);
     }
   };
@@ -64,11 +70,12 @@ const ChatModal = ({
     <div
       className="ChatModal ChatModal-animation"
       onClick={handleClickBackground}
+      ref={backgroundRef}
     >
       <div className="ChatModal-wrap">
         <div className="Feed-userInfo ChatModalUser">
           {onSetting ? (
-            <div className="ChatModal-Setting" ref={backgroundRef}>
+            <div className="ChatModal-Setting">
               <Setting
                 width={150}
                 settingTitleList={[
@@ -85,8 +92,14 @@ const ChatModal = ({
             </div>
           ) : null}
           <UserInfo
+            id={feedList.memberId ? feedList.memberId : feedList.postMember.id}
+            profile={profile}
             clock={feedList.createdAt}
-            username={feedList.nickname}
+            username={
+              feedList.nickname
+                ? feedList.nickname
+                : feedList.postMember.nickname
+            }
             Icon={faX}
             handleSettingButtonClick={handleSettingButtonClick}
           ></UserInfo>
@@ -106,7 +119,7 @@ const ChatModal = ({
                 postId={feedList.id}
                 like={feedList.liked}
                 setFalseLoveNum={setFalseLoveNum}
-                falseLoveNum={falseLoveNum}
+                falseLoveNum={falseLoveNum ? falseLoveNum : feedList.likeCnt}
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
               ></Buttons>
@@ -123,7 +136,12 @@ const ChatModal = ({
                       className="Texts-content"
                       style={{ whiteSpace: "pre-wrap" }}
                     >
-                      {feedList.content}
+                      {renderContent(
+                        feedList.content,
+                        [],
+                        feedList.mentions,
+                        nav
+                      )}
                     </span>
                   </div>
                 )}
@@ -132,6 +150,7 @@ const ChatModal = ({
           ) : (
             <div>
               <p
+                className="NoImage-Texts"
                 style={{
                   marginBottom: "10px",
                   whiteSpace: "pre-wrap",
@@ -140,7 +159,7 @@ const ChatModal = ({
                   overflow: "scroll",
                 }}
               >
-                {feedList.content}
+                {renderContent(feedList.content, [], feedList.mentions, nav)}
               </p>
               <Buttons
                 postId={feedList.id}

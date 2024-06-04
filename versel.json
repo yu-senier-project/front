@@ -1,0 +1,11 @@
+{
+  "env": {
+    "API_URL": "https://c-ns.site:443"
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}

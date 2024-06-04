@@ -4,8 +4,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
-  width: 50%;
-  height: 600px;
+  width: 60vw;
+  height: 80vh;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,23 +13,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  // h1 {
-  //   float: left;
-  //   margin-right: 100px;
-  //   margin-bottom: 10px;
-  // }
+  justify-content: center;
+
   .title {
-    // position: fixed;
     text-align: start;
     width: 70%;
     margin-top: 0px;
     margin-bottom: 20px;
+    position: fixed;
+    top:5%;
   }
+
   .header {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 50px;
+    position: fixed;
+    top: 0%;
     .close-button {
       background-color: transparent;
       border: none;
@@ -37,6 +38,7 @@
       cursor: pointer;
     }
   }
+
   .company-list {
     background-color: rgb(216, 216, 216);
     height: 300px;
@@ -51,34 +53,38 @@
       padding: 0;
       margin: 0;
     }
+
     li {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
-      border-bottom: 3px solid #ccc; // 아이템 사이의 구분선
+      border-bottom: 3px solid #ccc;
 
       &:last-child {
-        border-bottom: none; // 마지막 항목은 구분선 없음
+        border-bottom: none;
       }
-    }
-    button {
-      padding: 5px 10px;
-      background-color: #71c9ce; // 버튼 배경색
-      color: white; // 텍스트 색상
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s; // 버튼 호버 효과
 
-      &:hover {
-        background-color: darken(#60aeb3, 10%);
-      }
-      &:active {
+      button {
+        padding: 5px 10px;
         background-color: #71c9ce;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: darken(#60aeb3, 10%);
+        }
+
+        &:active {
+          background-color: #71c9ce;
+        }
       }
     }
   }
+
   .birthday-selecter {
     width: 70%;
 
@@ -88,73 +94,123 @@
       margin-bottom: 0px;
     }
   }
+
   .name-space {
-    width: 100%;
+    width: 30vw;
+    position: relative;
+    top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .position-space {
+    width: 30vw;
+    // margin-bottom: 50px;
+  }
+
+  .next_button {
+    width: 33.7vw;
+    position: fixed;
+    bottom: 0px;
+    // margin-bottom: 10px;
+  }
+
+  .id-space {
+    position: relative;
+    // margin-bottom: 20px;
+
     Input {
-      margin: 10px 33px 20px 33px;
+      width: 33.7vw;
+
+      // width: calc(100% - 80px); // 중복 확인 버튼 크기만큼 너비 조정
+      padding-right: 70px; // 중복 확인 버튼 공간 확보
+    }
+
+    .duplication_button {
+      position: absolute;
+      width: 6vw;
+      right: 5px;
+      top: 2.5vh;
+      transform: translateY(-50%);
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
     }
   }
+
   .password-space {
-    width: 100%;
-    Input {
-      margin: 10px 36px 20px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
+    Input{
+      width: 33.7vw;
     }
   }
+
 }
+
 #input-error {
   border: 2px solid red;
 }
+
 .auth_container {
-  width: 150%;
+  width: 40vw;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   .email_input {
-    width: 100%;
+    width: 33.7vw;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-
+    border-radius: 5px;
+    border: 2px solid #b9b8b8;
+    margin-bottom: 20px;
     Input {
-      margin-right: 10px;
-    }
-
-    .company_email {
-      margin-right: 10px;
+      flex: 1;
+      border: none;
+      margin: 0;
     }
 
     .auth_button {
-      background-color: #71c9ce;
-      color: white;
+      background-color: transparent;
       border: none;
-      border-radius: 4px;
-      padding: 5px 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: darken(#60aeb3, 10%);
-      }
+      padding: 5px 10px;
 
       &:active {
-        background-color: #71c9ce;
+        background-color: #aaaaaa;
       }
     }
   }
 
   .authcode_input {
-    width: 100%;
+    width: 33.7vw;
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    Input {
+    justify-content: space-between;
+    padding: 0;
+    position: relative; /* 부모 요소를 상대적으로 설정 */
+  
+    input {
+      flex: 1;
       margin-right: 10px;
+      margin: 0;
     }
-
+  
     .auth_time {
+      position: absolute; /* 절대 위치 설정 */
+      right: 10px; /* 부모 요소의 오른쪽 끝에 배치 */
+      top: 50%; /* 부모 요소의 중간 높이에 배치 */
+      transform: translateY(-50%); /* 수직 중앙 정렬 */
       color: red;
+      white-space: nowrap;
     }
   }
+  
+}
+.error-message{
+  color: red;
+  font-size: 10px;
 }

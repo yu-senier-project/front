@@ -10,7 +10,12 @@ import { useState } from "react";
 import { Loading } from "../component/basic/Loading";
 const Home = () => {
   // 게시물 받아오는 함수
-  const fetchFeeds = ({ pageParam = 0 }) => getAllFeed(pageParam);
+  const fetchFeeds = ({ pageParam = { lastId: 0, nextPage: 1 } }) => {
+    const { lastId, nextPage } = pageParam;
+
+    console.log(lastId, nextPage);
+    return getAllFeed(lastId, nextPage);
+  };
 
   // 무한 스크롤 구현 부분
   const {
@@ -25,15 +30,22 @@ const Home = () => {
     queryKey: ["feeds"],
     queryFn: fetchFeeds,
     getNextPageParam: (lastPage, pages) => {
-      return lastPage
-        ? lastPage.data[lastPage.data.length - 1].id ?? false
-        : false;
+      const lastId =
+        lastPage && Array.isArray(lastPage.data) && lastPage.data.length > 0
+          ? lastPage.data[lastPage.data.length - 1].id
+          : -1;
+      if (lastId === -1) {
+        return undefined; // 더 이상 페이지가 없음을 나타냅니다.
+      }
+      const nextPage = pages.length + 1;
+      return { lastId, nextPage };
     },
-    staleTime: 1000 * 60 * 5,
-    retry: 0,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 10 * 5,
+    gcTime: 1000 * 10 * 5,
+    retry: 3,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) {
@@ -43,9 +55,8 @@ const Home = () => {
   // 화면 끝에 도달했는지 확인하는 함수
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight) {
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
       if (hasNextPage && !isFetchingNextPage) {
-        console.log("게시물 불러오기");
         fetchNextPage();
       }
     }
@@ -56,6 +67,9 @@ const Home = () => {
 
   list = list?.map((item1) => {
     return item1.map((item) => ({
+      mentions: item.mentions,
+      hashtags: item.hashtags,
+      memberId: item.postMember?.id,
       id: item.id,
       content: item.content,
       isCommentEnabled: item.isCommentEnabled,
@@ -78,6 +92,9 @@ const Home = () => {
   }
 
   const feedList = spreadList?.map((item) => ({
+    mentions: item.mentions,
+    hashtags: item.hashtags,
+    memberId: item.memberId,
     id: item.id,
     content: item.content,
     isCommentEnabled: item.isCommentEnabled,
@@ -98,7 +115,7 @@ const Home = () => {
       style={{ height: "100vh", overflow: "auto" }}
     >
       {feedList?.map((item, idx) => (
-        <Feed feedList={item} key={item.id}></Feed>
+        <Feed feedList={item} key={idx}></Feed>
       ))}
       {isFetchingNextPage && (
         <div style={{ textAlign: "center" }}>게시글 불러오는중 ...</div>

@@ -15,12 +15,17 @@ const Content = ({
 }) => {
   // 멘션하는지 확인하는 부분
 
+  const img =
+    localStorage.getItem("profile") == "null"
+      ? "/image/dp.jpg"
+      : localStorage.getItem("profile");
+
   return (
     <div className="Content">
       <UserCard
-        userName={"yeongi0111"}
+        userName={localStorage.getItem("userNickName")}
         width="width-40"
-        img="public/image/dp.jpg"
+        img={img}
       ></UserCard>
       <MentionTextarea
         inputRef={inputRef}
