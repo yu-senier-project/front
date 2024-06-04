@@ -191,7 +191,7 @@ const ChatUserCard = ({
           </span>
           <span className="ChatUserCard-commnet">
             {console.log(mentions)}
-            {renderContent(comment, [], mentions)}
+            {renderContent(comment, [], mentions, null, true)}
           </span>
           <div className="ChatUserCard-chat">
             <span

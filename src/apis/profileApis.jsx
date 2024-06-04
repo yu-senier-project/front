@@ -12,6 +12,16 @@ export const getMemberFeed = async (
   if (cursorValue === false) {
     return { data: [] };
   }
+
+  if (filterType == "oldest") {
+    if (cursorValue == 0) {
+      return apiClient.get(
+        `/api/v1/member/${memberId}/post?filter=${filterType}`
+      );
+    } else {
+      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`;
+    }
+  }
   if (startDate == 0 || endDate == 0) {
     if (cursorValue == 0) {
       return apiClient.get(

@@ -9,7 +9,7 @@ import {
 import { constructNow } from "date-fns";
 
 export const OtherTodo = ({ nickname, todoList }) => {
-  console.log(todoList);
+  console.log(nickname, todoList);
 
   const [todos, setTodos] = useState([]);
 
@@ -33,7 +33,7 @@ export const OtherTodo = ({ nickname, todoList }) => {
 
       setTodos(newObj);
     }
-  }, []);
+  }, [nickname]);
 
   return (
     <div className="OtherTodo">
