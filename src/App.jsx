@@ -38,10 +38,10 @@ function App() {
   const { isLogin } = useLoginStore((state) => state);
   return (
     <>
-      <ReactQueryDevtools
+      {/* <ReactQueryDevtools
         initialIsOpen={true}
         buttonPosition="bottom"
-      ></ReactQueryDevtools>
+      ></ReactQueryDevtools> */}
       <BrowserRouter>
         {toggle && <CreateFeed />}
         <Routes>
