@@ -7,6 +7,7 @@
   display: none;
 }
 
+
 $colors: (
   0: hsl(0, 50%, 70%),
   1: hsl(30, 50%, 70%),
@@ -24,8 +25,9 @@ $colors: (
 );
 
 @each $index, $color in $colors {
-  .task-color-#{$index} .gantt_task_bar {
-    background-color: #{$color} !important;
+  .task-color-#{$index} .gantt_task_content {
+    
+    background-color: #{$color};
   }
 }
 
@@ -43,7 +45,7 @@ $colors: (
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 70%;
     max-width: 1300px;
     height: 80vh;
   }
@@ -52,3 +54,5 @@ $colors: (
     display: none;
   }
 }
+
+

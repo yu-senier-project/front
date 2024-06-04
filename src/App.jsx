@@ -29,7 +29,6 @@ import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 
-
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
