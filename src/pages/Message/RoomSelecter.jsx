@@ -1,4 +1,3 @@
-// RoomSelecter.js
 import React, { useState } from "react";
 import "../../styles/message/roomselecter.scss";
 import apiClient from "../../util/BaseUrl";
