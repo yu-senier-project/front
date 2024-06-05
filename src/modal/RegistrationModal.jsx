@@ -199,7 +199,6 @@ function RegistrationModal({ open, handleClose }) {
           setModalStep={setModalStep}
           handleCloseWithReset={handleCloseWithReset}
           handleDateChange={handleDateChange}
-
           date={date}
           years={years}
           months={months}
@@ -219,7 +218,6 @@ function RegistrationModal({ open, handleClose }) {
           minutes={minutes}
           seconds={seconds}
           sendUserInfo={sendUserInfo}
-         
           setModalStep={setModalStep}
           setIsDuplicate={setIsDuplicate}
           handleCloseWithReset={handleCloseWithReset}

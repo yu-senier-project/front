@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import { CgAddR } from "react-icons/cg";
@@ -16,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import apiClient from "../../util/BaseUrl";
+import FileModal from "../../modal/FileModal";
 
 export default function Message() {
   const isLogin = localStorage.getItem("login");
@@ -30,14 +30,16 @@ export default function Message() {
     messages,
     setMessages,
     fetchMessages,
-    fetchMoreMessages, // 추가 메시지 불러오기 함수
+    fetchMoreMessages, 
     sendMessage,
     sendImageMessage,
     sendFileMessage,
     isConnected,
     leaveRoom,
-    isLoading, // 로딩 상태
-    setLoading, // 로딩 상태 설정 함수
+    isLoading, 
+    setLoading, 
+    fetchAllFile,
+    files,
   } = useMessageStore();
   const lastMessageRef = useRef(null);
   const [message, setMessage] = useState("");
@@ -48,6 +50,7 @@ export default function Message() {
     console.log("close");
     setCreateOpen(false);
   };
+
   const [hasReloaded, setHasReloaded] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const handleInviteOpen = () => setInviteOpen(true);
@@ -57,26 +60,27 @@ export default function Message() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
+
+  const [fileModalOpen, setFileModalOpen] = useState(false); 
+
   const handleConnect = () => {
     if (!isConnected) {
       connectStompClient();
     }
   };
+
   useEffect(() => {
     if (isLogin && memberId) {
       fetchRooms(memberId, roomNumber);
     }
   }, [isLogin, memberId, roomNumber]);
-  
+
   useEffect(() => {
     if (selectedRoom && memberId) {
-      setMessages([]);
       fetchMessages(selectedRoom);
     }
   }, [selectedRoom, fetchMessages]);
 
-
-  
   useEffect(() => {
     const hasReloaded = sessionStorage.getItem('hasReloaded');
 
@@ -86,7 +90,17 @@ export default function Message() {
       setHasReloaded(true)
     }
   }, []);
+  useEffect(() => {
+    if (files.length > 0) {
+      setFileModalOpen(true);
+    }
+  }, [files]);
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages[selectedRoom]]);
 
   const handleSelectRoom = (roomId) => {
     setSelectedRoom(roomId);
@@ -94,11 +108,10 @@ export default function Message() {
 
   const handleAddRoom = async (newRoomName) => {
     if (newRoomName.trim() && memberId) {
-        await addRoom(newRoomName, memberId);
-        fetchRooms(memberId, roomNumber);
+      await addRoom(newRoomName, memberId);
+      fetchRooms(memberId, roomNumber);
     }
-};
-
+  };
 
   const handleLoadMore = () => {
     const nextRoomNumber = roomNumber + 1;
@@ -133,11 +146,11 @@ export default function Message() {
 
         if (file.type.startsWith("image/")) {
           console.log("이미지 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); // Base64 인코딩 헤더 제거
+          base64Data = base64Data.replace(/^data:.*;base64,/, ""); 
           sendImageMessage(file, selectedRoom, memberId, base64Data);
         } else {
           console.log("다른 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); // Base64 인코딩 헤더 제거
+          base64Data = base64Data.replace(/^data:.*;base64,/, ""); 
           sendFileMessage(file, selectedRoom, memberId, base64Data);
         }
       };
@@ -158,7 +171,9 @@ export default function Message() {
     handleMenuClose();
     switch (action) {
       case "fileImage":
-        document.getElementById("file_input").click();
+        fetchAllFile(selectedRoom, memberId);
+        console.log(files[selectedRoom])
+        setFileModalOpen(true);
         break;
       case "invite":
         handleInviteOpen();
@@ -192,7 +207,10 @@ export default function Message() {
       case "IMAGE":
         return (
           <div>
-            <p>{data.from}</p>
+            <div>
+              <p>asdf</p>
+              <p>{data.from}</p>
+            </div>
             <img
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -201,9 +219,7 @@ export default function Message() {
               }
               src={data.content}
               alt="Message Content"
-              onClick={() => {
-                console.log(data);
-              }}
+
             />
           </div>
         );
@@ -227,7 +243,11 @@ export default function Message() {
       default:
         return (
           <div>
-            <p>{data.from}</p>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ?
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? <img src={data.profile ? data.profile : "/public/image/dp.jpg"} className="message-profile-img" /> : ''}
+                <p>{data.from}</p>
+              </div> : ''}
             <span
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -261,6 +281,13 @@ export default function Message() {
           handleClose={handleInviteClose}
           selectedRoom={selectedRoom}
           memberId={memberId}
+          close={handleInviteClose}
+          setMessages={setMessages}
+        />
+        <FileModal
+          open={fileModalOpen}
+          handleClose={() => setFileModalOpen(false)}
+          files={files[selectedRoom]}
         />
         <div className="message_header">
           {selectedRoomData && (
@@ -315,8 +342,8 @@ export default function Message() {
                   data.memberId === parseInt(memberId)
                     ? "message_self"
                     : data.messageType === "STATUS"
-                    ? "message_system"
-                    : "message_other"
+                      ? "message_system"
+                      : "message_other"
                 }
                 key={index + 1}
               >
@@ -353,7 +380,6 @@ export default function Message() {
             <IoIosSend />
           </button>
         </div>
-        
       </div>
     </div>
   );

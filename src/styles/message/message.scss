@@ -50,6 +50,13 @@
       padding: 0;
       margin: 0;
     }
+    .message-profile-img{
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+      margin-right: 5px;
+    }
+   
 
     img {
       max-width: 100%;
@@ -57,7 +64,8 @@
 
     .message_self {
       text-align: right;
-
+      
+      
       span {
         padding: 10px;
         background-color: #71c9ce;
@@ -103,17 +111,14 @@
     }
 
     .message_system {
-      // display: flex;
-      width: 100%;
       text-align: center;
       display: flex;
-      background-color: #e0e0e0;
+      justify-content: center;
+      display: flex;
+      background-color: #ffffff;
       padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 5px;
-      max-width: 40%;
-      margin-right: auto;
-      white-space: normal;
+      margin-bottom: 15px;
+      max-width: 100%;
       overflow-wrap: break-word;
     }
   }
@@ -180,3 +185,4 @@
     color: #bebebe;
   }
 }
+
