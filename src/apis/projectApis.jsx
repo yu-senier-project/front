@@ -63,6 +63,7 @@ export const deletePlan = async (planId) => {
 // 일정 수정 api
 export const updatePlan = async (planId, data) => {
   try {
+    console.log(data);
     const response = await apiClient.patch(`/api/v1/plan/${planId}`, data);
     return response.data;
   } catch (error) {
