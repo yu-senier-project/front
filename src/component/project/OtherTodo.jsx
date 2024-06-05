@@ -14,8 +14,9 @@ export const OtherTodo = ({ nickname, todoList }) => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
+    let newObj = null;
     if (todoList.length != 0) {
-      const newObj = {
+      newObj = {
         BEFORE: [],
         ONGOING: [],
         AFTER: [],
@@ -30,10 +31,19 @@ export const OtherTodo = ({ nickname, todoList }) => {
       for (let key in newObj) {
         newObj[key].sort((a, b) => b.id - a.id);
       }
-
       setTodos(newObj);
+      return;
     }
-  }, [nickname]);
+    if (newObj == null) {
+      newObj = {
+        BEFORE: [],
+        ONGOING: [],
+        AFTER: [],
+      };
+    }
+    setTodos(newObj);
+    return;
+  }, [nickname, todoList]);
 
   return (
     <div className="OtherTodo">

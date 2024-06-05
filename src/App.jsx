@@ -13,7 +13,7 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
+import Message from "./pages/Message/Message";
 import { ProjectHome } from "./pages/project/ProjectHome";
 import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
@@ -42,7 +42,6 @@ function App() {
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<Login />} />
-
           <Route path="/" element={<SmallNav />}>
             <Route path="Id" element={<IdFind />} />
             <Route path="CheckId" element={<IdCheck />} />
@@ -55,7 +54,6 @@ function App() {
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="Profile/:id" element={<Profile />} />
-            {/* <Route path="Message" element={<Message />} /> */}
           </Route>
           <Route path="/ProjectHome" element={<ProjectNav />}>
             <Route path="InfoUpdate" element={<UpdateProject />} />
@@ -67,7 +65,6 @@ function App() {
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
-        {/* <ReactQueryDevtools buttonPosition="bottom"> </ReactQueryDevtools> */}
       </BrowserRouter>
     </>
   );

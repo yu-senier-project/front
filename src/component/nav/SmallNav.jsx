@@ -75,7 +75,7 @@ const SmallNav = () => {
           </Link>
           <div className="SmallNav-menu" onClick={onCreate}>
             <FaRegSquarePlus className="icon" />
-            <p>만들기</p>
+            <p>게시글 작성</p>
           </div>
         </div>
 
