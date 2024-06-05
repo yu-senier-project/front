@@ -43,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="Id" element={<IdFind />} />
+
           <Route path="CheckId" element={<IdCheck />} />
           <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
