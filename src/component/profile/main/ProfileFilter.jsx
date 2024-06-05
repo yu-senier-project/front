@@ -45,7 +45,16 @@ export const ProfileFilter = ({
       >
         <CiFilter size="30" />
       </div>
-      <p>{value}</p>
+      <p
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          setOnFilter(!onFilter);
+        }}
+      >
+        {value}
+      </p>
       {onFilter ? (
         <ProfileFilterMenu
           setOnFilter={setOnFilter}

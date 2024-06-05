@@ -43,8 +43,16 @@
   display: flex;
   gap: 20px;
   input {
-    width: 250px;
+    width: 100%;
   }
+}
+
+.CreateProject-endDate {
+  width: 100%;
+}
+
+.CreateProject-startDate {
+  width: 100%;
 }
 
 .CreateProject-btn {

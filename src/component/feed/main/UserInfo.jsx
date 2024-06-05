@@ -12,6 +12,7 @@ const UserInfo = ({
   profile,
   id,
 }) => {
+  console.log(clock);
   let time = `${clock[0]}-${clock[1]}-${clock[2]} ${clock[3]}:${clock[4]}:${clock[5]}`;
   time = new Date(time).getTime();
   let currentTime = new Date().getTime();
