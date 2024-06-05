@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import Modal from "@mui/material/Modal";
 import Input from "../component/basic/Input";
 import apiClient from "../util/BaseUrl";
-import { debounce } from "lodash";
+import { debounce, values } from "lodash";
 import Button from "../component/basic/Button";
 import CloseButton from "../component/basic/CloseButton";
 import useMessageStore from "../store/message/useMessageStore";
@@ -14,7 +14,7 @@ function RoomCreateModal({ open, close }) {
   const [selectedPeople, setSelectedPeople] = useState([]);
   const [search, setSearch] = useState("");
   const [newRoomName, setNewRoomName] = useState(
-    localStorage.getItem("userNickName") || ""
+    localStorage.getItem("userNickName")
   );
   const { addRoom, fetchRooms, roomNumber } = useMessageStore();
 
@@ -43,13 +43,13 @@ function RoomCreateModal({ open, close }) {
     debouncedFetchPeople(value);
   };
 
-  const handleSelectPerson = (nickname, memberId) => {
+  const handleSelectPerson = (nickname, memberId, profile) => {
     setSelectedPeople((prev) => {
       const isSelected = prev.some((person) => person.memberId === memberId);
       if (isSelected) {
         return prev.filter((person) => person.memberId !== memberId);
       } else {
-        return [...prev, { nickname, memberId }];
+        return [...prev, { nickname, memberId, profile }];
       }
     });
   };
@@ -62,59 +62,78 @@ function RoomCreateModal({ open, close }) {
     addRoom(newRoomName, selectedPeople);
     fetchRooms(localStorage.getItem("memberId"), roomNumber);
     setModalStep(0);
+    setSearch('');
     setPeople([]);
     setSelectedPeople([]);
+    window.location.reload();
     close();
   };
 
   const renderPeopleList = () => {
+    // 선택된 사람들을 제외한 유저 리스트 필터링
     if (people.length > 0) {
+      const filteredPeople = people.filter(
+        (person) => !selectedPeople.some((selected) => selected.memberId === person.memberId)
+      );
       return (
-        <ul>
-          {people.map((person) => (
-            <li key={person.memberId}>
-              {person.nickname}
-              <button
-                onClick={() =>
-                  handleSelectPerson(person.nickname, person.memberId)
-                }
-                className={
-                  selectedPeople.some(
-                    (selected) => selected.memberId === person.memberId
-                  )
-                    ? "button-selected"
-                    : ""
-                }
-              >
-                선택
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div style={{ display: "flex" }}>
+          <div className="left-section">
+            <p>유저 리스트</p>
+            <ul>
+              {filteredPeople.map((person) => (
+                <li key={person.memberId}>
+                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
+                  {person.nickname}
+                  <button
+                    onClick={() => handleSelectPerson(person.nickname, person.memberId, person.profile)}
+                  >
+                    선택
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="right-section">
+            <p>선택된 유저</p>
+            <ul>
+              {selectedPeople.map((person) => (
+                <li key={person.memberId}>
+                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
+                  {person.nickname}
+                  <button
+                    onClick={() => handleSelectPerson(person.nickname, person.memberId, person.profile)}
+                  >
+                    선택
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       );
     } else if (search.length > 0) {
-      return <p>검색 결과가 없습니다.</p>;
+      return <div style={{ display: "flex" }}>
+        <div className="left-section"><p>검색결과가</p></div>
+        <div className="right-section"><p>없습니다.</p></div>
+      </div>
     }
     return null;
   };
+  
 
   const renderModalContent = () => {
     if (modalStep === 0) {
       return (
         <div className="addroom-modal">
           <div className="header">
-            {/* <button className="close-button" onClick={close}> */}
             <CloseButton onCloseButton={close} />
-            {/* </button> */}
           </div>
           <b>채팅방 생성</b>
-          <Input
-            size="Large"
-            name="invite"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <div className="people-list">{renderPeopleList()}</div>
+          <Input size="Large" name="invite" value={search} onChange={handleSearchChange} />
+          {search?<div className="people-list">{renderPeopleList()}</div>:<div style={{ display: "flex" }}>
+        <div className="left-section"></div>
+        <div className="right-section"></div>
+      </div>}
           <Button text="다음" size="Large" onClick={() => setModalStep(1)} />
         </div>
       );
@@ -125,23 +144,12 @@ function RoomCreateModal({ open, close }) {
             <button className="close-button" onClick={() => setModalStep(0)}>
               <h1>←</h1>
             </button>
-            <button className="close-button" onClick={close}>
-              <CloseButton />
-            </button>
+            <CloseButton onCloseButton={close} />
           </div>
           <p>사용하실 채팅방의 이름을 적어주세요</p>
           <p>미 작성시 채팅방 회원의 이름으로 작성됩니다</p>
-          <Input
-            size="Large"
-            name="newRoomName"
-            value={newRoomName}
-            onChange={handleNewRoomNameChange}
-          />
-          <Button
-            text="채팅방 생성"
-            size="Large"
-            onClick={handleRoomCreation}
-          />
+          <Input size="Large" name="newRoomName" value={newRoomName} onChange={handleNewRoomNameChange} />
+          <Button text="채팅방 생성" size="Large" onClick={handleRoomCreation} />
         </div>
       );
     } else {
@@ -150,12 +158,7 @@ function RoomCreateModal({ open, close }) {
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={close}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={close} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       {renderModalContent()}
     </Modal>
   );

@@ -121,7 +121,7 @@ const useMessageStore = create((set, get) => ({
   messages: {},
   subscribedRooms: [],
   isMessageLoading: false,
-
+  files:{},
   setRooms: (rooms) => set({ rooms }),
 
   setSelectedRoom: (roomId) => set({ selectedRoom: roomId }),
@@ -133,6 +133,8 @@ const useMessageStore = create((set, get) => ({
       messages: { ...state.messages, [roomId]: newMessages },
     })),
 
+  
+
   addSubscribedRoom: (roomId) =>
     set((state) => ({
       subscribedRooms: [...state.subscribedRooms, roomId],
@@ -143,21 +145,28 @@ const useMessageStore = create((set, get) => ({
 
   addRoom: async (roomName, inviteList) => {
     try {
-
       const memberId = localStorage.getItem("memberId");
+      const filteredInviteList = inviteList.map(({ memberId, nickname }) => ({
+        memberId,
+        nickname,
+      }));
+  
       const data = {
         roomName: roomName,
-        inviteList: inviteList,
+        inviteList: filteredInviteList,
       };
-      // console.log(data)
+  
+      console.log(data);
+  
       const response = await apiClient.post(
         `/api/v1/chat-room/create?memberId=${memberId}`,
         data
-      );  
-      return response    
+      );
+  
+      return response;
     } catch (error) {
       // console.error("Error adding chat room:", error);
-      throw error
+      throw error;
     }
   },
 
@@ -204,9 +213,15 @@ const useMessageStore = create((set, get) => ({
 
       const response = await apiClient.get(`/api/v1/chat-room/${roomId}`);
       console.log(response);
-      const sortedMessages = response.data.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
+      const sortedMessages = response.data.sort((a, b) => {
+        if (a.chatId < b.chatId) {
+          return -1;
+        }
+        if (a.chatId > b.chatId) {
+          return 1;
+        }
+        return 0;
+      });
       set((state) => ({
         messages: { ...state.messages, [roomId]: sortedMessages },
       }));
@@ -356,7 +371,6 @@ const useMessageStore = create((set, get) => ({
       const response = await apiClient.delete(
         `/api/v1/chat-room/${roomId}?memberId=${memberId}`
       );
-      console.log(response);
       set((state) => {
         const updatedRooms = state.rooms.filter(
           (room) => room.roomId !== roomId
@@ -375,6 +389,20 @@ const useMessageStore = create((set, get) => ({
       console.error("Error leaving chat room:", error);
     }
   },
+
+  fetchAllFile: async(roomId,memberId) => {
+    try{
+      const response = await apiClient.get(`/api/v1/chat-room/${roomId}/images`);
+      console.log(response)
+      set((state) => ({
+        files: { ...state.files, [roomId]: response.data },
+      }));
+
+    }catch(error){
+      console.error("Error fetchFiles",error)
+    }
+    
+  }
 }));
 
 export default useMessageStore;

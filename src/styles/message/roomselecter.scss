@@ -22,6 +22,7 @@
       text-align: center;
       justify-content: center;
       padding: 10px;
+      color: white
     }
   
     .profile {
@@ -41,6 +42,8 @@
       margin: 0;
       width: 100%;
       cursor: pointer;
+      overflow-y: auto; 
+      flex-grow: 1; 
       .selected {
         background-color: #71C9CE;
         color: white;
