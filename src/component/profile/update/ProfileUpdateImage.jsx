@@ -32,9 +32,12 @@ export const ProfileUpdateImage = ({ setImageEdit, img, setProfileImg }) => {
 
   // 기본 프로필로 설정 눌렀을 때 서버로 전송
   const handleOriginImage = () => {
-    setProfileImg("/image/dp.jpg");
-    deleteMutate();
-    handleCloseBtn();
+    let bool = window.confirm("정말 기본 프로필로 설정하시겠습니까?");
+    if (bool) {
+      setProfileImg("/image/dp.jpg");
+      deleteMutate();
+      handleCloseBtn();
+    }
     // 서버로 보내는 로직 추가, 낙관적 업데이트 추가
   };
 

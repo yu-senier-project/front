@@ -5,6 +5,15 @@ p {
 .Texts {
   margin-top: 5px;
   width: 500px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.NoImage-Texts {
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .Texts-id {

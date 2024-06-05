@@ -217,7 +217,7 @@ export const ChatReplyUserCard = ({
           {userName}
         </span>{" "}
         <span className="ChatUserCard-commnet">
-          {renderContent(comment, [], mentions)}
+          {renderContent(comment, [], mentions, null, true)}
         </span>
         <div className="ChatUserCard-chat">
           <span

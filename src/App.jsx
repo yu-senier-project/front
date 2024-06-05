@@ -13,12 +13,14 @@ import useLoginStore from "./store/login/useLoginStore";
 import { refreshAccessTokenInterceptor } from "./util/auth";
 import "./App.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
+import Message from "./pages/Message/Message";
 import { ProjectHome } from "./pages/project/ProjectHome";
 import { CreateProject } from "./pages/project/CreateProject";
 import { ProjectCalendar } from "./pages/project/ProjectCalendar";
 import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
+import SearchPost from "./component/search/SearchPost";
+import { NotFound } from "./pages/NotFound";
 
 import ProjectGantt from "./pages/project/ProjectGantt";
 import ProJectPost from "./pages/project/ProjectPost";
@@ -26,7 +28,6 @@ import ProJectPost from "./pages/project/ProjectPost";
 import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
-
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -42,31 +43,31 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="Id" element={<IdFind />} />
-            <Route path="CheckId" element={<IdCheck />} />
-            <Route path="Password" element={<PwInitCheckId />} />
-            <Route path="PasswordInit" element={<PwInit />} />
+
+          <Route path="CheckId" element={<IdCheck />} />
+          <Route path="Password" element={<PwInitCheckId />} />
+          <Route path="PasswordInit" element={<PwInit />} />
           <Route path="/" element={<SmallNav />}>
-           
             <Route path="Home" element={<Home />} />
             <Route path="Search" element={<Search />} />
+            <Route path="SearchPost" element={<SearchPost />} />
             <Route path="Project" element={<ProjectHome />} />
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="Profile/:id" element={<Profile />} />
-            {/* <Route path="Message" element={<Message />} /> */}
+            <Route path="Message" element={<Message />} />
           </Route>
           <Route path="/ProjectHome" element={<ProjectNav />}>
             <Route path="InfoUpdate" element={<UpdateProject />} />
             <Route path="Todo/:projectId" element={<Todo />} />
             <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
             <Route path=":projectId" element={<ProjectCalendar />} />
-            <Route path=":projectId/Gantt" element={<ProjectGantt />} />
-            <Route path=":projectId/Post" element={<ProJectPost />} />
-
+            <Route path="Gantt/:projectId" element={<ProjectGantt />} />
+            <Route path="Post/:projectId" element={<ProJectPost />} />
           </Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
-
     </>
   );
 }

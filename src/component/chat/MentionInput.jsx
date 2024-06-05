@@ -101,8 +101,8 @@ export const MentionInput = ({
           return;
         }
       }
-      setCurrentCusor(e.target.selectionStart - 1);
-      setOnHash(true);
+      // setCurrentCusor(e.target.selectionStart - 1);
+      // setOnHash(true);
       return;
     }
   };

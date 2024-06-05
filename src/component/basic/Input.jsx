@@ -26,8 +26,8 @@ export default function Input({
       type={type}
       onChange={onChange}
       ref={reference}
-      onkeydown={onkeydown}
-      onfocus={onfocus}
+      onKeyDown={onkeydown}
+      onFocus={onfocus}
       placeholder={placeholder}
       value={value}
       style={style}

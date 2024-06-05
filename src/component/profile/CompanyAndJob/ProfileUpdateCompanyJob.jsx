@@ -60,6 +60,7 @@ export const ProfileUpdateCompanyJob = ({ setOnChangeCompany, data }) => {
     <>
       {onCompanyChange ? (
         <ProfileCompanySearch
+          nowCompany={data.data.companyName}
           setOnCompanyChange={setOnCompanyChange}
           setCompany={setCompany}
         />

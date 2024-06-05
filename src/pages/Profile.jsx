@@ -29,8 +29,6 @@ export const Profile = () => {
     memberData?.data?.profile ?? "/image/dp.jpg"
   );
 
-  console.log(profileImg);
-
   useEffect(() => {
     setProfileImg(memberData?.data?.profile ?? "/image/dp.jpg");
   }, [memberData]);
@@ -100,7 +98,7 @@ export const Profile = () => {
       <ProfileNav
         selectMenu={selectMenu}
         setSelectMenu={setSelectMenu}
-        nickname={memberData.data.nickname}
+        nickname={memberData?.data.nickname}
       />
       {/* 내 게시물에만 필터 넣기  */}
       {selectMenu == 1 ? (

@@ -12,13 +12,33 @@ export const getMemberFeed = async (
   if (cursorValue === false) {
     return { data: [] };
   }
+
+  if (filterType == "oldest") {
+    if (cursorValue == 0) {
+      return apiClient.get(
+        `/api/v1/member/${memberId}/post?filter=${filterType}`
+      );
+    } else {
+      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`;
+    }
+  }
   if (startDate == 0 || endDate == 0) {
+    if (cursorValue == 0) {
+      return apiClient.get(
+        `/api/v1/member/${memberId}/post?filter=${filterType}`
+      );
+    }
     return apiClient.get(
-      `/api/v1/member/${memberId}/post?filter=${filterType}&likeCnt=${likeCnt}&cursorValue=${cursorValue}`
+      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`
+    );
+  }
+  if (cursorValue == 0) {
+    return apiClient.get(
+      `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}`
     );
   }
   return apiClient.get(
-    `/api/v1/member/${memberId}/post?filter=${filterType}&likeCnt=${likeCnt}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
+    `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}&cursorValue=${cursorValue}`
   );
 };
 
@@ -37,9 +57,13 @@ export const getMemberLikeFeed = async (memberId, cursorValue) => {
   if (cursorValue === false) {
     return { data: [] };
   }
-  return apiClient.get(
-    `/api/v1/member/${memberId}/post/liked?cursorValue=${cursorValue}`
-  );
+  if (cursorValue == 0) {
+    return apiClient.get(`/api/v1/member/${memberId}/post/liked`);
+  } else {
+    return apiClient.get(
+      `/api/v1/member/${memberId}/post/liked?cursorValue=${cursorValue}`
+    );
+  }
 };
 
 // 회원 정보 수정 api

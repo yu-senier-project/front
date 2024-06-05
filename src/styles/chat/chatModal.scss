@@ -15,6 +15,9 @@
     overflow: scroll;
     background-color: white;
     padding: 20px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 

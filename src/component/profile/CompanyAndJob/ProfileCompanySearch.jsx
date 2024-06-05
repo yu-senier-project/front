@@ -9,7 +9,11 @@ import {
 } from "../../../apis/profileApis";
 import useTimer from "../../../hooks/useTimer";
 
-export const ProfileCompanySearch = ({ setOnCompanyChange, setCompany }) => {
+export const ProfileCompanySearch = ({
+  setOnCompanyChange,
+  setCompany,
+  nowCompany,
+}) => {
   // 타이머 훅 사용
   const { minutes, seconds, isActive, toggle } = useTimer(3, 0);
 
@@ -98,6 +102,10 @@ export const ProfileCompanySearch = ({ setOnCompanyChange, setCompany }) => {
 
   // 회사 선택 버튼 눌렀을 떄
   const onSelect = (name) => {
+    if (nowCompany == name) {
+      alert("이미 소속된 회사입니다");
+      return;
+    }
     setSelectValue(name);
   };
 
