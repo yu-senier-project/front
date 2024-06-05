@@ -8,6 +8,7 @@ import { useGetPlanList } from "../../react-query/useProject";
 import { parseDate } from "../../util/parseDate";
 import { CreateSchedule } from "../../component/project/CreateSchedule";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { PlanDetail } from "../../component/project/PlanDetail";
 import "../../styles/project/GanttChart.scss";
 
 export default function ProjectGantt() {
@@ -24,23 +25,34 @@ export default function ProjectGantt() {
 
   useEffect(() => {
     if (data && data.data) {
-      const event = data.data.map((plan, index) => {
-        return {
-          id: plan.planId,
-          text: plan.planName,
-          start_date: parseDate(plan.startedAt),
-          end_date: parseDate(plan.endedAt),
-          color: `task-color-${index % 13}`, // 13개의 색상을 순환하여 할당
-        };
-      });
+      const event = data.data
+        .map((plan, index) => {
+          const startDate = parseDate(plan.startedAt);
+          const endDate = parseDate(plan.endedAt);
+          const duration = plan.duration;
+          if (duration === 0) {
+            return null;
+          }
+
+          return {
+            id: plan.planId,
+            text: plan.planName,
+            start_date: startDate,
+            end_date: endDate,
+            color: `task-color-${index % 13}`, // 13개의 색상을 순환하여 할당
+          };
+        })
+        .filter(Boolean); // Remove null values
+
       setTasks({ data: event, links: [] });
+    } else {
+      setTasks({ data: [], links: [] });
     }
   }, [data]);
 
   useEffect(() => {
-    if (ganttContainer.current && tasks.data.length > 0) {
+    if (ganttContainer.current) {
       gantt.init(ganttContainer.current);
-      gantt.parse(tasks);
 
       gantt.config.date_format = "%Y-%m-%d %H:%i"; // 날짜 형식 설정
 
@@ -64,34 +76,46 @@ export default function ProjectGantt() {
       gantt.config.drag_progress = false;
       gantt.config.drag_move = false; // 드래그를 통한 수정 제거
 
-      gantt.attachEvent("onTaskDblClick", function (id, e) {
-        const task = gantt.getTask(id);
-        setSelectedTask(task);
-        setIsModalOpen(true);
-        return false; // 기본 모달 방지
-      });
+      // 기본 뼈대를 위해 간트 차트를 빈 데이터로 초기화
+      gantt.clearAll();
+      gantt.parse(tasks);
 
-      // Tasks 색 지정
       gantt.templates.task_class = function (start, end, task) {
         return task.color;
       };
 
-    
-
       // Todo list 테이블 속성
       gantt.config.columns = [
-        { name: "text", label: "일정 이름", width: "*", tree: true, template: (obj) => {
+        {
+          name: "text",
+          label: "일정 이름",
+          width: "*",
+          tree: true,
+          template: (obj) => {
             return `<i class="fas fa-calendar-alt"></i> ${obj.text}`;
-          }
+          },
         },
         { name: "start_date", label: "시작 시간", align: "center" },
         { name: "end_date", label: "종료 시간", align: "center" },
-       
       ];
+
+      gantt.attachEvent("onTaskClick", function (id, e) {
+        const task = gantt.getTask(id);
+        setSelectedTask(task);
+        setIsModalOpen(true);
+        return true;
+      });
 
       gantt.render();
     }
   }, [tasks]);
+
+  // Add useEffect to log selectedTask changes
+  useEffect(() => {
+    if (selectedTask) {
+      console.log(selectedTask);
+    }
+  }, [selectedTask]);
 
   // 커스텀 스크롤 이벤트 추가
   useEffect(() => {
@@ -105,17 +129,17 @@ export default function ProjectGantt() {
       isMouseDown = true;
       startX = e.pageX - ganttElement.offsetLeft;
       scrollLeft = ganttElement.scrollLeft;
-      ganttElement.style.cursor = 'grabbing';
+      ganttElement.style.cursor = "grabbing";
     };
 
     const mouseLeaveHandler = () => {
       isMouseDown = false;
-      ganttElement.style.cursor = 'grab';
+      ganttElement.style.cursor = "grab";
     };
 
     const mouseUpHandler = () => {
       isMouseDown = false;
-      ganttElement.style.cursor = 'grab';
+      ganttElement.style.cursor = "grab";
     };
 
     const mouseMoveHandler = (e) => {
@@ -126,16 +150,16 @@ export default function ProjectGantt() {
       ganttElement.scrollLeft = scrollLeft - walk;
     };
 
-    ganttElement.addEventListener('mousedown', mouseDownHandler);
-    ganttElement.addEventListener('mouseleave', mouseLeaveHandler);
-    ganttElement.addEventListener('mouseup', mouseUpHandler);
-    ganttElement.addEventListener('mousemove', mouseMoveHandler);
+    ganttElement.addEventListener("mousedown", mouseDownHandler);
+    ganttElement.addEventListener("mouseleave", mouseLeaveHandler);
+    ganttElement.addEventListener("mouseup", mouseUpHandler);
+    ganttElement.addEventListener("mousemove", mouseMoveHandler);
 
     return () => {
-      ganttElement.removeEventListener('mousedown', mouseDownHandler);
-      ganttElement.removeEventListener('mouseleave', mouseLeaveHandler);
-      ganttElement.removeEventListener('mouseup', mouseUpHandler);
-      ganttElement.removeEventListener('mousemove', mouseMoveHandler);
+      ganttElement.removeEventListener("mousedown", mouseDownHandler);
+      ganttElement.removeEventListener("mouseleave", mouseLeaveHandler);
+      ganttElement.removeEventListener("mouseup", mouseUpHandler);
+      ganttElement.removeEventListener("mousemove", mouseMoveHandler);
     };
   }, [ganttContainer.current]);
 
@@ -167,6 +191,13 @@ export default function ProjectGantt() {
         id="gantt_here"
         style={{ overflow: "auto", cursor: "grab" }}
       ></div>
+      {isModalOpen && (
+        <PlanDetail
+          setDetail={setIsModalOpen}
+          setSelectedEvent={setSelectedTask}
+          selectedEvent={selectedTask}
+        />
+      )}
     </div>
   );
 }
