@@ -124,7 +124,9 @@ export const CreateProject = () => {
                   }}
                 />
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", width: "10px" }}
+              >
                 <p style={{ fontWeight: "bold" }}>~</p>
               </div>
               <div className="CreateProject-endDate">

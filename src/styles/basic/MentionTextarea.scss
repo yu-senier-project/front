@@ -8,5 +8,8 @@
     border: none;
     resize: none;
     font-size: 17px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
