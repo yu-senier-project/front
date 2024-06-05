@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import gantt from "dhtmlx-gantt";
 import { useSearchParams } from "react-router-dom";
@@ -9,10 +9,14 @@ import { parseDate } from "../../util/parseDate";
 import { CreateSchedule } from "../../component/project/CreateSchedule";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { PlanDetail } from "../../component/project/PlanDetail";
+import { Participants } from "../../component/project/Participants";
+import { ProjectInfo } from "../../component/project/ProjectInfo";
+import { DeleteProject } from "../../component/project/DeleteProject";
+import { Setting } from "../../component/basic/Setting";
+import { useExitProject } from "../../react-query/useProject";
 import "../../styles/project/GanttChart.scss";
 
 export default function ProjectGantt() {
-  const { setProjectId, setTitle: setProjectTitle } = useProjectStore();
   const { projectId } = useParams();
   const { data, isLoading } = useGetPlanList(projectId);
   const [tasks, setTasks] = useState({ data: [], links: [] });
@@ -22,6 +26,79 @@ export default function ProjectGantt() {
   const [onCreate, setOnCreate] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [onSetting, setOnSetting] = useState(false);
+  const [onParticipants, setOnParticipants] = useState(false);
+  const [onProjectInfo, setOnProjectInfo] = useState(false);
+  const [onDelete, setOnDelete] = useState(false);
+ const { mutate: exitMutate } = useExitProject();
+ const nav = useNavigate();
+  const myId = localStorage.getItem('memberId')
+  const {
+    setProjectId,
+    setTitle: setProjectTitle,
+    managerId,
+  } = useProjectStore();
+  
+  const settingRef = useRef(null);
+  const onBackgroundClick = (e) => {
+    if (settingRef.current && !settingRef.current.contains(e.target)) {
+      setOnSetting(false);
+    }
+  };
+
+
+  // 프로젝트 나가기 버튼 눌렀을 때 실행할 함수
+  const exitProject = () => {
+    if (myId == managerId) {
+      alert("프로젝트 대표자는 프로젝트를 나갈 수 없습니다.");
+      setOnSetting(false);
+      return;
+    }
+    let bool = confirm("정말로 나가겠습니까?");
+    if (bool) {
+      exitMutate(projectId);
+      nav("/Project");
+    } else {
+      return;
+    }
+  };
+
+  const updateProjectInfo = () => {
+    setOnProjectInfo(true);
+  };
+
+  const updateParticipants = () => {
+    setOnParticipants(true);
+    setOnSetting(false);
+  };
+
+  const deleteProject = () => {
+    if (myId != managerId) {
+      alert("프로젝트 담당자만 삭제가능힙니다");
+      return;
+    }
+    setOnDelete(true);
+    setOnSetting(false);
+  };
+  const settingTitleList = [
+    {
+      title: "프로젝트 정보",
+      onClick: updateProjectInfo,
+    },
+    {
+      title: "참여자",
+      onClick: updateParticipants,
+    },
+    {
+      title: "프로젝트 나가기",
+      onClick: exitProject,
+    },
+    {
+      title: "삭제하기",
+      onClick: deleteProject,
+    },
+  ];
+
 
   useEffect(() => {
     if (data && data.data) {
@@ -30,6 +107,7 @@ export default function ProjectGantt() {
           const startDate = parseDate(plan.startedAt);
           const endDate = parseDate(plan.endedAt);
           const duration = plan.duration;
+          console.log(plan + '@');
           if (duration === 0) {
             return null;
           }
@@ -162,15 +240,35 @@ export default function ProjectGantt() {
       ganttElement.removeEventListener("mousemove", mouseMoveHandler);
     };
   }, [ganttContainer.current]);
-
+  const handleSettingButton = () => {
+    setOnSetting(!onSetting);
+  };
   return (
     <div className="gantt-chart">
+      {/* 프로젝트 삭제 모달 */}
+      {onDelete ? <DeleteProject setOnDelete={setOnDelete} /> : null}
+
+      {/* 프로젝트 정보 모달 */}
+      {onProjectInfo ? (
+        <ProjectInfo setOnProjectInfo={setOnProjectInfo} />
+      ) : null}
+
+      {/* 참여자 모달  */}
+      {onParticipants ? (
+        <Participants setOnParticipants={setOnParticipants} />
+      ) : null}
+
       {onCreate ? (
         <CreateSchedule setOnCreate={setOnCreate}></CreateSchedule>
       ) : null}
       <div className="ProjectCalendar-top">
+        {onSetting ? (
+          <div className="ProjectCalendar-setting" ref={settingRef}>
+            <Setting settingTitleList={settingTitleList}></Setting>
+          </div>
+        ) : null}
         <h2>
-          <button>
+          <button onClick={handleSettingButton}>
             <HiOutlineDotsVertical size={20} />
           </button>
           {title}
