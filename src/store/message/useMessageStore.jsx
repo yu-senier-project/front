@@ -253,9 +253,12 @@ const useMessageStore = create((set, get) => ({
         },
       }));
       set({ isMessageLoading: false });
+
+      return newMessages; 
     } catch (error) {
       console.error("Error fetching more messages:", error);
       set({ isMessageLoading: false });
+      return []; 
     }
   },
 

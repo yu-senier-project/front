@@ -30,18 +30,19 @@ export default function Message() {
     messages,
     setMessages,
     fetchMessages,
-    fetchMoreMessages, 
+    fetchMoreMessages,
     sendMessage,
     sendImageMessage,
     sendFileMessage,
     isConnected,
     leaveRoom,
-    isLoading, 
-    setLoading, 
+    isLoading,
+    setLoading,
     fetchAllFile,
     files,
   } = useMessageStore();
   const lastMessageRef = useRef(null);
+  const observerRef = useRef(null);
   const [message, setMessage] = useState("");
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -61,7 +62,9 @@ export default function Message() {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
-  const [fileModalOpen, setFileModalOpen] = useState(false); 
+  const [fileModalOpen, setFileModalOpen] = useState(false);
+
+  const [hasMoreMessages, setHasMoreMessages] = useState(true); // 메시지 끝 여부 확인용 상태
 
   const handleConnect = () => {
     if (!isConnected) {
@@ -82,12 +85,12 @@ export default function Message() {
   }, [selectedRoom, fetchMessages]);
 
   useEffect(() => {
-    const hasReloaded = sessionStorage.getItem('hasReloaded');
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
     if (!hasReloaded) {
-      sessionStorage.setItem('hasReloaded', 'true');
+      sessionStorage.setItem("hasReloaded", "true");
       window.location.reload(true);
-      setHasReloaded(true)
+      setHasReloaded(true);
     }
   }, []);
   useEffect(() => {
@@ -146,11 +149,11 @@ export default function Message() {
 
         if (file.type.startsWith("image/")) {
           console.log("이미지 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); 
+          base64Data = base64Data.replace(/^data:.*;base64,/, "");
           sendImageMessage(file, selectedRoom, memberId, base64Data);
         } else {
           console.log("다른 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); 
+          base64Data = base64Data.replace(/^data:.*;base64,/, "");
           sendFileMessage(file, selectedRoom, memberId, base64Data);
         }
       };
@@ -172,7 +175,7 @@ export default function Message() {
     switch (action) {
       case "fileImage":
         fetchAllFile(selectedRoom, memberId);
-        console.log(files[selectedRoom])
+        console.log(files[selectedRoom]);
         setFileModalOpen(true);
         break;
       case "invite":
@@ -186,16 +189,37 @@ export default function Message() {
         break;
     }
   };
+  useEffect(() => {
+    setHasMoreMessages(true);
+  }, [selectedRoom]);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoading && selectedRoom && hasMoreMessages) {
+          const oldestMessage = messages[selectedRoom][0];
+          if (oldestMessage) {
+            fetchMoreMessages(selectedRoom, oldestMessage.chatId).then((fetchedMessages) => {
+              if (fetchedMessages.length === 0) {
+                setHasMoreMessages(false); // 더 이상 메시지가 없을 경우
+              }
+            });
+          }
+        }
+      },
+      { threshold: 1.0 }
+    );
 
-  const handleScroll = (e) => {
-    if (e.target.scrollTop === 0 && !isLoading && selectedRoom) {
-      const oldestMessage = messages[selectedRoom][0];
-      console.log(oldestMessage);
-      if (oldestMessage) {
-        fetchMoreMessages(selectedRoom, oldestMessage.chatId);
-      }
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
     }
-  };
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [isLoading, selectedRoom, messages, fetchMoreMessages, hasMoreMessages]);
 
   const selectedRoomData =
     rooms &&
@@ -219,7 +243,6 @@ export default function Message() {
               }
               src={data.content}
               alt="Message Content"
-
             />
           </div>
         );
@@ -243,11 +266,23 @@ export default function Message() {
       default:
         return (
           <div>
-            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ?
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
               <div style={{ display: "flex", marginBottom: "5px" }}>
-                {data.messageType != "STATUS" ? <img src={data.profile ? data.profile : "/public/image/dp.jpg"} className="message-profile-img" /> : ''}
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={
+                      data.profile ? data.profile : "/public/image/dp.jpg"
+                    }
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
                 <p>{data.from}</p>
-              </div> : ''}
+              </div>
+            ) : (
+              ""
+            )}
             <span
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -273,7 +308,7 @@ export default function Message() {
         close={handleCreateClose}
         onLoadMore={handleLoadMore}
       />
-
+  
       <div className="message_container">
         <RoomCreateModal open={createOpen} close={handleCreateClose} />
         <MessageInviteModal
@@ -333,17 +368,18 @@ export default function Message() {
             </>
           )}
         </div>
-
-        <div id="messages" onScroll={handleScroll}>
+  
+        <div id="messages">
           <ul id="pre_messages">
+            <li ref={observerRef} /> {/* 옵저버를 최상단에 위치 */}
             {(messages[selectedRoom] || []).map((data, index) => (
               <li
                 className={
                   data.memberId === parseInt(memberId)
                     ? "message_self"
                     : data.messageType === "STATUS"
-                      ? "message_system"
-                      : "message_other"
+                    ? "message_system"
+                    : "message_other"
                 }
                 key={index + 1}
               >
@@ -367,15 +403,19 @@ export default function Message() {
           >
             <CgAddR />
           </button>
-          <input
-            autoComplete="off"
-            type="text"
-            id="message_input"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="메시지 입력..."
-          />
+          {selectedRoom ? (
+            <input
+              autoComplete="off"
+              type="text"
+              id="message_input"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="메시지 입력..."
+            />
+          ) : (
+            <></>
+          )}
           <button type="button" id="send_message_button" onClick={handleSubmit}>
             <IoIosSend />
           </button>
