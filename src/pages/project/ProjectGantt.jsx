@@ -15,6 +15,8 @@ import { DeleteProject } from "../../component/project/DeleteProject";
 import { Setting } from "../../component/basic/Setting";
 import { useExitProject } from "../../react-query/useProject";
 import "../../styles/project/GanttChart.scss";
+import { useUpdatePlanDate } from "../../react-query/useProject";
+
 
 export default function ProjectGantt() {
   const { projectId } = useParams();
@@ -30,7 +32,6 @@ export default function ProjectGantt() {
   const [onParticipants, setOnParticipants] = useState(false);
   const [onProjectInfo, setOnProjectInfo] = useState(false);
   const [onDelete, setOnDelete] = useState(false);
- const { mutate: exitMutate } = useExitProject();
  const nav = useNavigate();
   const myId = localStorage.getItem('memberId')
   const {
@@ -106,9 +107,8 @@ export default function ProjectGantt() {
         .map((plan, index) => {
           const startDate = parseDate(plan.startedAt);
           const endDate = parseDate(plan.endedAt);
-          const duration = plan.duration;
-          console.log(plan + '@');
-          if (duration === 0) {
+          const isAllDay = (endDate - startDate) / (1000 * 60 * 60 * 24);
+          if (isAllDay < 1) {
             return null;
           }
 
@@ -117,17 +117,17 @@ export default function ProjectGantt() {
             text: plan.planName,
             start_date: startDate,
             end_date: endDate,
-            color: `task-color-${index % 13}`, // 13개의 색상을 순환하여 할당
+            color: `task-color-${index % 13}`, 
           };
         })
-        .filter(Boolean); // Remove null values
+        .filter(Boolean); 
 
       setTasks({ data: event, links: [] });
     } else {
       setTasks({ data: [], links: [] });
     }
   }, [data]);
-
+  
   useEffect(() => {
     if (ganttContainer.current) {
       gantt.init(ganttContainer.current);
@@ -179,6 +179,11 @@ export default function ProjectGantt() {
 
       gantt.attachEvent("onTaskClick", function (id, e) {
         const task = gantt.getTask(id);
+        if (!task) {
+          console.error("Task not found");
+          return;
+        } 
+        console.log("Task selected:", task);
         setSelectedTask(task);
         setIsModalOpen(true);
         return true;
