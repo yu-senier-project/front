@@ -70,7 +70,6 @@ function RoomCreateModal({ open, close }) {
   };
 
   const renderPeopleList = () => {
-    // 선택된 사람들을 제외한 유저 리스트 필터링
     if (people.length > 0) {
       const filteredPeople = people.filter(
         (person) => !selectedPeople.some((selected) => selected.memberId === person.memberId)
@@ -134,7 +133,14 @@ function RoomCreateModal({ open, close }) {
         <div className="left-section"></div>
         <div className="right-section"></div>
       </div>}
-          <Button text="다음" size="Large" onClick={() => setModalStep(1)} />
+          <Button text="다음" size="Large" onClick={() => {
+            if(selectedPeople.length <= 0){
+              alert('초대인원은 1명이상 선택해야합니다')
+              return
+            }
+            setModalStep(1)
+            
+            }} />
         </div>
       );
     } else if (modalStep === 1) {
