@@ -16,7 +16,8 @@
     align-items: center;
     padding: 20px;
     justify-content: space-between;
-
+    background-color: #71c9ce;
+    // border-bottom: 1px solid black;
     .header_left {
       display: flex;
       align-items: center;
@@ -50,13 +51,12 @@
       padding: 0;
       margin: 0;
     }
-    .message-profile-img{
+    .message-profile-img {
       width: 30px;
       height: 30px;
       border-radius: 50px;
       margin-right: 5px;
     }
-   
 
     img {
       max-width: 100%;
@@ -64,8 +64,7 @@
 
     .message_self {
       text-align: right;
-      
-      
+
       span {
         padding: 10px;
         background-color: #71c9ce;
@@ -74,7 +73,7 @@
       //   background-color: red;
       // }
 
-      .file:hover{
+      .file:hover {
         color: rgb(90, 90, 90);
       }
 
@@ -106,7 +105,6 @@
         margin-right: auto;
         white-space: normal;
         overflow-wrap: break-word;
-
       }
     }
 
@@ -185,4 +183,3 @@
     color: #bebebe;
   }
 }
-
