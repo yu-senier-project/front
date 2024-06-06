@@ -115,8 +115,8 @@ export function refreshAccessTokenInterceptor() {
 export async function login(data) {
   try {
     const response = await apiClient.post("/api/v1/auth/login", data);
-    console.log("Response Status:", response.status);
-    console.log("Response Headers:", response.headers);
+    // console.log("Response Status:", response.status);
+    // console.log("Response Headers:", response.headers);
 
     if (response.status === 200) {
       // 응답에서 authorization 헤더 추출
@@ -166,3 +166,7 @@ export async function logout() {
     alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
   }
 }
+
+export const isAuthenticated = () => {
+  return !!localStorage.getItem("login");
+};

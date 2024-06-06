@@ -90,14 +90,6 @@ const SmallNav = () => {
             로그아웃
           </p>
         </div>
-        {/* <button
-          onClick={() => {
-            logout();
-            nav("/");
-          }}
-        >
-          로그아웃
-        </button> */}
       </div>
       <Outlet />
     </div>

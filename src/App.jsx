@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import IdFind from "./pages/Auth/IdFind";
 import PwInitCheckId from "./pages/Auth/PwInitCheckId";
@@ -29,6 +29,9 @@ import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 
+import { isAuthenticated } from "./util/auth";
+import ProtectedRoute from "./util/ProtectedRoute";
+
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
 
@@ -41,29 +44,71 @@ function App() {
       <BrowserRouter>
         {toggle && <CreateFeed />}
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/login" element={<Login />} />
           <Route path="Id" element={<IdFind />} />
-
           <Route path="CheckId" element={<IdCheck />} />
           <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
           <Route path="/" element={<SmallNav />}>
-            <Route path="Home" element={<Home />} />
-            <Route path="Search" element={<Search />} />
-            <Route path="SearchPost" element={<SearchPost />} />
-            <Route path="Project" element={<ProjectHome />} />
-            <Route path="Project/Create" element={<CreateProject />} />
-            <Route path="Profile" element={<Profile />} />
-            <Route path="Profile/:id" element={<Profile />} />
-            <Route path="Message" element={<Message />} />
+            <Route path="Home" element={<ProtectedRoute element={Home} />} />
+            <Route
+              path="Search"
+              element={<ProtectedRoute element={Search} />}
+            />
+            <Route
+              path="SearchPost"
+              element={<ProtectedRoute element={SearchPost} />}
+            />
+            <Route
+              path="Project"
+              element={<ProtectedRoute element={ProjectHome} />}
+            />
+            <Route
+              path="Project/Create"
+              element={<ProtectedRoute element={CreateProject} />}
+            />
+            <Route
+              path="Profile"
+              element={<ProtectedRoute element={Profile} />}
+            />
+            <Route
+              path="Profile/:id"
+              element={<ProtectedRoute element={Profile} />}
+            />
+            <Route
+              path="Message"
+              element={<ProtectedRoute element={Message} />}
+            />
           </Route>
-          <Route path="/ProjectHome" element={<ProjectNav />}>
-            <Route path="InfoUpdate" element={<UpdateProject />} />
-            <Route path="Todo/:projectId" element={<Todo />} />
-            <Route path="ParticipantsUpdate" element={<UpdateParticipants />} />
-            <Route path=":projectId" element={<ProjectCalendar />} />
-            <Route path="Gantt/:projectId" element={<ProjectGantt />} />
-            <Route path="Post/:projectId" element={<ProJectPost />} />
+          <Route
+            path="ProjectHome"
+            element={<ProtectedRoute element={ProjectNav} />}
+          >
+            <Route
+              path="InfoUpdate"
+              element={<ProtectedRoute element={UpdateProject} />}
+            />
+            <Route
+              path="Todo/:projectId"
+              element={<ProtectedRoute element={Todo} />}
+            />
+            <Route
+              path="ParticipantsUpdate"
+              element={<ProtectedRoute element={UpdateParticipants} />}
+            />
+            <Route
+              path=":projectId"
+              element={<ProtectedRoute element={ProjectCalendar} />}
+            />
+            <Route
+              path="Gantt/:projectId"
+              element={<ProtectedRoute element={ProjectGantt} />}
+            />
+            <Route
+              path="Post/:projectId"
+              element={<ProtectedRoute element={ProJectPost} />}
+            />
           </Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
@@ -71,5 +116,9 @@ function App() {
     </>
   );
 }
+
+const HomeRedirect = () => {
+  return isAuthenticated() ? <Navigate to="/Home" /> : <Navigate to="/login" />;
+};
 
 export default App;
