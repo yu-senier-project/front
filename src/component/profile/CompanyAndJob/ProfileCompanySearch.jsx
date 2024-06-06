@@ -75,10 +75,21 @@ export const ProfileCompanySearch = ({
       alert("인증번호를 입력하세요");
       return;
     }
-    const data = {
-      email: `${inputEmail}@${email}`,
-      authCode: authNum,
-    };
+
+    let data;
+    if (selectValue == "없음") {
+      data = {
+        email: `${inputEmail}@${emailArr}`,
+        authCode: authNum,
+      };
+    } else {
+      data = {
+        email: `${inputEmail}@${email}`,
+        authCode: authNum,
+      };
+    }
+
+    console.log(data);
 
     const res = await postEmailAuthNum(data);
     if (res.status == 200) {
@@ -86,6 +97,7 @@ export const ProfileCompanySearch = ({
       setFinish(true);
       toggle();
     } else {
+      console.log(res);
       alert("인증번호가 일치하지 않습니다");
     }
   };
