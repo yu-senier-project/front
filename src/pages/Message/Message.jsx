@@ -231,10 +231,23 @@ export default function Message() {
       case "IMAGE":
         return (
           <div>
-            <div>
-              <p>asdf</p>
-              <p>{data.from}</p>
-            </div>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={
+                      data.profile ? data.profile : "/public/image/dp.jpg"
+                    }
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{data.from}</p>
+              </div>
+            ) : (
+              ""
+            )}
             <img
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -249,7 +262,23 @@ export default function Message() {
       case "FILE":
         return (
           <div>
-            <p>{data.from}</p>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={
+                      data.profile ? data.profile : "/public/image/dp.jpg"
+                    }
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{data.from}</p>
+              </div>
+            ) : (
+              ""
+            )}
             <a href={data.content} download>
               <span
                 className={

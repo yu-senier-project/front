@@ -244,7 +244,7 @@ const useMessageStore = create((set, get) => ({
 
       const newMessages = response.data
         .filter((msg) => !existingMessages.has(msg.chatId))
-        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        .sort((a, b) => a.chatId - b.chatId);
 
       set((state) => ({
         messages: {
@@ -261,6 +261,7 @@ const useMessageStore = create((set, get) => ({
       return []; 
     }
   },
+
 
   sendMessage: async (text, roomId) => {
     try {
