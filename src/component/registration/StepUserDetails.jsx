@@ -61,14 +61,17 @@ function StepUserDetails({
       <div className="position-space">
         <Input
           size="Large"
-          placeholder={"직무"}
+          placeholder={"무직일 경우 희망 직무"}
           onChange={handleInputChange}
           value={formData.position}
           name={"position"}
-          autocomplete={'off'}
+          autocomplete={"off"}
         />
         {errors.position && (
-          <div className="error-message" style={{ color: 'red', fontSize:'10px'}}>
+          <div
+            className="error-message"
+            style={{ color: "red", fontSize: "10px" }}
+          >
             *{errors.position}
           </div>
         )}
@@ -81,11 +84,13 @@ function StepUserDetails({
           value={formData.firstName}
           name={"firstName"}
           id="input-error"
-          autocomplete={'off'}
-
+          autocomplete={"off"}
         />
         {errors.firstName && (
-          <div className="error-message" style={{ color: 'red' , fontSize:'10px'}}>
+          <div
+            className="error-message"
+            style={{ color: "red", fontSize: "10px" }}
+          >
             *{errors.firstName}
           </div>
         )}
@@ -95,16 +100,18 @@ function StepUserDetails({
           value={formData.secondName}
           onChange={handleInputChange}
           name={"secondName"}
-          autocomplete={'off'}
-
+          autocomplete={"off"}
         />
         {errors.secondName && (
-          <div className="error-message" style={{ color: 'red', fontSize:'10px'}}>
+          <div
+            className="error-message"
+            style={{ color: "red", fontSize: "10px" }}
+          >
             *{errors.secondName}
           </div>
         )}
       </div>
-     
+
       <div className="birthday-selecter">
         <h3 className="birthday">생년월일</h3>
         <SelectComponent
@@ -129,17 +136,16 @@ function StepUserDetails({
           data={days}
         />
         {errors.date && (
-          <div className="error-message" style={{ color: 'red', fontSize:'10px' }}>
+          <div
+            className="error-message"
+            style={{ color: "red", fontSize: "10px" }}
+          >
             *{errors.date}
           </div>
         )}
       </div>
       <div className="next_button">
-        <Button
-          text={"다음"}
-          size={"Large"}
-          onClick={handleNextClick}
-        />
+        <Button text={"다음"} size={"Large"} onClick={handleNextClick} />
       </div>
     </div>
   );
