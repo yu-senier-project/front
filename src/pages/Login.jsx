@@ -21,13 +21,18 @@ const style = {
 };
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  if (localStorage.getItem("login")) {
+    navigate("/Home");
+  }
+
   // logout();
   const [formData, setFormData] = useState({ id: "", password: "" });
   const { setIsLogin } = useLoginStore((state) => state);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -55,9 +60,9 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    logout();
-  }, []);
+  // useEffect(() => {
+  //   logout();
+  // }, []);
 
   return (
     <div id="login_container">

@@ -13,7 +13,7 @@ const Home = () => {
   const fetchFeeds = ({ pageParam = { lastId: 0, nextPage: 1 } }) => {
     const { lastId, nextPage } = pageParam;
 
-    console.log(lastId, nextPage);
+    // console.log(lastId, nextPage);
     return getAllFeed(lastId, nextPage);
   };
 
