@@ -186,7 +186,7 @@ export const ProfileCompanySearch = ({
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="회사 검색"
+                placeholder="회사 검색(무직인 경우 '없음' 입력)"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
