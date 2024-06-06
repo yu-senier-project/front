@@ -517,8 +517,9 @@ export const useGetAllTodos = (projectId) => {
     queryFn: () => getAllTodos(projectId),
     staleTime: 5 * 1000 * 60,
     gcTime: 10 * 1000 * 60,
-    // refetchOnWindowFocus: false,
-    // refetchOnReconnect: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
   return { data, isLoading };
 };

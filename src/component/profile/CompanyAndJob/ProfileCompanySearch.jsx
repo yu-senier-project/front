@@ -15,7 +15,7 @@ export const ProfileCompanySearch = ({
   nowCompany,
 }) => {
   // 타이머 훅 사용
-  const { minutes, seconds, isActive, toggle } = useTimer(3, 0);
+  const { minutes, seconds, isActive, toggle } = useTimer(5, 0);
 
   const inputRef = useRef(null);
   const [search, setSearch] = useState("");
@@ -31,6 +31,9 @@ export const ProfileCompanySearch = ({
 
   // 회사 이메일 저장
   const [email, setEmail] = useState("");
+
+  // 회사 없을 일때 이메일 주소 입력 받음
+  const [emailArr, setEmailArr] = useState("");
 
   // 사용자 입력 이메일 저장
   const [inputEmail, setInputEmail] = useState("");
@@ -50,6 +53,17 @@ export const ProfileCompanySearch = ({
       alert("올바른 이메일을 입력하세요");
       return;
     }
+
+    if (selectValue == "없음" && emailArr.length < 5) {
+      alert("올바른 이메일을 입력하세요");
+    }
+    if (selectValue == "없음") {
+      toggle();
+      setOnAuth(true);
+      const data = await getEmail(`${inputEmail}@${emailArr}`);
+      return;
+    }
+
     toggle();
     setOnAuth(true);
     const data = await getEmail(`${inputEmail}@${email}`);
@@ -115,6 +129,7 @@ export const ProfileCompanySearch = ({
       alert("회사를 선택하세요.");
       return;
     }
+
     setStage(2);
 
     const data = await getCompanyEmail(selectValue);
@@ -182,7 +197,7 @@ export const ProfileCompanySearch = ({
           </>
         ) : (
           <div className="ProfileAuth">
-            <h4>회사 인증</h4>
+            {selectValue == "없음" ? <h4>본인 인증</h4> : <h4>회사 인증</h4>}
             <div className="ProfileAuth-email">
               <input
                 onKeyDown={onKeyDown}
@@ -193,7 +208,20 @@ export const ProfileCompanySearch = ({
                 type="text"
                 disabled={isActive || finish}
               />
-              <span>{`@${email}`}</span>
+              {selectValue == "없음" ? (
+                <>
+                  <span>@</span>
+                  <input
+                    type="text"
+                    value={emailArr}
+                    onChange={(e) => {
+                      setEmailArr(e.target.value);
+                    }}
+                  />
+                </>
+              ) : (
+                <span>{`@${email}`}</span>
+              )}
               <button
                 className="ProfileAuth-btn"
                 disabled={isActive || finish}
