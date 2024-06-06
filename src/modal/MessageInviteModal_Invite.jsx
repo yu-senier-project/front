@@ -8,10 +8,17 @@ import CloseButton from "../component/basic/CloseButton";
 import useMessageStore from "../store/message/useMessageStore";
 import "../styles/message/addroom.scss";
 
-function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,setMessages }) {
+function MessageInviteModal({
+  open,
+  handleClose,
+  selectedRoom,
+  memberId,
+  close,
+  setMessages,
+}) {
   const [people, setPeople] = useState([]);
   const [search, setSearch] = useState("");
-  const { addRoom, fetchRooms, roomNumber,fetchMessages } = useMessageStore();
+  const { addRoom, fetchRooms, roomNumber, fetchMessages } = useMessageStore();
   const [existsPeople, setExistsPeople] = useState([]);
   const [selectedPeople, setSelectedPeople] = useState([]);
   const [addPeople, setAddPeople] = useState([]);
@@ -19,11 +26,13 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
   useEffect(() => {
     const fetchSelectedPeople = async () => {
       try {
-        const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/participant`);
+        const response = await apiClient.get(
+          `/api/v1/chat-room/${selectedRoom}/participant`
+        );
         console.log(response);
         setSelectedPeople(response.data);
       } catch (error) {
-        console.error('Error fetching selected people:', error);
+        console.error("Error fetching selected people:", error);
       }
     };
 
@@ -38,7 +47,10 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
             `/api/v1/member/for-invite/search?memberId=${memberId}&nickname=${value}&roomId=${selectedRoom}`
           );
           const filteredPeople = data.filter(
-            (person) => !existsPeople.some((existing) => existing.memberId === person.memberId)
+            (person) =>
+              !existsPeople.some(
+                (existing) => existing.memberId === person.memberId
+              )
           );
           setPeople(filteredPeople);
         } catch (error) {
@@ -79,11 +91,13 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
 
   const getExistsPeople = async () => {
     try {
-      const response = await apiClient.get(`/api/v1/chat-room/${selectedRoom}/participant?memberId=${memberId}`);
+      const response = await apiClient.get(
+        `/api/v1/chat-room/${selectedRoom}/participant?memberId=${memberId}`
+      );
       console.log(response.data);
       setExistsPeople(response.data);
     } catch (error) {
-      console.error('Error fetching participants:', error);
+      console.error("Error fetching participants:", error);
     }
   };
 
@@ -95,13 +109,13 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
 
   const handleInvitePeople = async () => {
     try {
-      const inviteList = addPeople.map(person => ({
+      const inviteList = addPeople.map((person) => ({
         memberId: person.memberId,
-        nickname: person.nickname
+        nickname: person.nickname,
       }));
 
       const data = {
-        inviteList: inviteList
+        inviteList: inviteList,
       };
       console.log(data);
 
@@ -110,13 +124,13 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
         data
       );
 
-      console.log('Invite response:', response);
+      console.log("Invite response:", response);
       setPeople([]);
       setSearch();
-      fetchMessages(selectedRoom)
+      fetchMessages(selectedRoom);
       handleClose();
     } catch (error) {
-      console.error('Error inviting people:', error);
+      console.error("Error inviting people:", error);
     }
   };
 
@@ -132,7 +146,10 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
   const renderPeopleList = () => {
     if (people.length > 0) {
       const filteredPeople = people.filter(
-        (person) => !selectedPeople.some((selected) => selected.memberId === person.memberId)
+        (person) =>
+          !selectedPeople.some(
+            (selected) => selected.memberId === person.memberId
+          )
       );
       return (
         <div style={{ display: "flex" }}>
@@ -141,10 +158,16 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
             <ul>
               {filteredPeople.map((person) => (
                 <li key={person.memberId}>
-                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
+                  <img
+                    src={person.profile ? person.profile : "/image/dp.jpg"}
+                    alt="Profile"
+                    className="profile-image"
+                  />
                   {person.nickname}
                   <button
-                    onClick={() => handleSelectPerson(person.nickname, person.memberId)}
+                    onClick={() =>
+                      handleSelectPerson(person.nickname, person.memberId)
+                    }
                   >
                     선택
                   </button>
@@ -157,7 +180,11 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
             <ul>
               {selectedPeople.map((person) => (
                 <li key={person.memberId}>
-                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
+                  <img
+                    src={person.profile ? person.profile : "/image/dp.jpg"}
+                    alt="Profile"
+                    className="profile-image"
+                  />
                   {person.nickname}
                 </li>
               ))}
@@ -168,19 +195,25 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
     } else if (search.length > 0) {
       return (
         <div style={{ display: "flex" }}>
-          <div className="left-section"><p>검색결과가 없습니다</p></div>
+          <div className="left-section">
+            <p>검색결과가 없습니다</p>
+          </div>
           <div className="right-section">
             <p>참여중인 유저</p>
             <ul>
               {selectedPeople.map((person) => (
                 <li key={person.memberId}>
-                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
+                  <img
+                    src={person.profile ? person.profile : "/image/dp.jpg"}
+                    alt="Profile"
+                    className="profile-image"
+                  />
                   {person.nickname}
-                  <button
+                  {/* <button
                     onClick={() => handleSelectPerson(person.nickname, person.memberId)}
                   >
                     선택
-                  </button>
+                  </button> */}
                 </li>
               ))}
             </ul>
@@ -198,33 +231,53 @@ function MessageInviteModal({ open, handleClose, selectedRoom, memberId, close,s
           <CloseButton onCloseButton={handleModalClose} />
         </div>
         <b>채팅초대</b>
-        <Input size="Large" name="invite" value={search} onChange={handleSearchChange} />
-        {search ? <div className="people-list">{renderPeopleList()}</div> : <div style={{ display: "flex" }}>
-          <div className="left-section"></div>
-          <div className="right-section">
-            <p>참여중인 유저</p>
-            <ul>
-              {selectedPeople.map((person) => (
-                <li key={person.memberId}>
-                  <img src={person.profile ? person.profile : "/image/dp.jpg"} alt="Profile" className="profile-image" />
-                  {person.nickname}
-                  <button
-                    onClick={() => handleSelectPerson(person.nickname, person.memberId)}
-                  >
-                    선택
-                  </button>
-                </li>
-              ))}
-            </ul>
+        <Input
+          size="Large"
+          name="invite"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        {search ? (
+          <div className="people-list">{renderPeopleList()}</div>
+        ) : (
+          <div style={{ display: "flex" }}>
+            <div className="left-section"></div>
+            <div className="right-section">
+              <p>참여중인 유저</p>
+              <ul>
+                {selectedPeople.map((person) => (
+                  <li key={person.memberId}>
+                    <img
+                      src={person.profile ? person.profile : "/image/dp.jpg"}
+                      alt="Profile"
+                      className="profile-image"
+                    />
+                    {person.nickname}
+                    {/* <button
+                      onClick={() =>
+                        handleSelectPerson(person.nickname, person.memberId)
+                      }
+                    >
+                      선택
+                    </button> */}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>}
+        )}
         <Button text="다음" size="Large" onClick={handleInvitePeople} />
       </div>
     );
   };
 
   return (
-    <Modal open={open} onClose={handleModalClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+    <Modal
+      open={open}
+      onClose={handleModalClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
       {modalContent()}
     </Modal>
   );

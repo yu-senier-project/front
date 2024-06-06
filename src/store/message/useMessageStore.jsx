@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -121,7 +120,7 @@ const useMessageStore = create((set, get) => ({
   messages: {},
   subscribedRooms: [],
   isMessageLoading: false,
-  files:{},
+  files: {},
   setRooms: (rooms) => set({ rooms }),
 
   setSelectedRoom: (roomId) => set({ selectedRoom: roomId }),
@@ -132,8 +131,6 @@ const useMessageStore = create((set, get) => ({
     set((state) => ({
       messages: { ...state.messages, [roomId]: newMessages },
     })),
-
-  
 
   addSubscribedRoom: (roomId) =>
     set((state) => ({
@@ -150,19 +147,19 @@ const useMessageStore = create((set, get) => ({
         memberId,
         nickname,
       }));
-  
+
       const data = {
         roomName: roomName,
         inviteList: filteredInviteList,
       };
-  
+
       console.log(data);
-  
+
       const response = await apiClient.post(
         `/api/v1/chat-room/create?memberId=${memberId}`,
         data
       );
-  
+
       return response;
     } catch (error) {
       // console.error("Error adding chat room:", error);
@@ -173,16 +170,16 @@ const useMessageStore = create((set, get) => ({
   fetchRooms: async (memberId, pageNumber) => {
     try {
       connectStompClient(); // 채팅방 목록 받아올 때 웹소켓 연결 시도
-      
+
       set((state) => ({ rooms: [] }));
       set((state) => ({ messages: [] }));
-      
+      set((state) => ({ selectedRoom: "" }));
       const response = await apiClient.get(
         `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
       );
       // console.log("방 받아오는 중");
       if (response.status === 204) {
-        console.log(response)
+        console.log(response);
         // 더 이상 방이 없는 경우
         // console.log('더이상 방이없음')
         set((state) => ({ roomNumber: state.roomNumber - 1 }));
@@ -254,14 +251,13 @@ const useMessageStore = create((set, get) => ({
       }));
       set({ isMessageLoading: false });
 
-      return newMessages; 
+      return newMessages;
     } catch (error) {
       console.error("Error fetching more messages:", error);
       set({ isMessageLoading: false });
-      return []; 
+      return [];
     }
   },
-
 
   sendMessage: async (text, roomId) => {
     try {
@@ -394,19 +390,19 @@ const useMessageStore = create((set, get) => ({
     }
   },
 
-  fetchAllFile: async(roomId,memberId) => {
-    try{
-      const response = await apiClient.get(`/api/v1/chat-room/${roomId}/images`);
-      console.log(response)
+  fetchAllFile: async (roomId, memberId) => {
+    try {
+      const response = await apiClient.get(
+        `/api/v1/chat-room/${roomId}/images`
+      );
+      console.log(response);
       set((state) => ({
         files: { ...state.files, [roomId]: response.data },
       }));
-
-    }catch(error){
-      console.error("Error fetchFiles",error)
+    } catch (error) {
+      console.error("Error fetchFiles", error);
     }
-    
-  }
+  },
 }));
 
 export default useMessageStore;

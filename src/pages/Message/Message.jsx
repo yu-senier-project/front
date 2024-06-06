@@ -192,18 +192,25 @@ export default function Message() {
   useEffect(() => {
     setHasMoreMessages(true);
   }, [selectedRoom]);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading && selectedRoom && hasMoreMessages) {
+        if (
+          entries[0].isIntersecting &&
+          !isLoading &&
+          selectedRoom &&
+          hasMoreMessages
+        ) {
           const oldestMessage = messages[selectedRoom][0];
           if (oldestMessage) {
-            fetchMoreMessages(selectedRoom, oldestMessage.chatId).then((fetchedMessages) => {
-              if (fetchedMessages.length === 0) {
-                setHasMoreMessages(false); // 더 이상 메시지가 없을 경우
+            fetchMoreMessages(selectedRoom, oldestMessage.chatId).then(
+              (fetchedMessages) => {
+                if (fetchedMessages.length === 0) {
+                  setHasMoreMessages(false); // 더 이상 메시지가 없을 경우
+                }
               }
-            });
+            );
           }
         }
       },
@@ -235,9 +242,7 @@ export default function Message() {
               <div style={{ display: "flex", marginBottom: "5px" }}>
                 {data.messageType != "STATUS" ? (
                   <img
-                    src={
-                      data.profile ? data.profile : "/public/image/dp.jpg"
-                    }
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
                     className="message-profile-img"
                   />
                 ) : (
@@ -266,9 +271,7 @@ export default function Message() {
               <div style={{ display: "flex", marginBottom: "5px" }}>
                 {data.messageType != "STATUS" ? (
                   <img
-                    src={
-                      data.profile ? data.profile : "/public/image/dp.jpg"
-                    }
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
                     className="message-profile-img"
                   />
                 ) : (
@@ -299,9 +302,7 @@ export default function Message() {
               <div style={{ display: "flex", marginBottom: "5px" }}>
                 {data.messageType != "STATUS" ? (
                   <img
-                    src={
-                      data.profile ? data.profile : "/public/image/dp.jpg"
-                    }
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
                     className="message-profile-img"
                   />
                 ) : (
@@ -337,7 +338,7 @@ export default function Message() {
         close={handleCreateClose}
         onLoadMore={handleLoadMore}
       />
-  
+
       <div className="message_container">
         <RoomCreateModal open={createOpen} close={handleCreateClose} />
         <MessageInviteModal
@@ -353,51 +354,52 @@ export default function Message() {
           handleClose={() => setFileModalOpen(false)}
           files={files[selectedRoom]}
         />
-        <div className="message_header">
-          {selectedRoomData && (
-            <>
-              <div className="header_left">
-                <img
-                  src={
-                    selectedRoomData.image || "https://via.placeholder.com/40"
-                  }
-                  alt={selectedRoomData.roomName}
-                  className="message_profile_image"
-                />
-                <span className="message_profile_name">
-                  {selectedRoomData.roomName}
-                </span>
-              </div>
-              <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleMenuOpen}
-                className="kebab_button"
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={menuOpen}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={() => handleMenuItemClick("fileImage")}>
-                  파일/이미지
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("invite")}>
-                  채팅 초대
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("leave")}>
-                  채팅방 나가기
-                </MenuItem>
-              </Menu>
-            </>
-          )}
-        </div>
-  
+        {selectedRoom ? (
+          <div className="message_header">
+            {selectedRoomData && (
+              <>
+                <div className="header_left">
+                  <img
+                    src={selectedRoomData.image || "/public/favicon2.ico"}
+                    alt={selectedRoomData.roomName}
+                    className="message_profile_image"
+                  />
+                  <span className="message_profile_name">
+                    {selectedRoomData.roomName}
+                  </span>
+                </div>
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={handleMenuOpen}
+                  className="kebab_button"
+                >
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={menuOpen}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleMenuItemClick("fileImage")}>
+                    파일/이미지
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("invite")}>
+                    채팅 초대
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("leave")}>
+                    채팅방 나가기
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
         <div id="messages">
           <ul id="pre_messages">
             <li ref={observerRef} /> {/* 옵저버를 최상단에 위치 */}
@@ -418,21 +420,22 @@ export default function Message() {
             <li ref={lastMessageRef} />
           </ul>
         </div>
-        <div className="form_container">
-          <input
-            type="file"
-            id="file_input"
-            style={{ display: "none" }}
-            onChange={handleFileSend}
-          />
-          <button
-            type="button"
-            id="send_file_button"
-            onClick={() => document.getElementById("file_input").click()}
-          >
-            <CgAddR />
-          </button>
-          {selectedRoom ? (
+
+        {selectedRoom ? (
+          <div className="form_container">
+            <input
+              type="file"
+              id="file_input"
+              style={{ display: "none" }}
+              onChange={handleFileSend}
+            />
+            <button
+              type="button"
+              id="send_file_button"
+              onClick={() => document.getElementById("file_input").click()}
+            >
+              <CgAddR />
+            </button>
             <input
               autoComplete="off"
               type="text"
@@ -442,14 +445,26 @@ export default function Message() {
               onKeyPress={handleKeyPress}
               placeholder="메시지 입력..."
             />
-          ) : (
-            <></>
-          )}
-          <button type="button" id="send_message_button" onClick={handleSubmit}>
-            <IoIosSend />
-          </button>
-        </div>
+
+            <button
+              type="button"
+              id="send_message_button"
+              onClick={handleSubmit}
+            >
+              <IoIosSend />
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
+      {/* <button
+        onClick={() => {
+          console.log(selectedRoom);
+        }}
+      >
+        asdf
+      </button> */}
     </div>
   );
 }

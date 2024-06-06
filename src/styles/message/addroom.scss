@@ -34,9 +34,6 @@
       cursor: pointer;
     }
   }
-
-
-  
 }
 
 .profile-image {
@@ -46,16 +43,18 @@
   margin-right: 5px;
 }
 
-.left-section,.right-section{
+.left-section,
+.right-section {
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(185, 185, 185); 
+  border: 1px solid rgb(185, 185, 185);
   display: flex;
   flex-direction: column;
   width: 20vw;
   height: 35vh;
   margin-bottom: 40px;
-  overflow: auto;
-  button{
+  overflow-y: auto;
+  overflow-x: hidden;
+  button {
     padding: 5px 10px;
     background-color: #71c9ce;
     color: white;
@@ -65,7 +64,7 @@
     position: absolute;
     right: 50px;
   }
-  li{
+  li {
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -73,22 +72,19 @@
     margin: 5px;
     position: relative;
   }
-  ul{
+  ul {
     width: 100%;
   }
-  
 }
 
-.left-section{
- border-radius: 10px 0px 0px 10px;
- border-right: none;
-  p{
+.left-section {
+  border-radius: 10px 0px 0px 10px;
+  border-right: none;
+  p {
     position: relative;
     right: 0;
   }
 }
-.right-section{
- border-radius: 0px 10px 10px 0px;
+.right-section {
+  border-radius: 0px 10px 10px 0px;
 }
-
-
