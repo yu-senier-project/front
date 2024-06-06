@@ -10,25 +10,25 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '80%',
+  height: '80%',
   bgcolor: 'background.paper',
   boxShadow: 24,
+  overflow: 'auto',  
   p: 4,
 };
 
 const imageStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    height: 'auto',
-    maxWidth: '80%',
-    maxHeight: '80%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-  };
-  
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxWidth: '100%',
+  maxHeight: '100%',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  overflow: 'auto',  
+  p: 4,
+};
 
 export default function FileModal({ open, handleClose, files = [] }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -62,7 +62,7 @@ export default function FileModal({ open, handleClose, files = [] }) {
       {selectedImage && (
         <Modal open={true} onClose={handleImageClose}>
           <Box sx={imageStyle}>
-            <img src={selectedImage} alt="Selected" style={{ width: '100%', height: '100%' }} />
+            <img src={selectedImage} alt="Selected" style={{ width: '100%', height: 'auto' }} />
           </Box>
         </Modal>
       )}
