@@ -190,7 +190,6 @@ const ChatUserCard = ({
             {userName}
           </span>
           <span className="ChatUserCard-commnet">
-            {console.log(mentions)}
             {renderContent(comment, [], mentions, null, true)}
           </span>
           <div className="ChatUserCard-chat">
