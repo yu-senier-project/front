@@ -58,6 +58,7 @@ export function refreshAccessTokenInterceptor() {
       return newAccessToken;
     } catch (error) {
       console.error("토큰 재발급 실패:", error);
+      localStorage.setItem("login", false);
       return null;
     }
   }
