@@ -57,6 +57,8 @@ export function refreshAccessTokenInterceptor() {
       console.log("토큰 재발급 성공", newAccessToken);
       return newAccessToken;
     } catch (error) {
+      localStorage.removeItem("login");
+      window.location.href = "/";
       console.error("토큰 재발급 실패:", error);
       return null;
     }
@@ -168,5 +170,5 @@ export async function logout() {
 }
 
 export const isAuthenticated = () => {
-  return !!localStorage.getItem("login");
+  return localStorage.getItem("login") === 'true';
 };
