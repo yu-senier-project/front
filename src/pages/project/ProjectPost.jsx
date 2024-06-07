@@ -338,7 +338,7 @@ export default function ProjectPost() {
                     onClick={(event) => handleClick(event, item.id)}
                     className="post-option-button"
                   >
-                    <HiOutlineDotsVertical size={20} />
+                    {/* <HiOutlineDotsVertical size={20} /> */}
                   </Button>
                   <Menu
                     id="simple-menu"
