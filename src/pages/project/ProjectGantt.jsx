@@ -106,9 +106,9 @@ export default function ProjectGantt() {
         .map((plan, index) => {
           const startDate = parseDate(plan.startedAt);
           const endDate = parseDate(plan.endedAt);
-          const duration = plan.duration;
+          const duration = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24);
           console.log(plan + '@');
-          if (duration === 0) {
+          if (duration < 1) {
             return null;
           }
 
