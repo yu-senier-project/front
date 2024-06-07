@@ -148,7 +148,7 @@ function StepAuthVerification({
           autocomplete={'off'}
 
           />
-          {"@" + companyEmail}
+         {companyEmail?"@" + companyEmail:""}
           <button
             className="auth_button"
             onClick={sendAuthCode}

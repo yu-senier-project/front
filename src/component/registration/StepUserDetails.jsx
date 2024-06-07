@@ -61,7 +61,7 @@ function StepUserDetails({
       <div className="position-space">
         <Input
           size="Large"
-          placeholder={"무직일 경우 희망 직무"}
+          placeholder={"직무 (무직일 경우 '희망 직무')"}
           onChange={handleInputChange}
           value={formData.position}
           name={"position"}

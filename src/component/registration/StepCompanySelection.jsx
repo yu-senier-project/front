@@ -62,7 +62,7 @@ function StepCompanySelection({
           <></>
         )}
       </div>
-      <p>선택된 회사: {selectedCompanyName}</p>
+      {/* <p>선택된 회사: {selectedCompanyName}</p> */}
       <div className="next_button">
         <Button
           text={"다음"}
