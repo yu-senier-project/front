@@ -299,13 +299,14 @@ export default function ProjectPost() {
       </h2>
       <div className="create-post">
         <div className="create-top">
+          {console.log(localStorage.getItem("profile"))}
           <UserCard
             onClick={() => preserveQueryParams(`/Profile/${memberId}`)}
             userName={localStorage.getItem("userNickName")}
             width={"width-40"}
             height={"height-40"}
             img={
-              localStorage.getItem("profile") != null
+              localStorage.getItem("profile") != "null"
                 ? localStorage.getItem("profile")
                 : "/image/dp.jpg"
             }
