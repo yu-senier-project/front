@@ -33,7 +33,7 @@ export default function ProjectPost() {
   const [newPost, setNewPost] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [editContent, setEditContent] = useState("");
-  
+
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -128,12 +128,12 @@ export default function ProjectPost() {
       millisecond / 1000000 // 밀리초로 변환
     );
   };
-  
+
   // 얼마전에 생성하였는지 표시하기 위한 함수
   const formatDistanceToNowInKorean = (date) => {
     const distance = formatDistanceToNow(date, { addSuffix: true });
     const translations = {
-      "about":'',
+      about: "",
       // 'hour':'시간',
       // 'ago':'전',
       // 'minute':'분',
@@ -154,24 +154,27 @@ export default function ProjectPost() {
       "months ago": "개월 전",
       "years ago": "년 전",
     };
-  
+
     let translated = distance;
-  
+
     for (const [key, value] of Object.entries(translations)) {
       translated = translated.replace(key, value);
     }
-  
+
     return translated;
   };
 
   const createPost = async (content) => {
     try {
-      const response = await apiClient.post(`/api/v1/project/${projectId}/post`, { content });
+      const response = await apiClient.post(
+        `/api/v1/project/${projectId}/post`,
+        { content }
+      );
       console.log("Post created");
       setPostContent("");
 
-      setNewPost(newPost+1);
-  
+      setNewPost(newPost + 1);
+
       // URL params 유지
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set("title", title);
@@ -240,7 +243,7 @@ export default function ProjectPost() {
   };
 
   const handleEdit = () => {
-    const postToEdit = posts.find(post => post.id === currentPostId);
+    const postToEdit = posts.find((post) => post.id === currentPostId);
     setEditContent(postToEdit.content);
     setOpenModal(true);
     handleClose();
@@ -248,8 +251,15 @@ export default function ProjectPost() {
 
   const handleSave = async () => {
     try {
-      await apiClient.patch(`/api/v1/project/${projectId}/post/${currentPostId}`, { content: editContent });
-      setPosts(posts.map(post => post.id === currentPostId ? { ...post, content: editContent } : post));
+      await apiClient.patch(
+        `/api/v1/project/${projectId}/post/${currentPostId}`,
+        { content: editContent }
+      );
+      setPosts(
+        posts.map((post) =>
+          post.id === currentPostId ? { ...post, content: editContent } : post
+        )
+      );
       setOpenModal(false);
     } catch (error) {
       console.error("Failed to update post:", error);
@@ -283,7 +293,7 @@ export default function ProjectPost() {
             console.log(posts);
           }}
         >
-          <HiOutlineDotsVertical size={20}  />
+          <HiOutlineDotsVertical size={20} />
         </button>
         {title}
       </h2>
@@ -294,7 +304,11 @@ export default function ProjectPost() {
             userName={localStorage.getItem("userNickName")}
             width={"width-40"}
             height={"height-40"}
-            img={localStorage.getItem('profile')?localStorage.getItem('profile'):"/image/dp.jpg"}
+            img={
+              localStorage.getItem("profile") != null
+                ? localStorage.getItem("profile")
+                : "/image/dp.jpg"
+            }
           />
           <button onClick={() => createPost(postContent)}>작성</button>
         </div>
@@ -303,7 +317,6 @@ export default function ProjectPost() {
           id="write-area"
           value={postContent}
           onChange={(e) => setPostContent(e.target.value)}
-
         />
       </div>
       <ul className="view-posts">
@@ -324,7 +337,11 @@ export default function ProjectPost() {
                   userName={item.postMember.nickname}
                   width={"width-40"}
                   height={"height-40"}
-                  img={item.postMember.profile?item.postMember.profile:"/image/dp.jpg"}
+                  img={
+                    item.postMember.profile
+                      ? item.postMember.profile
+                      : "/image/dp.jpg"
+                  }
                 />
                 <p style={{ margin: "10px", color: "rgb(210, 210, 210)" }}>
                   {formatDistanceToNowInKorean(parseDate(item.createdAt))}
