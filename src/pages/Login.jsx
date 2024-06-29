@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { login, logout } from "../util/auth";
 import useLoginStore from "../store/login/useLoginStore";
 import RegistrationModal from "../modal/RegistrationModal";
-
 const style = {
   position: "absolute",
   top: "50%",

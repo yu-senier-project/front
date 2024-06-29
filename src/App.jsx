@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import IdFind from "./pages/Auth/IdFind";
@@ -21,6 +22,7 @@ import { ProjectNav } from "./component/nav/ProjectNav";
 import { Profile } from "./pages/Profile";
 import SearchPost from "./component/search/SearchPost";
 import { NotFound } from "./pages/NotFound";
+import { Hamberger } from "./component/nav/Hamberger";
 
 import ProjectGantt from "./pages/project/ProjectGantt";
 import ProJectPost from "./pages/project/ProjectPost";
@@ -39,6 +41,21 @@ function App() {
   const login = localStorage.getItem("login");
   const { toggle } = useCreateFeed((state) => state);
   const { isLogin } = useLoginStore((state) => state);
+
+  // 화면 크기 감지 상태 추가
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <BrowserRouter>
@@ -50,7 +67,7 @@ function App() {
           <Route path="CheckId" element={<IdCheck />} />
           <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
-          <Route path="/" element={<SmallNav />}>
+          <Route path="/" element={isMobile ? <Hamberger /> : <SmallNav />}>
             <Route path="Home" element={<ProtectedRoute element={Home} />} />
             <Route
               path="Search"

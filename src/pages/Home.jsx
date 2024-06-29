@@ -66,7 +66,8 @@ const Home = () => {
   let list = data?.pages.map((item) => item.data);
 
   list = list?.map((item1) => {
-    return item1.map((item) => ({
+    if(item1.length >= 1){
+    return item1?.map((item) => ({
       mentions: item.mentions,
       hashtags: item.hashtags,
       memberId: item.postMember?.id,
@@ -81,6 +82,9 @@ const Home = () => {
       liked: item.liked,
       profile: item.postMember?.profile,
     }));
+  }else{
+    return []
+  }
   });
 
   let spreadList;
