@@ -1,0 +1,29 @@
+
+.modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    border: none;
+    box-shadow: 24px;
+    padding: 16px;
+    border-radius: 20px;
+
+  }
+  
+  .modal-title {
+    margin-bottom: 16px;
+  }
+  
+  .modal-textfield {
+    margin-bottom: 16px;
+  }
+  
+  .modal-button {
+    display: block;
+    background-color: #71c9ce;
+    margin: 0 auto;
+  }
+  

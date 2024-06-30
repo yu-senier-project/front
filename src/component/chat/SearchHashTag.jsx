@@ -2,18 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../styles/chat/searchUser.scss";
 import UserCard from "../UserCard";
 import apiClient from "../../util/BaseUrl";
-import { debounce } from "lodash";
 
 export const SearchHashTag = ({ onHashClick, hashValue }) => {
   const [selectedIndex, setSelectedIndex] = useState(0); // 현재 선택된 항목의 인덱스
+  const [loading, setLoading] = useState(false);
   const [hash, setHash] = useState([]);
 
   const fetchData = async () => {
     try {
       let data = await apiClient.get(`/api/v1/hashtag/${hashValue}`);
+      console.log(data);
       setHash(
         data?.data.map((item) => ({
-          hash: item.name.substr(1),
+          hash: item.name,
           postCnt: item.postCnt,
           img: "image/images.png",
         }))
@@ -21,10 +22,12 @@ export const SearchHashTag = ({ onHashClick, hashValue }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }; // 300ms 동안의 연속적인 요청을 하나로 그룹화합니다.
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const timeoutExecute = setTimeout(() => fetchData(), 1000);
+    setLoading(true);
+    const timeoutExecute = setTimeout(() => fetchData(), 500);
     return () => clearTimeout(timeoutExecute);
   }, [hashValue]);
 
@@ -71,6 +74,12 @@ export const SearchHashTag = ({ onHashClick, hashValue }) => {
   return (
     <div className="SearchUser">
       <ul>
+        {loading ? (
+          "로딩중..."
+        ) : hash?.length === 0 ? (
+          <div>결과 없음</div>
+        ) : null}
+
         {hash?.map((user, index) => (
           <li
             key={index}

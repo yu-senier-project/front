@@ -7,6 +7,8 @@ function useTimer(initialMinutes = 10, initialSeconds = 0) {
 
   // 타이머 시작하는 함수
   const toggle = () => {
+    setMinutes(initialMinutes);
+    setSeconds(initialSeconds);
     setIsActive(!isActive);
   };
 

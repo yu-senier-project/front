@@ -31,6 +31,14 @@ export const MentionInput = ({
   }, []);
 
   useEffect(() => {
+    if (!value.includes("@")) {
+      setOnHash(false);
+      setOnMention(false);
+      setHashValue("");
+      setMentionValue("");
+      return;
+    }
+
     // 없는 해시태그 입력시
     if (hashValue !== "") {
       if (value[value.length - 1] == " ") {
@@ -101,8 +109,8 @@ export const MentionInput = ({
           return;
         }
       }
-      setCurrentCusor(e.target.selectionStart - 1);
-      setOnHash(true);
+      // setCurrentCusor(e.target.selectionStart - 1);
+      // setOnHash(true);
       return;
     }
   };

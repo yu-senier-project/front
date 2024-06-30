@@ -1,0 +1,73 @@
+.chat_nav {
+  margin-left: 110px;
+  width: 250px;
+  height: 100vh;
+  background-color: #ffffff;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  border-right: 2px solid gray;
+  border-left: 2px solid gray;
+
+  .add_room_button {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+    // padding-bottom: 10px;
+    background-color: #71c9ce;
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+    border-radius: 20px;
+  }
+
+  .profile {
+    text-align: center;
+    margin-bottom: 20px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    cursor: pointer;
+    overflow-y: auto;
+    flex-grow: 1;
+    .selected {
+      background-color: #71c9ce;
+      color: white;
+    }
+  }
+
+  li {
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+    flex-direction: column;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    &.more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+}

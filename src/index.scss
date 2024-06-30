@@ -13,7 +13,8 @@ span {
 }
 
 div,
-input {
+input,
+textarea {
   box-sizing: border-box;
 }
 
@@ -76,7 +77,7 @@ input[type="radio"]:checked {
 }
 
 @for $i from 1 through 500 {
-  .hegiht-#{$i} {
+  .height-#{$i} {
     height: #{$i}px;
   }
 }
@@ -90,4 +91,18 @@ input[type="radio"]:checked {
 .react-datepicker__day--outside-month {
   cursor: default;
   visibility: hidden;
+}
+
+.metionHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #71c9ce;
+}
+
+.hashHighlight {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #ce7171;
 }

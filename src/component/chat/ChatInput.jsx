@@ -15,7 +15,8 @@ const ChatInput = ({
   setReplyUser,
   setCommentId,
 }) => {
-  const [value, setValue] = useState(replyUser);
+  const [value, setValue] = useState(replyUser == "" ? "" : replyUser);
+
   const mentionList = useRef([]);
   const hashList = useRef([]);
   const inputRef = useRef(null);
@@ -38,6 +39,9 @@ const ChatInput = ({
   // 댓글 달기
   const { mutate: commentMutate, status: commentStatus } = useMutation({
     mutationFn: postComment,
+    onError: (e) => {
+      console.log(e);
+    },
     onMutate: async (newComment) => {
       // 캐시에 있는 이전 댓글을 저장
       const previousComments = queryClient.getQueryData([
@@ -52,9 +56,12 @@ const ChatInput = ({
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
         postMember: {
-          id: previousComments.data[0].postMember.id,
+          id: localStorage.getItem("memberId"),
           nickname: localStorage.getItem("userNickName"),
-          profile: previousComments.data[0].postMember.profile,
+          profile:
+            previousComments.data.length !== 0
+              ? previousComments?.data[0].postMember.profile
+              : "/image/dp.jpg",
         },
       };
 
@@ -63,19 +70,15 @@ const ChatInput = ({
         return { data: [...old.data, newData] };
       });
 
-      // 롤백 함수를 반환합니다. 이 함수는 뮤테이션 실패 시 호출됩니다.
       return () =>
         queryClient.setQueryData(["feedComment", postId], previousComments);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
     },
-    onError: (err, newComment, rollback) => {
-      console.log(e);
-      rollback();
-    },
   });
 
+  // 답글 달기기
   const { mutate: replyMutate, status: replyStatus } = useMutation({
     mutationFn: postCommentReply,
     onMutate: async (newComment) => {
@@ -86,7 +89,6 @@ const ChatInput = ({
         commentId,
       ]);
 
-      console.log(previousCommentsReply);
       let newData = {
         commentId: 0,
         commentReply: 0,
@@ -94,9 +96,12 @@ const ChatInput = ({
         createAt: [2024, 1, 1, 1, 1, 1, 752664000],
         likeCnt: 0,
         postMember: {
-          id: previousCommentsReply.data[0].postMember.id,
+          id: localStorage.getItem("memberId"),
           nickname: localStorage.getItem("userNickName"),
-          profile: previousCommentsReply.data[0].postMember.profile,
+          profile:
+            previousCommentsReply?.data.length !== 0
+              ? previousCommentsReply?.data[0].postMember.profile
+              : "/image/dp.jpg",
         },
       };
 
@@ -126,6 +131,10 @@ const ChatInput = ({
   });
 
   const onSubmit = () => {
+    if (value == "" || value == null || value == undefined) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
     let data;
     let reply = false;
     if (commentId == 0) {
@@ -156,6 +165,10 @@ const ChatInput = ({
   const onKeyDown = (e) => {
     if (e.key == "Enter") {
       e.preventDefault();
+      if (value.trim() === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
       onSubmit();
     }
   };

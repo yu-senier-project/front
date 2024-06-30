@@ -3,6 +3,7 @@ a {
     color: black;
 }
 
+//이메일 인증
 #find_content {
     text-align: center;
     display: flex;
@@ -20,46 +21,78 @@ a {
             position: absolute;
             background-color: transparent;
             border: none;
-            margin-left: 320px;
+            margin-left: 25vw;
             margin-bottom: 12px;
         }
     }
-    .authcode_input{
+    .authcode_input {
         width: 100%;
         display: grid;
         place-items: center;
-        .auth_time{
+        .auth_time {
             position: absolute;
             background-color: transparent;
             border: none;
-            margin-left: 320px;
+            margin-left: 25vw;
             margin-bottom: 12px;
             color: red;
         }
     }
 }
 
-.check_container{
+//아이디 찾기
+.check_container {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    .check_id{
+    .check_id {
         margin: 150px;
     }
-    .findpassword_button{
+    .findpassword_button {
         border: none;
-        background-color: #71C9CE;
+        background-color: #71c9ce;
         width: 30%;
         height: 40px;
         margin-bottom: 20px;
         color: white;
+        padding-top: 15px;
         // font-size: 15px;
     }
-    .login_button{
+    .login_button {
         border: none;
         background-color: transparent;
-        
+    }
+}
+
+//비밀번호 찾기
+#pwfind_container {
+    #find_content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .name_box {
+        width: 30%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.name-space{
+    width: 100%;
+    // background-color: red;
+    Input{
+        margin: 10px 30px 20px 30px;
+    }
+}
+.password-space{
+    width: 100%;
+    // background-color: red;
+    Input{
+        margin: 10px 30px 20px 30px;
     }
 }

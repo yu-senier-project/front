@@ -13,6 +13,7 @@ export default function UserCard({
   return (
     <div id="usercard" onClick={onClick}>
       <img id="userImg" className={className} src={img} alt="프로필사진" />
+
       <div className="usercard-comment">
         <span>
           <b>{userName}</b>
@@ -25,7 +26,7 @@ export default function UserCard({
               overflowWrap: "break-word",
             }}
           >
-            {comment}{" "}
+            {comment}
           </div>
         ) : null}
       </div>

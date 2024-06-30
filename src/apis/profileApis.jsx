@@ -13,9 +13,29 @@ export const getMemberFeed = async (
   if (cursorValue === false) {
     return { data: [] };
   }
+
+  if (filterType == "oldest") {
+    if (cursorValue == 0) {
+      return apiClient.get(
+        `/api/v1/member/${memberId}/post?filter=${filterType}`
+      );
+    } else {
+      `/api/v1/member/${memberId}/post?filter=${filterType}&cursorValue=${cursorValue}`;
+    }
+  }
   if (startDate == 0 || endDate == 0) {
+    if (cursorValue == 0) {
+      return apiClient.get(
+        `/api/v1/member/${memberId}/post?filter=${filterType}`
+      );
+    }
     return apiClient.get(
       `/api/v1/member/${memberId}/post?filter=${filterType}&likeCnt=${likeCnt}&cursorValue=${cursorValue}`
+    );
+  }
+  if (cursorValue == 0) {
+    return apiClient.get(
+      `/api/v1/member/${memberId}/post?filter=${filterType}&start=${startDate}&end=${endDate}`
     );
   }
   return apiClient.get(
@@ -38,9 +58,13 @@ export const getMemberLikeFeed = async (memberId, cursorValue) => {
   if (cursorValue === false) {
     return { data: [] };
   }
-  return apiClient.get(
-    `/api/v1/member/${memberId}/post/liked?cursorValue=${cursorValue}`
-  );
+  if (cursorValue == 0) {
+    return apiClient.get(`/api/v1/member/${memberId}/post/liked`);
+  } else {
+    return apiClient.get(
+      `/api/v1/member/${memberId}/post/liked?cursorValue=${cursorValue}`
+    );
+  }
 };
 
 // 회원 정보 수정 api
@@ -75,7 +99,8 @@ export const postProfileImage = async (data) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response);
+    console.log(response.data.profile);
+    localStorage.setItem("profile", response.data.profile);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -96,8 +121,56 @@ export const deleteResume = async () => {
 export const deleteProfileImage = async () => {
   try {
     const response = await apiClient.delete(`/api/v1/member/profile`);
+    localStorage.setItem("profile", null);
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+// 회사 검색 api
+export const getCompany = async (companyName) => {
+  return apiClient.get(`/api/v1/company/search?keyword=${companyName}`);
+};
+
+// 회사 이메일 가져오는 api
+export const getCompanyEmail = async (companyName) => {
+  return apiClient.get(`/api/v1/company/${companyName}/email`);
+};
+
+// 회사 이메일 요청
+export const getEmail = async (email) => {
+  return apiClient.get(`/api/v1/email-auth/request/${email}`);
+};
+
+// 이메일 인증
+export const postEmailAuthNum = async (data) => {
+  try {
+    const response = await apiClient.post(`/api/v1/email-auth/confirm`, data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// 회사나 직무 수정
+export const updateCompany = async (data) => {
+  try {
+    const response = await apiClient.put(`/api/v1/member/company`, data);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      // 서버에서 반환된 에러
+      throw new Error(
+        error.response.data.message || "서버 에러가 발생했습니다."
+      );
+    } else if (error.request) {
+      // 요청이 전송되었지만 응답이 없는 경우
+      throw new Error("서버로부터 응답이 없습니다. 나중에 다시 시도해주세요.");
+    } else {
+      // 요청 설정 중에 에러가 발생한 경우
+      throw new Error("요청을 처리하는 중에 에러가 발생했습니다.");
+    }
   }
 };

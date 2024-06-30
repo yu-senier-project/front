@@ -11,7 +11,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { Setting } from "../basic/Setting";
+import { renderContent } from "../../util/MentionHashText";
 export const ChatReplyUserCard = ({
+  mentions,
   id,
   userName,
   comment,
@@ -183,6 +185,10 @@ export const ChatReplyUserCard = ({
     }
   };
 
+  const onProfileCilick = () => {
+    nav(`/Profile/${id}`);
+  };
+
   let likeClassName = `${liked ? "like-red" : null}`;
 
   return (
@@ -198,12 +204,21 @@ export const ChatReplyUserCard = ({
         src={img}
         alt="프로필사진"
         onClick={() => {
-          handleModal();
+          onProfileCilick();
         }}
       />
       <div className={textClassName}>
-        <span className="ChatUserCard-userName">{userName}</span>{" "}
-        <span className="ChatUserCard-commnet">{comment}</span>
+        <span
+          className="ChatUserCard-userName"
+          onClick={() => {
+            onProfileCilick();
+          }}
+        >
+          {userName}
+        </span>{" "}
+        <span className="ChatUserCard-commnet">
+          {renderContent(comment, [], mentions, null, true)}
+        </span>
         <div className="ChatUserCard-chat">
           <span
             className="ChatUserCard-chat-grey"
