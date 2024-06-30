@@ -22,3 +22,27 @@ li {
     border-radius: 5px 5px 0px 0px;
   }
 }
+
+@media screen and (max-width: 800px) {
+  .ProfileNav {
+    ul {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      border-bottom: 1px solid grey;
+    }
+
+    li {
+      cursor: pointer;
+      color: grey;
+
+      font-size: 12px;
+    }
+
+    .select {
+      color: black;
+      background-color: lightgrey;
+      border-radius: 5px 5px 0px 0px;
+    }
+  }
+}

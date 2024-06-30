@@ -45,23 +45,29 @@ export const ProfileUser = ({
         {/* 사진이랑 아이디, 한줄소개*/}
         <div className="ProfileUser-info-text">
           {/* 아이디 */}
-          <span>{data?.data?.nickname}</span>
+          <div className="ProfileUser-info-text-flex">
+            <div>
+              <span>{data?.data?.nickname}</span>
+            </div>
 
-          {/* 프로필,이력서 수정 부분 */}
-          {myProfile ? (
-            <button
-              onClick={handleEditBtn}
-              style={{ backgroundColor: "#71C9CE" }}
-            >
-              프로필 수정
-            </button>
-          ) : null}
-          <button
-            style={{ backgroundColor: "#B3DCB2" }}
-            onClick={handleResumeCheckBtn}
-          >
-            이력서 조회
-          </button>
+            {/* 프로필,이력서 수정 부분 */}
+            <div>
+              {myProfile ? (
+                <button
+                  onClick={handleEditBtn}
+                  style={{ backgroundColor: "#71C9CE" }}
+                >
+                  프로필 수정
+                </button>
+              ) : null}
+              <button
+                style={{ backgroundColor: "#B3DCB2" }}
+                onClick={handleResumeCheckBtn}
+              >
+                이력서 조회
+              </button>
+            </div>
+          </div>
 
           {/* 한줄 소개 부분 */}
           <p>{data?.data?.introduction ?? ""}</p>

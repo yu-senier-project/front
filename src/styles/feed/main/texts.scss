@@ -25,3 +25,13 @@ p {
   margin-bottom: 10px;
   font-size: 16px;
 }
+
+@media screen and (max-width: 600px) {
+  .Texts {
+    margin-top: 5px;
+    width: 280px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

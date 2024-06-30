@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/pages/Profile.scss";
 import { useParams } from "react-router-dom";
-
 import { ProfileUser } from "../component/profile/main/ProfileUser";
 import { ProfileNav } from "../component/profile/main/ProfileNav";
 import { ProfileFilter } from "../component/profile/main/ProfileFilter";

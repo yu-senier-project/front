@@ -65,7 +65,11 @@ export const ProfileLikeFeedList = ({ memberId }) => {
   }));
 
   return (
-    <div onScroll={handleScroll} style={{ height: "100vh", overflow: "auto" }}>
+    <div
+      className="ProfileLikeFeedList"
+      onScroll={handleScroll}
+      style={{ height: "100vh", overflow: "auto" }}
+    >
       {feedList?.map((item, idx) => (
         <Feed feedList={item} key={item.id}></Feed>
       ))}

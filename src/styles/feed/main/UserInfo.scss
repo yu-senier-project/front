@@ -24,3 +24,9 @@
     border-bottom: 1px solid black;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .UserInfo {
+    width: 300px;
+  }
+}
