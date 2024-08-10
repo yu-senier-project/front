@@ -28,6 +28,7 @@ import ProJectPost from "./pages/project/ProjectPost";
 import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
+import { Alarm } from "./component/alarm/Alarm";
 
 // 액세스 토큰 갱신 인터셉터
 refreshAccessTokenInterceptor();
@@ -54,6 +55,7 @@ function App() {
             <Route path="Project/Create" element={<CreateProject />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="Profile/:id" element={<Profile />} />
+            <Route path="Alarm" element={<Profile />} />
           </Route>
           <Route path="/ProjectHome" element={<ProjectNav />}>
             <Route path="InfoUpdate" element={<UpdateProject />} />
