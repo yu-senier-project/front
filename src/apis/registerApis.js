@@ -50,7 +50,7 @@ export const sendAuthCode = async (formData, companyEmail, toggle) => {
     const res = await axios.get(
       `${BaseUrl}/api/v1/email-auth/request/${formData.email}@${companyEmail}`
     );
-    
+
     return { statusCode: res.status, data: res.data };
   } catch (err) {
     alert("이메일 전송에 실패했습니다.");
