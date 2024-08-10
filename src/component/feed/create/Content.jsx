@@ -34,7 +34,7 @@ const Content = ({
         value={content}
         onChange={onChangeContent}
       ></MentionTextarea>
-      <p> {content.length} / 250</p>
+      <p> {content.length} / 1000</p>
     </div>
   );
 };

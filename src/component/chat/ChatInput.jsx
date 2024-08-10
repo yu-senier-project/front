@@ -15,7 +15,7 @@ const ChatInput = ({
   setReplyUser,
   setCommentId,
 }) => {
-  const [value, setValue] = useState(replyUser);
+  const [value, setValue] = useState(replyUser == "" ? "" : replyUser);
   const mentionList = useRef([]);
   const hashList = useRef([]);
   const inputRef = useRef(null);
@@ -47,8 +47,6 @@ const ChatInput = ({
         "feedComment",
         postId,
       ]);
-
-      console.log(previousComments);
 
       let newData = {
         commentId: 0,
@@ -90,7 +88,6 @@ const ChatInput = ({
         commentId,
       ]);
 
-      console.log(previousCommentsReply);
       let newData = {
         commentId: 0,
         commentReply: 0,
@@ -133,6 +130,10 @@ const ChatInput = ({
   });
 
   const onSubmit = () => {
+    if (value == "" || value == null || value == undefined) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
     let data;
     let reply = false;
     if (commentId == 0) {
@@ -151,7 +152,6 @@ const ChatInput = ({
       };
     }
     if (reply) {
-      console.log(data);
       commentMutate(data);
     } else {
       replyMutate(data);
@@ -164,6 +164,10 @@ const ChatInput = ({
   const onKeyDown = (e) => {
     if (e.key == "Enter") {
       e.preventDefault();
+      if (value.trim() === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
       onSubmit();
     }
   };

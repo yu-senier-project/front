@@ -120,7 +120,7 @@ const useMessageStore = create((set, get) => ({
   messages: {},
   subscribedRooms: [],
   isMessageLoading: false,
-
+  files: {},
   setRooms: (rooms) => set({ rooms }),
 
   setSelectedRoom: (roomId) => set({ selectedRoom: roomId }),
@@ -142,37 +142,44 @@ const useMessageStore = create((set, get) => ({
 
   addRoom: async (roomName, inviteList) => {
     try {
-
       const memberId = localStorage.getItem("memberId");
+      const filteredInviteList = inviteList.map(({ memberId, nickname }) => ({
+        memberId,
+        nickname,
+      }));
+
       const data = {
         roomName: roomName,
-        inviteList: inviteList,
+        inviteList: filteredInviteList,
       };
-      // console.log(data)
+
+      console.log(data);
+
       const response = await apiClient.post(
         `/api/v1/chat-room/create?memberId=${memberId}`,
         data
-      );  
-      return response    
+      );
+
+      return response;
     } catch (error) {
       // console.error("Error adding chat room:", error);
-      throw error
+      throw error;
     }
   },
 
   fetchRooms: async (memberId, pageNumber) => {
     try {
       connectStompClient(); // 채팅방 목록 받아올 때 웹소켓 연결 시도
-      
+
       set((state) => ({ rooms: [] }));
       set((state) => ({ messages: [] }));
-      
+      set((state) => ({ selectedRoom: "" }));
       const response = await apiClient.get(
         `/api/v1/chat-room/index?memberId=${memberId}&page=${pageNumber}`
       );
       // console.log("방 받아오는 중");
       if (response.status === 204) {
-        console.log(response)
+        console.log(response);
         // 더 이상 방이 없는 경우
         // console.log('더이상 방이없음')
         set((state) => ({ roomNumber: state.roomNumber - 1 }));
@@ -203,9 +210,15 @@ const useMessageStore = create((set, get) => ({
 
       const response = await apiClient.get(`/api/v1/chat-room/${roomId}`);
       console.log(response);
-      const sortedMessages = response.data.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
+      const sortedMessages = response.data.sort((a, b) => {
+        if (a.chatId < b.chatId) {
+          return -1;
+        }
+        if (a.chatId > b.chatId) {
+          return 1;
+        }
+        return 0;
+      });
       set((state) => ({
         messages: { ...state.messages, [roomId]: sortedMessages },
       }));
@@ -228,7 +241,7 @@ const useMessageStore = create((set, get) => ({
 
       const newMessages = response.data
         .filter((msg) => !existingMessages.has(msg.chatId))
-        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        .sort((a, b) => a.chatId - b.chatId);
 
       set((state) => ({
         messages: {
@@ -237,9 +250,12 @@ const useMessageStore = create((set, get) => ({
         },
       }));
       set({ isMessageLoading: false });
+
+      return newMessages;
     } catch (error) {
       console.error("Error fetching more messages:", error);
       set({ isMessageLoading: false });
+      return [];
     }
   },
 
@@ -355,7 +371,6 @@ const useMessageStore = create((set, get) => ({
       const response = await apiClient.delete(
         `/api/v1/chat-room/${roomId}?memberId=${memberId}`
       );
-      console.log(response);
       set((state) => {
         const updatedRooms = state.rooms.filter(
           (room) => room.roomId !== roomId
@@ -372,6 +387,20 @@ const useMessageStore = create((set, get) => ({
       });
     } catch (error) {
       console.error("Error leaving chat room:", error);
+    }
+  },
+
+  fetchAllFile: async (roomId, memberId) => {
+    try {
+      const response = await apiClient.get(
+        `/api/v1/chat-room/${roomId}/images`
+      );
+      console.log(response);
+      set((state) => ({
+        files: { ...state.files, [roomId]: response.data },
+      }));
+    } catch (error) {
+      console.error("Error fetchFiles", error);
     }
   },
 }));

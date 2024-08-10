@@ -1,4 +1,3 @@
-// IdFind.js
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BaseUrl } from "../../util/BaseUrl";
@@ -6,34 +5,25 @@ import { useNavigate } from "react-router-dom";
 import Tobbar from "../../component/Topbar";
 import Input from "../../component/basic/Input";
 import Button from "../../component/basic/Button";
-// import useTimer from '../../hooks/useTimer';
 import useFindStore from "../../store/find/useFindStore";
 import useTimer from "../../hooks/useTimer";
 import "../../styles/find/find.scss";
-import { first } from "lodash";
 
 export default function PwInitCheckId() {
   const { minutes, seconds, isActive, toggle } = useTimer(5, 0); // 타이머 훅
-  const {
-    firstName,
-    secondName,
-    id,
-    isChecked,
-    setId,
-    setFirstName,
-    setSecondName,
-    setIsCheked,
-  } = useFindStore();
+  const [isChecked, setIsChecked] = useState(false);
   const [isSend, setIsSend] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const [formData, setFormData] = useState({
+    firstName: '',
+    secondName: '',
+    id: '',
     email: "",
     authCode: "",
   });
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-
-  //inputHandler
+  // inputHandler
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
@@ -42,69 +32,69 @@ export default function PwInitCheckId() {
     }));
   };
 
-  const handleFirstName = (event) => {
-    setFirstName(event.target.value);
-  };
-
-  const handleSecondName = (event) => {
-    setSecondName(event.target.value);
-  };
-
-  const handleId = (event) => {
-    setId(event.target.value);
-  };
-
-  const checkNameId = () => {
-    console.log(firstName, secondName, id);
-    if (firstName === "" || secondName === "" || id === "") {
+  const checkNameId = async () => {
+    console.log(formData.firstName, formData.secondName, formData.id);
+    if (formData.firstName === "" || formData.secondName === "" || formData.id === "") {
       alert("빈칸을 채워주세요.");
       return;
     }
-    checkAuthCode().then(() => {
-      navigate("/PasswordInit", { state: { email: formData.email } });
-    });
 
-    // axios({
-    //   method: "get",
-    //   url: "http://43.203.69.159/api/v1/auth/password-inquiry/verification",
-    //   data: {
-    //     firstName: firstName,
-    //     lastName: secondName,
-    //     nickname: id,
-    //     email: formData.email,
-    //   },
-    // })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-    // console.log(firstName, secondName, id, formData.email);
+    try {
+      await checkAuthCode(); 
+      const data =  {
+        firstName: formData.firstName,
+        lastName: formData.secondName,
+        nickname: formData.id,
+        email: formData.email,
+      };
+      const response = await axios.post("http://43.203.69.159/api/v1/auth/password-inquiry/verification", data);
+      console.log(response);
+      if (response.status === 200) {
+        navigate("/PasswordInit", { state: { email: formData.email } });
+      } else {
+        alert("유효하지 않은 사용자 정보입니다.");
+      }
+    }
+    catch (error) {
+      console.error(error);
+      if (error.response) {
+        const { code } = error.response.data;
+        if (code === 2001) {
+          alert("사용자가 존재하지 않습니다.");
+        } else if (code === 1013) {
+          alert("사용자 정보가 다릅니다.");
+        } else {
+          alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }
+      } else {
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
   };
 
-  const sendAuthCode = () => {
+  const sendAuthCode = async () => {
     if (formData.email === "") {
       alert("이메일을 작성해주세요");
       return;
     }
-    // toggle();
-    axios
-      .get(BaseUrl + "/api/v1/email-auth/request/" + formData.email)
-      .then((res) => {
-        console.log(res);
-        setIsSend(true);
-      })
-      .catch((err) => {
-        console.error("Error in sending email:", err);
-        alert("이메일 전송에 실패했습니다.");
-      });
+    setIsLoading(true); // 로딩 상태 시작
+    try {
+      const res = await axios.get(BaseUrl + "/api/v1/email-auth/request/" + formData.email);
+      console.log(res);
+      setIsSend(true);
+      toggle();  // 타이머 시작
+    } catch (err) {
+      console.error("Error in sending email:", err);
+      alert("이메일 전송에 실패했습니다.");
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
+    }
   };
 
   const checkAuthCode = async () => {
     if (!isSend) {
       alert("이메일을 먼저 전송하세요.");
-      return;
+      throw new Error("이메일 전송 안됨");
     }
     const data = {
       email: formData.email,
@@ -113,22 +103,21 @@ export default function PwInitCheckId() {
     console.log(data);
     if (isActive) {
       try {
-        const res = await axios.post(
-          BaseUrl + `/api/v1/email-auth/confirm`,
-          data
-        );
+        const res = await axios.post(BaseUrl + `/api/v1/email-auth/confirm`, data);
         if (res.status === 200) {
-          await setCheckId(data.email);
-          navigate("/");
+          return true;
         } else {
           alert("유효하지 않은 인증번호");
+          throw new Error("유효하지 않은 인증번호");
         }
       } catch (err) {
         console.error("Error in checking auth code:", err);
         alert("인증번호 확인에 실패했습니다.");
+        throw err;
       }
     } else {
       alert("인증시간이 만료되었습니다.");
+      throw new Error("인증시간 만료");
     }
   };
 
@@ -143,18 +132,17 @@ export default function PwInitCheckId() {
             placeholder={"성"}
             size={"Big"}
             name={"firstName"}
-            value={firstName}
-            onChange={handleFirstName}
+            value={formData.firstName}
+            onChange={handleInputChange}
             id={"first_name"}
             style={{ marginRight: "auto" }}
           />
-
           <Input
             placeholder={"이름"}
             size={"Big"}
             name={"secondName"}
-            value={secondName}
-            onChange={handleSecondName}
+            value={formData.secondName}
+            onChange={handleInputChange}
             id={"second_name"}
             style={{ marginLeft: "auto" }}
           />
@@ -164,8 +152,8 @@ export default function PwInitCheckId() {
             placeholder={"아이디"}
             size={"Small"}
             name={"id"}
-            value={id}
-            onChange={handleId}
+            value={formData.id}
+            onChange={handleInputChange}
           />
         </div>
         <div className="email_input">
@@ -179,9 +167,9 @@ export default function PwInitCheckId() {
           <button
             className="auth_button"
             onClick={sendAuthCode}
-            disabled={isSend}
+            disabled={isActive || isLoading}
           >
-            인증
+            {isLoading ? '전송 중...' : '인증'}  
           </button>
         </div>
         <div className="authcode_input">
@@ -193,9 +181,7 @@ export default function PwInitCheckId() {
             onChange={handleInputChange}
           />
           {isActive ? (
-            <span className="auth_time">{`${minutes}:${
-              seconds < 10 ? `0${seconds}` : seconds
-            }`}</span>
+            <span className="auth_time">{`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</span>
           ) : (
             <></>
           )}

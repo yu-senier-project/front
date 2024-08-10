@@ -9,7 +9,9 @@ import { useState, useRef } from "react";
 import { postFeed, postFeedImg } from "../../../apis/feedApis";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loading } from "../../basic/Loading";
+import { useNavigate } from "react-router-dom";
 const CreateFeed = () => {
+  const nav = useNavigate();
   const queryClient = useQueryClient();
   const { setToggle } = useCreateFeed((state) => state);
   const formData = new FormData();
@@ -85,12 +87,14 @@ const CreateFeed = () => {
       mentionList,
       isChat,
     });
+
+    nav(`/Profile/${localStorage.getItem("memberId")}`);
   };
 
   const onChangeContent = (e) => {
-    if (content.length >= 251) {
-      alert("250자까지 작성가능합니다.");
-      setContent(content.slice(0, 250));
+    if (content.length >= 1001) {
+      alert("1000자까지 작성가능합니다.");
+      setContent(content.slice(0, 1000));
       return;
     }
     setContent(e);

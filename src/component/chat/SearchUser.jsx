@@ -19,7 +19,7 @@ export const SearchUser = ({ onMentionClick, metionValue }) => {
         data.data.map((item) => ({
           userName: item.nickname,
           memberId: item.memberId,
-          img: item.profile ?? "image/dp.jpg",
+          img: item.profile ?? "/image/dp.jpg",
         }))
       );
     } catch (error) {

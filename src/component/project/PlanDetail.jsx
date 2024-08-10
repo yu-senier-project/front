@@ -9,6 +9,8 @@ import { UpdatePlan } from "./UpdatePlan";
 import { SpinLoading } from "../basic/SpinLoading";
 
 export const PlanDetail = ({ setDetail, setSelectedEvent, selectedEvent }) => {
+  console.log(selectedEvent);
+
   // 수정 버튼 눌렀는지
   const [onUpdate, setOnUpdate] = useState(false);
 
