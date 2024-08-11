@@ -43,6 +43,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <Alarm />
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<HomeRedirect />} />
@@ -82,7 +83,7 @@ function App() {
               path="Message"
               element={<ProtectedRoute element={Message} />}
             />{" "}
-            <Route path="Alarm" element={<ProtectedRoute element={Alarm} />} />
+            {/* <Route path="Alarm" element={<ProtectedRoute element={Alarm} />} /> */}
           </Route>
           {/* 프로젝트 라우터 */}
           <Route

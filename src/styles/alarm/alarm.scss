@@ -1,0 +1,40 @@
+.Alarm {
+  font-size: 14px;
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+  box-sizing: border-box;
+  min-width: 250px;
+  width: 23%;
+  height: 100px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 10px;
+}
+.Alarm-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.Alarm-top-left {
+  display: flex;
+  align-items: center;
+}
+
+.Alarm-top-right {
+}
+
+// 4줄 넘어가면 ...으로 표시
+.Alarm-text {
+  font-size: 15px;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 45px;
+  line-height: 15px; /* 줄 높이를 폰트 크기와 일치시킴 */
+}
