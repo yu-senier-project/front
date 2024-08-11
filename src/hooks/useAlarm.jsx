@@ -1,10 +1,27 @@
 import React, { useEffect, useState, useRef } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import { useTokenStore } from "../store/useTokenStore";
 
 // 어세스 토큰이 변경되었을 때도 useEffect 실행되도록 하기
-export const useUserAlarm = () => {
+export const useAlarm = () => {
+  // accessToken이 바뀔때마다 재 연결이 필요하므로 accessToken을 가져옴
+  const { accessToken } = useTokenStore();
+
+  // 서버에서 받은 메시지 저장할 state
   const [message, setMessage] = useState(null); // 메시지 상태 변수 추가
+
+  // 새로운 알람이 왔는지 확인할 변수
+  const [newAlarm, setNewAlarm] = useState(false);
+
+  // 알림 애니메이션 담당할 state
+  const [className, setClassName] = useState("Alarm-out");
+
   const eventSource = useRef(null);
+
+  // CloseButton 클릭 시 알람 숨김
+  const handleClose = () => {
+    setClassName("Alarm-out");
+  };
 
   useEffect(() => {
     const initializeEventSource = () => {
@@ -21,15 +38,25 @@ export const useUserAlarm = () => {
       // newMessage라는 타입의 알림이 왔을 때 실행
       eventSource.current.addEventListener("notification", (event) => {
         const parsedData = JSON.parse(event.data);
-        setMessage(parsedData); // 메시지 상태 업데이트
+        setMessage(parsedData);
         console.log(parsedData);
       });
 
       // 기본 "message" 이벤트 수신
       eventSource.current.onmessage = (event) => {
+        setNewAlarm(true);
         const notification = JSON.parse(event.data);
+        setMessage(notification);
         console.log("Notification received:", notification);
-        // 필요한 경우 추가 처리
+
+        setClassName("Alarm-in");
+        // 3초후 알람 안보이게
+        const timer = setTimeout(() => {
+          setClassName("Alarm-out");
+          setNewAlarm(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
       };
 
       // 연결이 완료 되었을 때 실행
@@ -56,7 +83,7 @@ export const useUserAlarm = () => {
         eventSource.current.close();
       }
     };
-  }, []);
+  }, [accessToken]);
 
-  return message; // 알림 메시지를 반환
+  return { message, newAlarm, className, handleClose }; // 알림 메시지를 반환
 };

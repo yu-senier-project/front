@@ -43,7 +43,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Alarm />
+        {/* <Alarm /> */}
         {toggle && <CreateFeed />}
         <Routes>
           <Route path="/" element={<HomeRedirect />} />

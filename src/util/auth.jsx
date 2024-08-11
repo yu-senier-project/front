@@ -1,6 +1,7 @@
 // auth.jsx
 import axios from "axios";
 import apiClient from "./BaseUrl";
+import { useTokenStore } from "../store/useTokenStore";
 
 export function refreshAccessTokenInterceptor() {
   // 토큰 갱신 상태와 구독자 목록
@@ -15,6 +16,8 @@ export function refreshAccessTokenInterceptor() {
 
   // 토큰 재발급 함수
   async function refreshAccessToken() {
+    // 어세스 토큰과 리프레시 토큰 저장할 코드 zustand에서 가져옴
+    const { setAccessToken, setRefreshToken } = useTokenStore();
     console.log("토큰 재발급 시작");
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) {
@@ -51,6 +54,8 @@ export function refreshAccessTokenInterceptor() {
         "Bearer ",
         ""
       );
+      setAccessToken(newAccessToken);
+      setRefreshToken(newRefreshToken);
       localStorage.setItem("accessToken", newAccessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
 
@@ -114,7 +119,10 @@ export function refreshAccessTokenInterceptor() {
   );
 }
 
+// 로그인
 export async function login(data) {
+  // 어세스 토큰과 리프레시 토큰 저장할 코드 zustand에서 가져옴
+  const { setAccessToken, setRefreshToken } = useTokenStore();
   try {
     const response = await apiClient.post("/api/v1/auth/login", data);
     // console.log("Response Status:", response.status);
@@ -127,6 +135,8 @@ export async function login(data) {
       if (token1 && token2) {
         const accessToken = token1.replace("Bearer ", "");
         const refreshToken = token2.replace("Bearer ", "");
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
       } else {
@@ -170,5 +180,5 @@ export async function logout() {
 }
 
 export const isAuthenticated = () => {
-  return localStorage.getItem("login") === 'true';
+  return localStorage.getItem("login") === "true";
 };
