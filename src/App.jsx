@@ -43,8 +43,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <Alarm /> */}
         {toggle && <CreateFeed />}
+        {login ? <Alarm /> : null}
         <Routes>
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/login" element={<Login />} />

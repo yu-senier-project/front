@@ -12,12 +12,12 @@ const UserInfo = ({
   profile,
   id,
 }) => {
-  let time = `${clock[0]}-${clock[1]}-${clock[2]} ${clock[3]}:${clock[4]}:${clock[5]}`;
-  time = new Date(time).getTime();
-  let currentTime = new Date().getTime();
-  let diffTime = (currentTime - time) / (1000 * 60);
-  // 시간 저장
-  time = getTime(diffTime);
+  // let time = `${clock[0]}-${clock[1]}-${clock[2]} ${clock[3]}:${clock[4]}:${clock[5]}`;
+  // time = new Date(time).getTime();
+  // let currentTime = new Date().getTime();
+  // let diffTime = (currentTime - time) / (1000 * 60);
+  // // 시간 저장
+  // time = getTime(diffTime);
 
   // 로그인한 정보 가져와서 게시물 아이디랑 같은지 확인해서 설정창 보여줄지 말지 결정
   const myName = localStorage.getItem("userNickName");
@@ -39,7 +39,7 @@ const UserInfo = ({
         height={"height-40"}
         img={img}
       ></UserCard>
-      <p className="UserInfo-clock">{time}</p>
+      <p className="UserInfo-clock">{1}</p>
       {myName == username ? (
         <button
           className="UserInfo-setting-btn"

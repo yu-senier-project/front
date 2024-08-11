@@ -17,11 +17,7 @@ export const Alarm = () => {
           <CloseButton size={15} onCloseButton={handleClose} />
         </div>
       </div>
-      <div className="Alarm-text">
-        fdsaklfjsdlkfjsadlkfjasdlkfjaskldfjsaklfjsadklfjksalfjskldfjklsfjklsdjflksdjflks
-        jfklasj flksadjf lksafj lksaf jsalkfj
-        lksdkflsjdlfkjsdklfjsdlkfjsdlkfsadjf asdflkasjdfklasd sadklfasdlsdf
-      </div>
+      <div className="Alarm-text">{message}</div>
     </div>
   );
 };

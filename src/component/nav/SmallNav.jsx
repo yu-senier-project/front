@@ -1,5 +1,6 @@
 import "../../styles/nav/SmallNav.scss";
 import { Link, Outlet } from "react-router-dom";
+import { Alarm } from "@mui/icons-material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,

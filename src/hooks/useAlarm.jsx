@@ -16,6 +16,8 @@ export const useAlarm = () => {
   // 알림 애니메이션 담당할 state
   const [className, setClassName] = useState("Alarm-out");
 
+  const [postId, setPostId] = useState(null);
+
   const eventSource = useRef(null);
 
   // CloseButton 클릭 시 알람 숨김
@@ -26,7 +28,7 @@ export const useAlarm = () => {
   useEffect(() => {
     const initializeEventSource = () => {
       eventSource.current = new EventSourcePolyfill(
-        `${import.meta.env.VITE_BASEURL}/notification`,
+        `${import.meta.env.VITE_BASEURL}/api/v1/notification`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -46,8 +48,9 @@ export const useAlarm = () => {
       eventSource.current.onmessage = (event) => {
         setNewAlarm(true);
         const notification = JSON.parse(event.data);
-        setMessage(notification);
-        console.log("Notification received:", notification);
+        setMessage(notification.message);
+        setPostId(notification.subjectId);
+        // 쿼리 인벨리드 하기
 
         setClassName("Alarm-in");
         // 3초후 알람 안보이게
@@ -69,9 +72,7 @@ export const useAlarm = () => {
         console.log("SSE connection error.");
         eventSource.current.close();
 
-        if (e.error) {
-          initializeEventSource(); // 오류 발생 시 재연결 시도
-        }
+        initializeEventSource(); // 오류 발생 시 재연결 시도
       };
     };
 
@@ -83,7 +84,7 @@ export const useAlarm = () => {
         eventSource.current.close();
       }
     };
-  }, [accessToken]);
+  }, []);
 
-  return { message, newAlarm, className, handleClose }; // 알림 메시지를 반환
+  return { message, newAlarm, className, handleClose, postId }; // 알림 메시지를 반환
 };
