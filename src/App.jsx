@@ -29,6 +29,7 @@ import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 import { Alarm } from "./component/alarm/Alarm";
+import AlarmModal from "./pages/AlarmModal";
 
 import { isAuthenticated } from "./util/auth";
 import ProtectedRoute from "./util/ProtectedRoute";
@@ -43,6 +44,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <AlarmModal />
         {toggle && <CreateFeed />}
         {login ? <Alarm /> : null}
         <Routes>
