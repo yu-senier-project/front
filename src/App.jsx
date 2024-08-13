@@ -44,7 +44,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <AlarmModal />
+        {/* <AlarmModal /> */}
         {toggle && <CreateFeed />}
         {login ? <Alarm /> : null}
         <Routes>

@@ -1,6 +1,7 @@
 .AlarmModal {
   position: fixed;
-  width: 350px;
+  padding-left: 10px;
+  width: 400px;
   top: 0px;
   left: 110px;
   bottom: 0px;
@@ -8,7 +9,9 @@
   overflow: auto;
   transform: translateX(0%);
   transition: all 0.5s ease;
-  z-index: 999999;
+  opacity: 1;
+  background-color: white;
+  z-index: 100;
 }
 
 .AlarmModalIn {
@@ -18,6 +21,7 @@
   z-index: 0;
   transition: all 0.5 ease;
   transform: translateX(-150%);
+  opacity: 0;
 }
 
 .AlarmItem {
@@ -26,7 +30,7 @@
   font-size: 14px;
   display: flex;
   justify-content: space-between;
-  width: 330px;
+  width: 350px;
   margin-bottom: 10px;
   border-radius: 10px;
 
@@ -43,7 +47,7 @@
   text-wrap: wrap;
 
   p {
-    width: 180px;
+    width: 210px;
     cursor: pointer;
   }
 

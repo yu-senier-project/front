@@ -1,7 +1,8 @@
 import React from "react";
-import User from "../../../public/image/dp.jpg";
+import User from "/image/dp.jpg";
+import { detailDate } from "../../util/detailDate";
 
-export const AlarmItem = () => {
+export const AlarmItem = ({ text, createdAt, postId, type }) => {
   return (
     <div className="AlarmItem">
       <div className="AlarmItem-left">
@@ -9,11 +10,11 @@ export const AlarmItem = () => {
         <div>
           <img src={User} alt="유저이미지" />
         </div>
-        <p>yeogni님이 회원님의 게시물에 좋아요를 눌렀씁니다!</p>
+        <p>{text}</p>
       </div>
       <div className="AlarmItem-right">
         {/* 시간 */}
-        <p style={{ color: "lightgrey" }}>10분전</p>
+        <p style={{ color: "lightgrey" }}>{detailDate(new Date(createdAt))}</p>
       </div>
     </div>
   );
