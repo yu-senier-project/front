@@ -8,6 +8,5 @@ export const getAllAlarms = async (cursor) => {
   } else {
     data = await apiClient.get(`/api/v1/notification/all?cursor=${cursor}`);
   }
-  console.log(data);
   return data?.data;
 };
