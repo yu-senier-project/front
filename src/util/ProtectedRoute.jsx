@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import { isAuthenticated } from "./auth";
 
 const ProtectedRoute = ({ element: Element, ...rest }) => {
-  console.log(rest);
   return isAuthenticated() ? <Element {...rest} /> : <Navigate to="/login" />;
 };
 

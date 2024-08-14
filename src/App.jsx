@@ -28,6 +28,8 @@ import ProJectPost from "./pages/project/ProjectPost";
 import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
+import { Alarm } from "./component/alarm/Alarm";
+import AlarmModal from "./pages/AlarmModal";
 
 import { isAuthenticated } from "./util/auth";
 import ProtectedRoute from "./util/ProtectedRoute";
@@ -42,7 +44,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        {/* <AlarmModal /> */}
         {toggle && <CreateFeed />}
+        {login ? <Alarm /> : null}
         <Routes>
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/login" element={<Login />} />
@@ -50,6 +54,7 @@ function App() {
           <Route path="CheckId" element={<IdCheck />} />
           <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
+          {/* sns 라우터*/}
           <Route path="/" element={<SmallNav />}>
             <Route path="Home" element={<ProtectedRoute element={Home} />} />
             <Route
@@ -79,8 +84,10 @@ function App() {
             <Route
               path="Message"
               element={<ProtectedRoute element={Message} />}
-            />
+            />{" "}
+            {/* <Route path="Alarm" element={<ProtectedRoute element={Alarm} />} /> */}
           </Route>
+          {/* 프로젝트 라우터 */}
           <Route
             path="ProjectHome"
             element={<ProtectedRoute element={ProjectNav} />}

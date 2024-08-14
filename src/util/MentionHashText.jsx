@@ -26,7 +26,7 @@ export const renderContent = (text, hashtags, mentions, nav, chat) => {
         return <span key={index}>{part}</span>;
       }
     } else if (part.startsWith("#")) {
-      if (!chat ?? true) {
+      if (!chat) {
         return (
           <span
             key={index}
