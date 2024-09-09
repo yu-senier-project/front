@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../../../styles/feed/main/feed.scss";
 import Buttons from "./Buttons";
 import Imgs from "./Imgs";
