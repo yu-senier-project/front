@@ -29,7 +29,7 @@ import { UpdateProject } from "./pages/project/UpdateProject";
 import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 import { Alarm } from "./component/alarm/Alarm";
-import AlarmModal from "./pages/AlarmModal";
+import { Post } from "./pages/Post";
 
 import { isAuthenticated } from "./util/auth";
 import ProtectedRoute from "./util/ProtectedRoute";
@@ -84,7 +84,11 @@ function App() {
             <Route
               path="Message"
               element={<ProtectedRoute element={Message} />}
-            />{" "}
+            />
+            <Route
+              path="Post/:id"
+              element={<ProtectedRoute element={Post} />}
+            />
             {/* <Route path="Alarm" element={<ProtectedRoute element={Alarm} />} /> */}
           </Route>
           {/* 프로젝트 라우터 */}

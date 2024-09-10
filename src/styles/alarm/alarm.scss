@@ -1,6 +1,7 @@
 .Alarm {
   font-size: 14px;
   position: fixed;
+  z-index: 100;
   right: 0;
   bottom: 5px;
   box-sizing: border-box;
