@@ -19,10 +19,17 @@ export const Post = () => {
   const { id } = useParams();
   const nav = useNavigate();
 
-  const { data, isLoading } = useGetOnePost({ postId: id });
+  const { data, isLoading, error } = useGetOnePost({ postId: id });
   const { data: imgData, isLoading: imgLoading } = useGetOnePostImg({
     postId: id,
   });
+
+  useEffect(() => {
+    if (error?.response?.data?.code === 3001) {
+      alert(error.response.data.message);
+      nav(-1);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (data) {
