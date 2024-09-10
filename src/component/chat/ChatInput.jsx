@@ -74,6 +74,7 @@ const ChatInput = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedComment", postId]);
+      queryClient.invalidateQueries(["feeds"]);
     },
   });
 

@@ -24,6 +24,7 @@ const ChatModal = ({
   setFalseLoveNum,
   falseLike,
   setFalseLike,
+  chatModal,
 }) => {
   // 댓글 정보 가져오는 쿼리
   const { data, isLoading, isError } = useQuery({
@@ -64,11 +65,11 @@ const ChatModal = ({
     }
   };
 
-  // if (isError) return <div>Error fetching comments</div>;
+  const className = chatModal ? "ChatModal" : "ChatModal-Feed";
 
   return (
     <div
-      className="ChatModal ChatModal-animation"
+      className={`${className} ChatModal-animation`}
       onClick={handleClickBackground}
       ref={backgroundRef}
     >
@@ -103,12 +104,14 @@ const ChatModal = ({
             Icon={faX}
             handleSettingButtonClick={handleSettingButtonClick}
           ></UserInfo>
-          <div className="ChatModalCloseButton">
-            <CloseButton
-              size={20}
-              onCloseButton={handleChatButtonClick}
-            ></CloseButton>
-          </div>
+          {chatModal && (
+            <div className="ChatModalCloseButton">
+              <CloseButton
+                size={20}
+                onCloseButton={handleChatButtonClick}
+              ></CloseButton>
+            </div>
+          )}
         </div>
         <div className="Feed-texts">
           {imgList?.length !== 0 ? (

@@ -21,6 +21,28 @@
   }
 }
 
+.ChatModal-Feed {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .ChatModal-wrap {
+    overflow: scroll;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: white;
+    padding: 20px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
 .ChatModal-animation {
   animation-name: fadeIn;
   animation-duration: 0.2s;

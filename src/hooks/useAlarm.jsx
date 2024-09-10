@@ -18,6 +18,8 @@ export const useAlarm = () => {
 
   const [postId, setPostId] = useState(null);
 
+  const [type, setType] = useState("");
+
   const eventSource = useRef(null);
 
   // CloseButton 클릭 시 알람 숨김
@@ -41,15 +43,16 @@ export const useAlarm = () => {
       eventSource.current.addEventListener("notification", (event) => {
         const parsedData = JSON.parse(event.data);
         setMessage(parsedData);
-        console.log(parsedData);
       });
 
       // 기본 "message" 이벤트 수신
       eventSource.current.onmessage = (event) => {
         setNewAlarm(true);
         const notification = JSON.parse(event.data);
+        console.log(notification);
         setMessage(notification.message);
         setPostId(notification.subjectId);
+        setType(notification.type);
         // 쿼리 인벨리드 하기
 
         setClassName("Alarm-in");
@@ -57,7 +60,7 @@ export const useAlarm = () => {
         const timer = setTimeout(() => {
           setClassName("Alarm-out");
           setNewAlarm(false);
-        }, 3000);
+        }, 5000);
 
         return () => clearTimeout(timer);
       };
@@ -69,7 +72,6 @@ export const useAlarm = () => {
 
       // 연결이 끊겼을 때 재 연결 시도
       eventSource.current.onerror = (e) => {
-        console.log("SSE connection error.");
         eventSource.current.close();
 
         initializeEventSource(); // 오류 발생 시 재연결 시도
@@ -86,5 +88,5 @@ export const useAlarm = () => {
     };
   }, []);
 
-  return { message, newAlarm, className, handleClose, postId }; // 알림 메시지를 반환
+  return { message, className, handleClose, postId, type }; // 알림 메시지를 반환
 };

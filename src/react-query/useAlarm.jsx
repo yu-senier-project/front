@@ -1,5 +1,7 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getAllAlarms } from "../apis/alarmApis";
+import { getOneFeed } from "../apis/feedApis";
+import { getFeedImg } from "../apis/feedApis";
 
 // 무한 스크롤로 알람 데이터 가져오기
 export const useGetAlarmAll = () => {
@@ -25,4 +27,24 @@ export const useGetAlarmAll = () => {
   // 여기서 데이터 가공하면 좋을 듯
 
   return { data: data?.pages, isLoading, ...rest };
+};
+
+// 특정 게시물 정보 가져오는 함수
+export const useGetOnePost = ({ postId }) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["feedData", postId],
+    queryFn: () => getOneFeed(postId),
+  });
+  return { data: data?.data, isLoading };
+};
+
+// 특정 게시물 사진 정보 사져오는 함수
+export const useGetOnePostImg = ({ postId }) => {
+  const { isLoading, data } = useQuery({
+    queryKey: ["feedImg", postId],
+    queryFn: () => getFeedImg(postId),
+    refetchOnMount: true,
+  });
+
+  return { data: data?.data, isLoading };
 };

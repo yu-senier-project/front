@@ -27,6 +27,8 @@ const Home = () => {
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 3,
       refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
     });
 
   // 초기 로딩 상태

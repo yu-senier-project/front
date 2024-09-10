@@ -21,7 +21,6 @@ const Feed = ({ feedList }) => {
     refetchOnWindowFocus: false, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
     refetchOnMount: false,
     refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
   });
 
@@ -166,6 +165,7 @@ const Feed = ({ feedList }) => {
                   falseLike={falseLike}
                   setFalseLike={setFalseLike}
                   setFalseLoveNum={setFalseLoveNum}
+                  chatModal={true}
                 ></ChatModal>
               ) : null}
             </div>
@@ -221,6 +221,7 @@ const Feed = ({ feedList }) => {
                 setFalseLoveNum={setFalseLoveNum}
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
+                chatModal={true}
               ></ChatModal>
             ) : null}
           </div>
