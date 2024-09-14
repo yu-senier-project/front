@@ -31,11 +31,11 @@ export const useGetAlarmAll = () => {
 
 // 특정 게시물 정보 가져오는 함수
 export const useGetOnePost = ({ postId }) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["feedData", postId],
     queryFn: () => getOneFeed(postId),
   });
-  return { data: data?.data, isLoading };
+  return { data: data?.data, isLoading, error };
 };
 
 // 특정 게시물 사진 정보 사져오는 함수

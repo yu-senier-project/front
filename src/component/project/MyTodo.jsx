@@ -54,20 +54,25 @@ export const MyTodo = ({
     if (start === finish) {
       // 동일 목록 내에서 이동 처리
       const updatedItems = Array.from(newTodos[start]);
+      // 이동할 아이템 저장
       const [movedItem] = updatedItems.splice(source.index, 1);
+      // 목적지 index 위치에 이동할 아이템 추가
       updatedItems.splice(destination.index, 0, movedItem);
       newTodos[start] = updatedItems;
+      // 사용자에게 변화된 아이템을 렌더링하기 위해 state 변경
       setTodos(newTodos);
     } else {
+      // 다른 항목 이동 처리
       const startItems = Array.from(newTodos[start]);
       const [movedItem] = startItems.splice(source.index, 1);
       const finishItems = Array.from(newTodos[finish]);
       finishItems.splice(destination.index, 0, movedItem);
-      console.log(finishItems);
       newTodos[start] = startItems;
       newTodos[finish] = finishItems;
+      // 사용자에게 변화된 아이템을 렌더링하기 위해 state 변경
       setTodos(newTodos);
       const data = { state: destination.droppableId };
+      // 변경된 결과를 서버에게 전송
       updateMutate({ taskId: movedItem.id, data });
     }
   };
@@ -78,7 +83,7 @@ export const MyTodo = ({
       <div className="Todo-wrap">
         <DragDropContext onDragEnd={onDragEnd}>
           {["BEFORE", "ONGOING", "AFTER"].map((type) => (
-            <Droppable droppableId={type} key={type}>
+            <Droppable droppableId={type} key={type} drap>
               {(provided) => (
                 <div className={`Todo-${type}`}>
                   <div className={`Todo-${type}-title`}>

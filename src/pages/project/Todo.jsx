@@ -54,7 +54,6 @@ export const Todo = () => {
     if (data && data.data) {
       let updatedTodos = selectUsers?.map((user1) => {
         const todosForUser = data.data.find((user) => user.owner == user1);
-        console.log(todosForUser);
         return todosForUser
           ? { nickname: user1, todoList: todosForUser.todoList }
           : { nickname: user1, todoList: [] };
