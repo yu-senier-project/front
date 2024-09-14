@@ -481,7 +481,6 @@ export const useUpdateTodoState = (projectId) => {
   const queryClient = useQueryClient();
   const { mutate, status, refetch } = useMutation({
     mutationFn: ({ taskId, data }) => {
-      console.log(taskId);
       return updateTodoState(taskId, data);
     },
     onError: (e) => {
