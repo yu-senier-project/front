@@ -66,7 +66,36 @@ export default function Login() {
 
   return (
     <div id="login_container">
-      <h1>
+      <div id="login_logo">
+        <svg
+          className="logo_svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          class="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-1nao33i r-rxcuwo r-1777fci r-m327ed r-494qqr"
+          width="50%"
+        >
+          <g>
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              fill="#ffff"
+            ></path>
+          </g>
+        </svg>
+      </div>
+      <div id="login_buttons">
+        <p className="login_buttons_title">지금 일어나고 있는 일</p>
+        <h4>지금 가입하세요.</h4>
+        <div className="login_buttons_wrap">
+          <div>
+            <button className="fill">계정 만들기</button>
+          </div>
+          <span>이미 CNS에 가입하셨나요?</span>
+          <div>
+            <button className="nonFill">로그인</button>
+          </div>
+        </div>
+      </div>
+      {/* <h1>
         <i>CNS</i>
       </h1>
       <RegistrationModal open={open} handleClose={handleClose} />
@@ -102,7 +131,7 @@ export default function Login() {
           text={"비밀번호 초기화"}
           onClick={() => navigate("/Password")}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

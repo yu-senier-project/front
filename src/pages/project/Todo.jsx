@@ -72,7 +72,6 @@ export const Todo = () => {
     };
     if (myTodos && myTodos.data && myTodos.data.todoList) {
       for (let todo of myTodos.data.todoList) {
-        console.log(todo);
         const type = todo.state;
         newObj[type] = [
           ...newObj[type],
