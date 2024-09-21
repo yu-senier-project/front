@@ -1,73 +1,135 @@
+// .chat_nav {
+//     margin-left: 110px;
+//     width: 250px;
+//     height: 100vh;
+//     background-color: #fff;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: flex-start;
+//     padding: 10px;
+//     border-right: 2px solid gray;
+//     border-left: 2px solid gray;
+
+//     .add_room_button {
+//         display: flex;
+//         width: 100%;
+//         margin-bottom: 20px;
+//         border: none;
+//         // padding-bottom: 10px;
+//         background-color: #71c9ce;
+//         text-align: center;
+//         justify-content: center;
+//         padding: 10px;
+//         color: white;
+//         border-radius: 20px;
+//     }
+
+//     .profile {
+//         text-align: center;
+//         margin-bottom: 20px;
+
+//         img {
+//             width: 40px;
+//             height: 40px;
+//             border-radius: 50%;
+//         }
+//     }
+
+//     ul {
+//         list-style: none;
+//         padding: 0;
+//         margin: 0;
+//         width: 100%;
+//         cursor: pointer;
+//         overflow-y: auto;
+//         flex-grow: 1;
+//         .selected {
+//             background-color: #71c9ce;
+//             color: white;
+//         }
+//     }
+
+//     li {
+//         display: flex;
+//         padding: 10px;
+//         cursor: pointer;
+//         flex-direction: column;
+
+//         img {
+//             width: 40px;
+//             height: 40px;
+//             border-radius: 50%;
+//             margin-right: 10px;
+//         }
+
+//         &.more {
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+//             cursor: pointer;
+//         }
+//     }
+// }
 .chat_nav {
-  margin-left: 110px;
-  width: 250px;
-  height: 100vh;
-  background-color: #ffffff;
-  color: #2c3e50;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 10px;
-  border-right: 2px solid gray;
-  border-left: 2px solid gray;
-
-  .add_room_button {
-    display: flex;
+    background-color: rgb(255, 255, 255);
+    margin-left: 110px;
+    width: 25rem;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+.chat_nav__row {
     width: 100%;
-    margin-bottom: 20px;
+    &:nth-child(1) {
+        display: flex;
+        justify-content: space-between;
+        .chat_username {
+            font-size: 1.25rem;
+            padding: 0 1.5rem;
+        }
+        .add_room_button {
+            background-color: transparent;
+            border: none;
+            font-size: 1.25rem;
+            padding: 0 1.5rem;
+        }
+    }
+    &:nth-child(2) {
+        .chat_header {
+            font-weight: bold;
+            padding: 0 1.5rem;
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .chat_chatroom {
+            padding: 0.5rem 1.5rem;
+            &.selected {
+                background-color: #dfdfdf;
+            }
+        }
+    }
+    &:nth-child(3) {
+        display: flex;
+        justify-content: center;
+    }
+}
+.load_more_button {
+    background-color: transparent;
+    color: rgb(114, 114, 114);
+    padding: 10px;
     border: none;
-    // padding-bottom: 10px;
-    background-color: #71c9ce;
-    text-align: center;
-    justify-content: center;
-    padding: 10px;
-    color: white;
-    border-radius: 20px;
-  }
-
-  .profile {
-    text-align: center;
-    margin-bottom: 20px;
-
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
     cursor: pointer;
-    overflow-y: auto;
-    flex-grow: 1;
-    .selected {
-      background-color: #71c9ce;
-      color: white;
-    }
-  }
+    margin: 10px auto;
 
-  li {
-    display: flex;
-    padding: 10px;
-    cursor: pointer;
-    flex-direction: column;
-
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
+    &:hover {
+        color: #464646;
     }
 
-    &.more {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+    &:active {
+        color: #bebebe;
     }
-  }
 }
