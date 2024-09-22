@@ -1,4 +1,9 @@
 .mySwiper {
-  width: 500px;
+  max-width: 500px;
   height: 400px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 }

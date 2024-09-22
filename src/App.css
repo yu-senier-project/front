@@ -9,6 +9,8 @@
   --gray8: #343a40;
   --main-blue: #71c9ce;
   --main-red: #ff6d6d;
+  --medium: 960px;
+  --small: 600px;
 }
 
 @font-face {

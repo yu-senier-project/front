@@ -12,6 +12,10 @@
   opacity: 1;
   background-color: white;
   z-index: 100;
+  // 960px 이하일 때 margin-left를 70px로 변경
+  @media (max-width: 960px) {
+    left: 70px;
+  }
 }
 
 .AlarmModalOut {

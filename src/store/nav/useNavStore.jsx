@@ -17,3 +17,11 @@ export const useSelectedMenu = create((set) => ({
       selectedMenu: str,
     })),
 }));
+
+export const useNavOpen = create((set) => ({
+  open: false,
+  setOpen: (bool) =>
+    set(() => ({
+      open: bool,
+    })),
+}));

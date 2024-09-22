@@ -1,7 +1,13 @@
 .UserInfo {
   display: flex;
   align-items: center;
-  width: 500px;
+  justify-content: space-between;
+  max-width: 500px;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .UserInfo-clock {
@@ -16,7 +22,6 @@
   background-color: white;
   border: none;
   position: relative;
-  margin-left: auto;
   bottom: 10px;
   font-size: 20px;
 

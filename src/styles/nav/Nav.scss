@@ -1,6 +1,6 @@
 .nav {
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -40,7 +40,12 @@
   }
 }
 
-/* 600px 이하일 때 p 태그 숨기기 */
+.navCloseButton {
+  position: fixed;
+  left: 40px;
+  top: 0px;
+}
+
 @media (max-width: 960px) {
   .nav {
     width: 70px;

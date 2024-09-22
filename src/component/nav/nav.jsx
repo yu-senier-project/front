@@ -1,5 +1,5 @@
+// Nav.js
 import "../../styles/nav/Nav.scss";
-import { Outlet } from "react-router-dom";
 import useCreateFeed from "../../store/feed/useCreateFeed";
 import useAlarmStore from "../../store/alarm/useAlarmStore";
 import AlarmModal from "../../pages/AlarmModal";
@@ -18,10 +18,12 @@ import NavItem from "./navItem";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { IoPerson, IoPersonOutline } from "react-icons/io5";
 import { useSelectedMenu } from "../../store/nav/useNavStore";
-import { useState } from "react";
 import useWindowWidth from "../../hooks/useWindowWidth";
+import CloseButton from "../basic/CloseButton";
+import { useNavOpen } from "../../store/nav/useNavStore";
 
-const Nav = () => {
+const Nav = ({ close, onCloseClick }) => {
+  // 알람 모달창 오픈 여부
   const { open, setOpen } = useAlarmStore();
   const nav = useNavigate();
   const { setToggle } = useCreateFeed((state) => state);
@@ -37,7 +39,6 @@ const Nav = () => {
 
   // 알람 모달 열기/닫기
   const handleAlarmIconClick = () => {
-    setSelectedMenu("Alarm");
     setOpen(!open);
   };
 
@@ -59,6 +60,12 @@ const Nav = () => {
     <div>
       <AlarmModal />
       <div className="nav">
+        {/* close가 true일 때만 닫기 버튼을 표시 */}
+        {close && (
+          <div className="navCloseButton" onClick={onCloseClick}>
+            <CloseButton />
+          </div>
+        )}
         <h1
           style={{
             cursor: "pointer",
@@ -165,13 +172,7 @@ const Nav = () => {
             }}
           />
           <NavItem
-            children={
-              selectedMenu === "Alarm" ? (
-                <FaBell size={"1.4rem"} />
-              ) : (
-                <FaRegBell size={"1.4rem"} />
-              )
-            }
+            children={<FaRegBell size={"1.4rem"} />}
             text={"알림"}
             onClick={handleAlarmIconClick}
           />
@@ -182,7 +183,6 @@ const Nav = () => {
           onClick={handleLogout}
         />
       </div>
-      <Outlet />
     </div>
   );
 };
