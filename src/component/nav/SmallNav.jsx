@@ -30,7 +30,6 @@ const SmallNav = () => {
 
   // 알람 아이콘 클릭했을 떄 실행
   const handleAlarmIconClick = () => {
-    console.log(open);
     setOpen(!open);
   };
 

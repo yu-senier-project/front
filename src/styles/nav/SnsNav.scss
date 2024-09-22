@@ -1,0 +1,25 @@
+.snsNav {
+  position: fixed;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.reponsiveNav {
+  width: 70px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transform: translateX(0px);
+  transition: all 0.5s;
+  background-color: white;
+}
+
+.snsNavIn {
+  transform: translateX(0px);
+}
+
+.snsNavOut {
+  transform: translateX(-70px);
+}

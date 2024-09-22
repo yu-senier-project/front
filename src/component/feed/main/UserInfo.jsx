@@ -32,22 +32,26 @@ const UserInfo = ({
 
   return (
     <div className="UserInfo" style={{ height: "50px" }}>
-      <UserCard
-        onClick={onClick}
-        userName={username}
-        width={"width-40"}
-        height={"height-40"}
-        img={img}
-      ></UserCard>
-      <p className="UserInfo-clock">{1}</p>
-      {myName == username ? (
-        <button
-          className="UserInfo-setting-btn"
-          onClick={handleSettingButtonClick}
-        >
-          <FontAwesomeIcon icon={faEllipsis} />
-        </button>
-      ) : null}
+      <div>
+        <UserCard
+          onClick={onClick}
+          userName={username}
+          width={"width-40"}
+          height={"height-40"}
+          img={img}
+        ></UserCard>
+        <p className="UserInfo-clock">{1}</p>
+      </div>
+      <div>
+        {myName == username ? (
+          <button
+            className="UserInfo-setting-btn"
+            onClick={handleSettingButtonClick}
+          >
+            <FontAwesomeIcon icon={faEllipsis} />
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };

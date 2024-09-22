@@ -1,6 +1,10 @@
 .ProjectHome {
   //margin-left: 120px;
-  padding: 30px 100px 30px 150px;
+  padding: 30px 100px 30px 220px;
+
+  @media (max-width: 960px) {
+    padding-left: 80px;
+  }
 }
 
 .ProjectHome-btn {

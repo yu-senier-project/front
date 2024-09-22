@@ -126,7 +126,7 @@ const Feed = ({ feedList }) => {
           <div className="Feed-userInfo"></div>
           <div className="Feed-texts">
             <div className="main-img">
-              <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
+              <Imgs imgList={imgList}></Imgs>
               <Buttons
                 isCommentEnabled={feedList.isCommentEnabled}
                 handleChatButtonClick={handleChatButtonClick}
