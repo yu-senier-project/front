@@ -32,6 +32,11 @@
   align-items: center;
 }
 
+.logo_wrap {
+  width: 50%;
+  height: auto;
+}
+
 #login_buttons {
   width: 50%;
   margin-top: 100px;
@@ -106,8 +111,8 @@
     height: 100px;
   }
 
-  .logo_svg {
-    width: 10%;
+  .logo_wrap {
+    width: 20%;
   }
 
   #login_buttons {
