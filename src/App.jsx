@@ -30,6 +30,7 @@ import { UpdateParticipants } from "./pages/project/UpdateParticipants";
 import { Todo } from "./pages/project/Todo";
 import { Alarm } from "./component/alarm/Alarm";
 import { Post } from "./pages/Post";
+import Nav from "./component/nav/nav";
 
 import { isAuthenticated } from "./util/auth";
 import ProtectedRoute from "./util/ProtectedRoute";
@@ -44,7 +45,6 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <AlarmModal /> */}
         {toggle && <CreateFeed />}
         {login ? <Alarm /> : null}
         <Routes>
@@ -55,7 +55,7 @@ function App() {
           <Route path="Password" element={<PwInitCheckId />} />
           <Route path="PasswordInit" element={<PwInit />} />
           {/* sns 라우터*/}
-          <Route path="/" element={<SmallNav />}>
+          <Route path="/" element={<Nav />}>
             <Route path="Home" element={<ProtectedRoute element={Home} />} />
             <Route
               path="Search"
