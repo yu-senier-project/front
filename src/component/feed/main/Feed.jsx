@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import "../../../styles/feed/main/feed.scss";
 import Buttons from "./Buttons";
 import Imgs from "./Imgs";
@@ -18,101 +18,114 @@ const Feed = ({ feedList }) => {
   const { isLoading, data } = useQuery({
     queryKey: ["feedImg", feedList.id],
     queryFn: () => getFeedImg(feedList.id),
-    refetchOnWindowFocus: false, // 포커스 변경시에는 자동 새로 고침이 발생하지 않습니다.
+    refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    staleTime: 1000 * 60 * 5, // 데이터가 5분 후에 스테일하다고 판단합니다.
+    staleTime: 1000 * 60 * 5,
   });
 
   const nav = useNavigate();
-
-  let imgList = data?.data;
+  const imgList = data?.data;
 
   const [isChatOpen, setIsChatOpen] = useState(false);
-
   const [isSettingOpen, setIsSettingOpen] = useState(false);
-
   const [isUpdate, setIsUpdate] = useState(false);
-
   const [falseLoveNum, setFalseLoveNum] = useState(feedList.loveNum);
-
   const [falseLike, setFalseLike] = useState(feedList.liked);
-
   const backgroundRef = useRef();
+  const queryClient = useQueryClient();
 
-  const handleChatButtonClick = () => {
-    setIsChatOpen(!isChatOpen);
-  };
+  const { mutate } = useMutation({
+    mutationFn: deleteFeed,
+    onSuccess: () => queryClient.invalidateQueries(["feeds"]),
+    onError: (e) => console.log(e),
+  });
 
-  const handleSettingButtonClick = () => {
-    setIsSettingOpen(!isSettingOpen);
-  };
-
+  // 핸들러 함수들
+  const handleChatButtonClick = () => setIsChatOpen(!isChatOpen);
+  const handleSettingButtonClick = () => setIsSettingOpen(!isSettingOpen);
   const handleUpdateButtonClick = () => {
-    if (isUpdate) {
-      return;
-    }
     setIsSettingOpen(false);
     setIsUpdate(true);
   };
-
-  const hanldUpdateCloseButtonClick = () => {
-    setIsUpdate(false);
-  };
-
-  const queryClient = useQueryClient();
-  const { status, mutate } = useMutation({
-    mutationFn: deleteFeed,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["feeds"]);
-    },
-    onError: (e) => {
-      console.log(e);
-    },
-  });
-
   const handleOnDelete = () => {
-    const bool = window.confirm("정말로 삭제하시겠습니까?");
-    if (bool) {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
       mutate(feedList.id);
+      setIsSettingOpen(false);
     }
-
-    setIsSettingOpen(false);
   };
-
   const handleClickBackground = (e) => {
     if (e.target !== backgroundRef.current && isSettingOpen) {
       setIsSettingOpen(false);
     }
   };
 
+  // 컴포넌트 공통 로직을 별도 함수로 분리
+  const renderButtonsAndTexts = () => (
+    <>
+      <Buttons
+        isCommentEnabled={feedList.isCommentEnabled}
+        handleChatButtonClick={handleChatButtonClick}
+        postId={feedList.id}
+        like={feedList.liked}
+        setFalseLoveNum={setFalseLoveNum}
+        falseLoveNum={falseLoveNum}
+        falseLike={falseLike}
+        setFalseLike={setFalseLike}
+      />
+      <Texts
+        comment={feedList.content}
+        loveNum={feedList.loveNum}
+        nickname={feedList.nickname}
+        falseLoveNum={falseLoveNum}
+        hashtags={feedList.hashtags}
+        mentions={feedList.mentions}
+      />
+      {feedList.isCommentEnabled && (
+        <ChatButton
+          onClick={handleChatButtonClick}
+          chatNum={feedList.commentCnt}
+        />
+      )}
+    </>
+  );
+
+  const renderChatModal = () =>
+    isChatOpen && (
+      <ChatModal
+        profile={feedList.profile}
+        imgList={imgList}
+        feedList={feedList}
+        falseLoveNum={falseLoveNum}
+        falseLike={falseLike}
+        setFalseLoveNum={setFalseLoveNum}
+        setFalseLike={setFalseLike}
+        handleChatButtonClick={handleChatButtonClick}
+      />
+    );
+
   return (
     <div className="Feed" onClick={handleClickBackground}>
-      {isUpdate ? (
+      {isUpdate && (
         <UpdateFeed
           setIsUpdate={setIsUpdate}
-          hanldUpdateCloseButtonClick={hanldUpdateCloseButtonClick}
           feedList={feedList}
           imgList={imgList}
-        ></UpdateFeed>
-      ) : null}
-      {isSettingOpen ? (
+        />
+      )}
+
+      {isSettingOpen && (
         <div ref={backgroundRef} className="Feed-setting">
           <Setting
             width={150}
             settingTitleList={[
-              {
-                title: "삭제하기",
-                onClick: handleOnDelete,
-              },
-              {
-                title: "수정하기",
-                onClick: handleUpdateButtonClick,
-              },
+              { title: "삭제하기", onClick: handleOnDelete },
+              { title: "수정하기", onClick: handleUpdateButtonClick },
             ]}
-          ></Setting>
+          />
         </div>
-      ) : null}
+      )}
+
       <UserInfo
         id={feedList.memberId}
         profile={feedList.profile}
@@ -120,111 +133,29 @@ const Feed = ({ feedList }) => {
         username={feedList.nickname}
         Icon={faEllipsis}
         handleSettingButtonClick={handleSettingButtonClick}
-      ></UserInfo>
-      {imgList?.length !== 0 ? (
-        <div>
-          <div className="Feed-userInfo"></div>
-          <div className="Feed-texts">
-            <div className="main-img">
-              <Imgs imgList={imgList} style={{ width: "500px" }}></Imgs>
-              <Buttons
-                isCommentEnabled={feedList.isCommentEnabled}
-                handleChatButtonClick={handleChatButtonClick}
-                postId={feedList.id}
-                like={feedList.liked}
-                setFalseLoveNum={setFalseLoveNum}
-                falseLoveNum={falseLoveNum}
-                falseLike={falseLike}
-                setFalseLike={setFalseLike}
-              ></Buttons>
-              <Texts
-                hashtags={feedList.hashtags}
-                mentions={feedList.mentions}
-                comment={feedList.content}
-                loveNum={feedList.loveNum}
-                nickname={feedList.nickname}
-                falseLoveNum={falseLoveNum}
-              ></Texts>
-              {feedList.isCommentEnabled ? (
-                <ChatButton
-                  onClick={handleChatButtonClick}
-                  chatNum={feedList.commentCnt}
-                ></ChatButton>
-              ) : null}
-            </div>
-            <div>
-              {isChatOpen ? (
-                <ChatModal
-                  profile={feedList.profile}
-                  handleUpdateButtonClick={handleUpdateButtonClick}
-                  handleOnDelete={handleOnDelete}
-                  imgList={imgList}
-                  feedList={feedList}
-                  handleChatButtonClick={handleChatButtonClick}
-                  falseLoveNum={falseLoveNum}
-                  falseLike={falseLike}
-                  setFalseLike={setFalseLike}
-                  setFalseLoveNum={setFalseLoveNum}
-                  chatModal={true}
-                ></ChatModal>
-              ) : null}
-            </div>
-          </div>
+      />
+
+      {imgList?.length ? (
+        <div className="main-img">
+          <Imgs imgList={imgList} style={{ width: "500px" }} />
+          {renderButtonsAndTexts()}
+          {renderChatModal()}
         </div>
       ) : (
         <div>
-          <div>
-            <p
-              style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
-              className="Feed-content"
-            >
-              {renderContent(
-                feedList.content,
-                feedList.hashtags,
-                feedList.mentions,
-                nav
-              )}
-            </p>
-            <Buttons
-              isCommentEnabled={feedList.isCommentEnabled}
-              handleChatButtonClick={handleChatButtonClick}
-              postId={feedList.id}
-              like={feedList.liked}
-              setFalseLoveNum={setFalseLoveNum}
-              falseLoveNum={falseLoveNum}
-              falseLike={falseLike}
-              setFalseLike={setFalseLike}
-            ></Buttons>
-            <Texts
-              comment={""}
-              loveNum={feedList.loveNum}
-              nickname={""}
-              falseLoveNum={falseLoveNum}
-            ></Texts>
-            {feedList.isCommentEnabled ? (
-              <ChatButton
-                onClick={handleChatButtonClick}
-                chatNum={feedList.commentCnt}
-              ></ChatButton>
-            ) : null}
-          </div>
-          <div>
-            {isChatOpen ? (
-              <ChatModal
-                profile={feedList.profile}
-                handleUpdateButtonClick={handleUpdateButtonClick}
-                handleOnDelete={handleOnDelete}
-                imgList={imgList}
-                feedList={feedList}
-                handleChatButtonClick={handleChatButtonClick}
-                falseLoveNum={falseLoveNum}
-                setFalseLoveNum={setFalseLoveNum}
-                falseLike={falseLike}
-                setFalseLike={setFalseLike}
-                chatModal={true}
-              ></ChatModal>
-            ) : null}
-          </div>
+          <p
+            className="Feed-content"
+            style={{ marginBottom: "10px", whiteSpace: "pre-wrap" }}
+          >
+            {renderContent(
+              feedList.content,
+              feedList.hashtags,
+              feedList.mentions,
+              nav
+            )}
+          </p>
+          {renderButtonsAndTexts()}
+          {renderChatModal()}
         </div>
       )}
     </div>
