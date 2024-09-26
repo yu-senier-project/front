@@ -17,7 +17,11 @@ export const renderContent = (text, hashtags, mentions, nav, chat) => {
       if (member) {
         return (
           <Link to={`/profile/${member?.memberId}`}>
-            <span key={index} className="metionHighlight">
+            <span
+              key={index}
+              className="metionHighlight"
+              style={{ wordBreak: "break-word" }}
+            >
               {part}
             </span>
           </Link>
@@ -31,6 +35,7 @@ export const renderContent = (text, hashtags, mentions, nav, chat) => {
           <span
             key={index}
             className="hashHighlight"
+            style={{ wordBreak: "break-word" }}
             onClick={() => {
               onHashClick(part.substr(1));
             }}
