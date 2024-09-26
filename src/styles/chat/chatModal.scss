@@ -7,17 +7,16 @@
   left: 0px;
   z-index: 1000000;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
   .ChatModal-wrap {
-    overflow: scroll;
     background-color: white;
     padding: 20px;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    width: 100%;
+    max-width: 940px;
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
   }
 }
 
@@ -27,19 +26,16 @@
   height: 100vh;
   top: 0px;
   left: 0px;
-
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   .ChatModal-wrap {
-    overflow: scroll;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     background-color: white;
     padding: 20px;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
   }
 }
 
@@ -53,7 +49,10 @@
 }
 
 .ChatModalCloseButton {
-  margin-left: auto;
+  width: 45%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 @keyframes fadeIn {
@@ -67,9 +66,74 @@
   }
 }
 
+.ChatModalImg {
+  img {
+    // max-width: 520px;
+    height: 400px;
+  }
+}
+
 .ChatModal-Setting {
   position: absolute;
   z-index: 100;
-  top: 90px;
-  left: 620px;
+  top: 20px;
+
+  right: 0;
+}
+
+.ChatModalFeed-info {
+  position: relative;
+  width: 55%;
+}
+
+.ChatModalFeed {
+  width: 55%;
+}
+
+.ChatModalChat {
+  width: 45%;
+}
+
+.ChatModalText {
+  width: 100%;
+  display: flex;
+}
+
+@media (max-width: 550px) {
+  .ChatModal {
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-y: auto; /* 스크롤이 필요하면 자동으로 표시 */
+    overflow-x: hidden;
+    max-height: 100vh; /* 최대 높이를 화면 높이로 제한 */
+  }
+
+  .ChatModalUser {
+    justify-content: space-between;
+  }
+
+  // .ChatModalCloseButton {
+  //   display: none;
+  // }
+
+  .ChatModalText {
+    flex-direction: column;
+  }
+
+  .ChatModalChat {
+    width: 100%;
+  }
+
+  .ChatModalFeed-info {
+    width: auto;
+  }
+
+  .ChatModalFeed {
+    width: 100%;
+  }
+
+  .ChatModal-Setting {
+    right: 0px;
+    top: 20px;
+  }
 }
