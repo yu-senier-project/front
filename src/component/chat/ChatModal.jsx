@@ -24,16 +24,30 @@ const ChatModal = ({
   setFalseLoveNum,
   falseLike,
   setFalseLike,
+  chatModal,
 }) => {
   // 댓글 정보 가져오는 쿼리
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["feedComment", feedList.id],
-    queryFn: () => {
-      return getFeedComment(feedList.id);
-    },
-    onSuccess: (data) => {},
+    queryFn: () => getFeedComment(feedList.id),
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    const onClickEsc = (e) => {
+      if (e.key === "Escape") {
+        handleChatButtonClick();
+      }
+    };
+
+    document.addEventListener("keydown", onClickEsc);
+
+    if (backgroundRef.current) {
+      backgroundRef.current.scrollTop = 0;
+    }
+
+    return () => document.removeEventListener("keydown", onClickEsc);
+  }, []);
 
   const nav = useNavigate();
 
@@ -64,55 +78,63 @@ const ChatModal = ({
     }
   };
 
-  // if (isError) return <div>Error fetching comments</div>;
+  const className = chatModal ? "ChatModal" : "ChatModal-Feed";
 
   return (
     <div
-      className="ChatModal ChatModal-animation"
+      className={`${className} ChatModal-animation`}
       onClick={handleClickBackground}
       ref={backgroundRef}
     >
       <div className="ChatModal-wrap">
-        <div className="Feed-userInfo ChatModalUser">
-          {onSetting ? (
-            <div className="ChatModal-Setting">
-              <Setting
-                width={150}
-                settingTitleList={[
-                  {
-                    title: "삭제하기",
-                    onClick: onDelete,
-                  },
-                  {
-                    title: "수정하기",
-                    onClick: onUpdate,
-                  },
-                ]}
-              ></Setting>
-            </div>
-          ) : null}
-          <UserInfo
-            id={feedList.memberId ? feedList.memberId : feedList.postMember.id}
-            profile={profile}
-            clock={feedList.createdAt}
-            username={
-              feedList.nickname
-                ? feedList.nickname
-                : feedList.postMember.nickname
-            }
-            Icon={faX}
-            handleSettingButtonClick={handleSettingButtonClick}
-          ></UserInfo>
-          <div className="ChatModalCloseButton">
-            <CloseButton
-              size={20}
-              onCloseButton={handleChatButtonClick}
-            ></CloseButton>
+        <div className="ChatModalUser">
+          <div className="ChatModalFeed-info">
+            <UserInfo
+              id={
+                feedList.memberId ? feedList.memberId : feedList.postMember.id
+              }
+              profile={profile}
+              clock={feedList.createdAt}
+              username={
+                feedList.nickname
+                  ? feedList.nickname
+                  : feedList.postMember.nickname
+              }
+              Icon={faX}
+              handleSettingButtonClick={handleSettingButtonClick}
+            ></UserInfo>
+            {onSetting ? (
+              <div className="ChatModal-Setting">
+                <Setting
+                  width={150}
+                  settingTitleList={[
+                    {
+                      title: "삭제하기",
+                      onClick: onDelete,
+                    },
+                    {
+                      title: "수정하기",
+                      onClick: onUpdate,
+                    },
+                  ]}
+                ></Setting>
+              </div>
+            ) : null}
           </div>
+
+          {chatModal && (
+            <div className="ChatModalCloseButton">
+              <CloseButton
+                size={20}
+                onCloseButton={handleChatButtonClick}
+              ></CloseButton>
+            </div>
+          )}
         </div>
-        <div className="Feed-texts">
+        <div className="ChatModalText">
           {imgList?.length !== 0 ? (
-            <div className="main-img">
+            // 이미지가 있는 경우
+            <div className="ChatModalImg ChatModalFeed">
               <Imgs imgList={imgList}></Imgs>
               <Buttons
                 handleChatButtonClick={handleChatButtonClick}
@@ -123,10 +145,14 @@ const ChatModal = ({
                 falseLike={falseLike}
                 setFalseLike={setFalseLike}
               ></Buttons>
-
               <div
                 className="Texts"
-                style={{ height: "100px", overflow: "scroll" }}
+                style={{
+                  width: "100%",
+                  height: "100px",
+                  overflow: "scroll",
+                  wordBreak: "break-word",
+                }}
               >
                 <p className="Texts-good">좋아요 {falseLoveNum}개</p>
                 {feedList.nickname !== "" && (
@@ -148,15 +174,15 @@ const ChatModal = ({
               </div>
             </div>
           ) : (
-            <div>
+            // 이미지가 없는 경우
+            <div className="ChatModalFeed">
               <p
                 className="NoImage-Texts"
                 style={{
                   marginBottom: "10px",
                   whiteSpace: "pre-wrap",
-                  width: "500px",
+                  width: "100%",
                   height: "470px ",
-                  overflow: "scroll",
                 }}
               >
                 {renderContent(feedList.content, [], feedList.mentions, nav)}
@@ -178,7 +204,7 @@ const ChatModal = ({
             </div>
           )}
 
-          <div>
+          <div className="ChatModalChat">
             <Chat
               id={feedList.id}
               data={data?.data}

@@ -1,7 +1,11 @@
 .CreateProject {
-  padding: 30px 100px 0px 150px;
+  padding: 30px 100px 0px 220px;
   display: flex;
   gap: 20px;
+
+  @media (max-width: 906px) {
+    padding-left: 80px;
+  }
 }
 
 .CreateProject-info {
@@ -43,8 +47,16 @@
   display: flex;
   gap: 20px;
   input {
-    width: 250px;
+    width: 100%;
   }
+}
+
+.CreateProject-endDate {
+  width: 100%;
+}
+
+.CreateProject-startDate {
+  width: 100%;
 }
 
 .CreateProject-btn {

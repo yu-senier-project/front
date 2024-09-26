@@ -26,7 +26,7 @@ export default function UserCard({
               overflowWrap: "break-word",
             }}
           >
-            {comment}{" "}
+            {comment}
           </div>
         ) : null}
       </div>

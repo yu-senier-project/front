@@ -13,19 +13,29 @@ export const renderContent = (text, hashtags, mentions, nav, chat) => {
       let member = mentions?.find((item) => {
         return `@${item.nickname}` == part;
       });
-      return (
-        <Link to={`/profile/${member?.memberId}`}>
-          <span key={index} className="metionHighlight">
-            {part}
-          </span>
-        </Link>
-      );
+
+      if (member) {
+        return (
+          <Link to={`/profile/${member?.memberId}`}>
+            <span
+              key={index}
+              className="metionHighlight"
+              style={{ wordBreak: "break-word" }}
+            >
+              {part}
+            </span>
+          </Link>
+        );
+      } else {
+        return <span key={index}>{part}</span>;
+      }
     } else if (part.startsWith("#")) {
-      if (!chat ?? true) {
+      if (!chat) {
         return (
           <span
             key={index}
             className="hashHighlight"
+            style={{ wordBreak: "break-word" }}
             onClick={() => {
               onHashClick(part.substr(1));
             }}

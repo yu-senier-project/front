@@ -80,7 +80,12 @@ export const DeleteProject = ({ setOnDelete }) => {
             </button>
           </div>
           <div>
-            <button style={{ backgroundColor: "#71c9ce" }}>완료</button>
+            <button
+              style={{ backgroundColor: "#71c9ce" }}
+              onClick={onDeleteClick}
+            >
+              완료
+            </button>
           </div>
         </div>
       </div>

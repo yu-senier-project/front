@@ -21,7 +21,7 @@ const Imgs = ({ imgList }) => {
         >
           {imgList.map((item) => (
             <SwiperSlide>
-              <img src={item.uploadFileURL} alt="car" />
+              <img src={item.uploadFileURL} alt="이미지" />
             </SwiperSlide>
           ))}
         </Swiper>

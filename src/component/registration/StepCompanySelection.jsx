@@ -26,8 +26,14 @@ function StepCompanySelection({
         </button>
       </div>
       <h2 className="title">가입하기</h2>
-     
-      <Input size="Large" name="companyName" onChange={handleCompanyName} autocomplete={"off"}  />
+
+      <Input
+        size="Large"
+        name="companyName"
+        onChange={handleCompanyName}
+        autocomplete={"off"}
+        placeholder={"회사 검색(무직인 경우 '없음' 입력)"}
+      />
       <div className="company-list">
         {companys.length > 0 ? (
           <ul>
@@ -38,7 +44,9 @@ function StepCompanySelection({
                   onClick={() => handleCompanyClick(company.name)}
                   style={{
                     backgroundColor:
-                      selectedCompanyName === company.name ? "#60aeb3" : "#71c9ce",
+                      selectedCompanyName === company.name
+                        ? "#60aeb3"
+                        : "#71c9ce",
                     color:
                       selectedCompanyName === company.name ? "black" : "white",
                   }}
@@ -54,7 +62,7 @@ function StepCompanySelection({
           <></>
         )}
       </div>
-      <p>선택된 회사: {selectedCompanyName}</p>
+      {/* <p>선택된 회사: {selectedCompanyName}</p> */}
       <div className="next_button">
         <Button
           text={"다음"}

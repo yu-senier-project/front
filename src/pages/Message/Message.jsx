@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import apiClient from "../../util/BaseUrl";
+import FileModal from "../../modal/FileModal";
 
 export default function Message() {
   const isLogin = localStorage.getItem("login");
@@ -29,16 +30,19 @@ export default function Message() {
     messages,
     setMessages,
     fetchMessages,
-    fetchMoreMessages, // 추가 메시지 불러오기 함수
+    fetchMoreMessages,
     sendMessage,
     sendImageMessage,
     sendFileMessage,
     isConnected,
     leaveRoom,
-    isLoading, // 로딩 상태
-    setLoading, // 로딩 상태 설정 함수
+    isLoading,
+    setLoading,
+    fetchAllFile,
+    files,
   } = useMessageStore();
   const lastMessageRef = useRef(null);
+  const observerRef = useRef(null);
   const [message, setMessage] = useState("");
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -47,6 +51,7 @@ export default function Message() {
     console.log("close");
     setCreateOpen(false);
   };
+
   const [hasReloaded, setHasReloaded] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const handleInviteOpen = () => setInviteOpen(true);
@@ -56,36 +61,49 @@ export default function Message() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
+
+  const [fileModalOpen, setFileModalOpen] = useState(false);
+
+  const [hasMoreMessages, setHasMoreMessages] = useState(true); // 메시지 끝 여부 확인용 상태
+
   const handleConnect = () => {
     if (!isConnected) {
       connectStompClient();
     }
   };
+
   useEffect(() => {
     if (isLogin && memberId) {
       fetchRooms(memberId, roomNumber);
     }
   }, [isLogin, memberId, roomNumber]);
-  
+
   useEffect(() => {
     if (selectedRoom && memberId) {
-      setMessages([]);
       fetchMessages(selectedRoom);
     }
   }, [selectedRoom, fetchMessages]);
 
-
-  
   useEffect(() => {
-    const hasReloaded = sessionStorage.getItem('hasReloaded');
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
     if (!hasReloaded) {
-      sessionStorage.setItem('hasReloaded', 'true');
+      sessionStorage.setItem("hasReloaded", "true");
       window.location.reload(true);
-      setHasReloaded(true)
+      setHasReloaded(true);
     }
   }, []);
+  useEffect(() => {
+    if (files.length > 0) {
+      setFileModalOpen(true);
+    }
+  }, [files]);
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages[selectedRoom]]);
 
   const handleSelectRoom = (roomId) => {
     setSelectedRoom(roomId);
@@ -93,11 +111,10 @@ export default function Message() {
 
   const handleAddRoom = async (newRoomName) => {
     if (newRoomName.trim() && memberId) {
-        await addRoom(newRoomName, memberId);
-        fetchRooms(memberId, roomNumber);
+      await addRoom(newRoomName, memberId);
+      fetchRooms(memberId, roomNumber);
     }
-};
-
+  };
 
   const handleLoadMore = () => {
     const nextRoomNumber = roomNumber + 1;
@@ -132,11 +149,11 @@ export default function Message() {
 
         if (file.type.startsWith("image/")) {
           console.log("이미지 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); // Base64 인코딩 헤더 제거
+          base64Data = base64Data.replace(/^data:.*;base64,/, "");
           sendImageMessage(file, selectedRoom, memberId, base64Data);
         } else {
           console.log("다른 파일");
-          base64Data = base64Data.replace(/^data:.*;base64,/, ""); // Base64 인코딩 헤더 제거
+          base64Data = base64Data.replace(/^data:.*;base64,/, "");
           sendFileMessage(file, selectedRoom, memberId, base64Data);
         }
       };
@@ -157,7 +174,9 @@ export default function Message() {
     handleMenuClose();
     switch (action) {
       case "fileImage":
-        document.getElementById("file_input").click();
+        fetchAllFile(selectedRoom, memberId);
+        console.log(files[selectedRoom]);
+        setFileModalOpen(true);
         break;
       case "invite":
         handleInviteOpen();
@@ -170,16 +189,44 @@ export default function Message() {
         break;
     }
   };
+  useEffect(() => {
+    setHasMoreMessages(true);
+  }, [selectedRoom]);
 
-  const handleScroll = (e) => {
-    if (e.target.scrollTop === 0 && !isLoading && selectedRoom) {
-      const oldestMessage = messages[selectedRoom][0];
-      console.log(oldestMessage);
-      if (oldestMessage) {
-        fetchMoreMessages(selectedRoom, oldestMessage.chatId);
-      }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          !isLoading &&
+          selectedRoom &&
+          hasMoreMessages
+        ) {
+          const oldestMessage = messages[selectedRoom][0];
+          if (oldestMessage) {
+            fetchMoreMessages(selectedRoom, oldestMessage.chatId).then(
+              (fetchedMessages) => {
+                if (fetchedMessages.length === 0) {
+                  setHasMoreMessages(false); // 더 이상 메시지가 없을 경우
+                }
+              }
+            );
+          }
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
     }
-  };
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [isLoading, selectedRoom, messages, fetchMoreMessages, hasMoreMessages]);
 
   const selectedRoomData =
     rooms &&
@@ -191,7 +238,21 @@ export default function Message() {
       case "IMAGE":
         return (
           <div>
-            <p>{data.from}</p>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{data.from}</p>
+              </div>
+            ) : (
+              ""
+            )}
             <img
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -200,16 +261,27 @@ export default function Message() {
               }
               src={data.content}
               alt="Message Content"
-              onClick={() => {
-                console.log(data);
-              }}
             />
           </div>
         );
       case "FILE":
         return (
           <div>
-            <p>{data.from}</p>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{data.from}</p>
+              </div>
+            ) : (
+              ""
+            )}
             <a href={data.content} download>
               <span
                 className={
@@ -226,7 +298,21 @@ export default function Message() {
       default:
         return (
           <div>
-            <p>{data.from}</p>
+            {parseInt(data.memberId, 10) !== parseInt(memberId, 10) ? (
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                {data.messageType != "STATUS" ? (
+                  <img
+                    src={data.profile ? data.profile : "/public/image/dp.jpg"}
+                    className="message-profile-img"
+                  />
+                ) : (
+                  ""
+                )}
+                <p>{data.from}</p>
+              </div>
+            ) : (
+              ""
+            )}
             <span
               className={
                 parseInt(data.memberId, 10) === parseInt(memberId, 10)
@@ -260,54 +346,63 @@ export default function Message() {
           handleClose={handleInviteClose}
           selectedRoom={selectedRoom}
           memberId={memberId}
+          close={handleInviteClose}
+          setMessages={setMessages}
         />
-        <div className="message_header">
-          {selectedRoomData && (
-            <>
-              <div className="header_left">
-                <img
-                  src={
-                    selectedRoomData.image || "https://via.placeholder.com/40"
-                  }
-                  alt={selectedRoomData.roomName}
-                  className="message_profile_image"
-                />
-                <span className="message_profile_name">
-                  {selectedRoomData.roomName}
-                </span>
-              </div>
-              <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleMenuOpen}
-                className="kebab_button"
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={menuOpen}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={() => handleMenuItemClick("fileImage")}>
-                  파일/이미지
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("invite")}>
-                  채팅 초대
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick("leave")}>
-                  채팅방 나가기
-                </MenuItem>
-              </Menu>
-            </>
-          )}
-        </div>
-
-        <div id="messages" onScroll={handleScroll}>
+        <FileModal
+          open={fileModalOpen}
+          handleClose={() => setFileModalOpen(false)}
+          files={files[selectedRoom]}
+        />
+        {selectedRoom ? (
+          <div className="message_header">
+            {selectedRoomData && (
+              <>
+                <div className="header_left">
+                  <img
+                    src={selectedRoomData.image || "/public/favicon2.ico"}
+                    alt={selectedRoomData.roomName}
+                    className="message_profile_image"
+                  />
+                  <span className="message_profile_name">
+                    {selectedRoomData.roomName}
+                  </span>
+                </div>
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={handleMenuOpen}
+                  className="kebab_button"
+                >
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={menuOpen}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleMenuItemClick("fileImage")}>
+                    파일/이미지
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("invite")}>
+                    채팅 초대
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("leave")}>
+                    채팅방 나가기
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
+        <div id="messages">
           <ul id="pre_messages">
+            <li ref={observerRef} /> {/* 옵저버를 최상단에 위치 */}
             {(messages[selectedRoom] || []).map((data, index) => (
               <li
                 className={
@@ -325,35 +420,51 @@ export default function Message() {
             <li ref={lastMessageRef} />
           </ul>
         </div>
-        <div className="form_container">
-          <input
-            type="file"
-            id="file_input"
-            style={{ display: "none" }}
-            onChange={handleFileSend}
-          />
-          <button
-            type="button"
-            id="send_file_button"
-            onClick={() => document.getElementById("file_input").click()}
-          >
-            <CgAddR />
-          </button>
-          <input
-            autoComplete="off"
-            type="text"
-            id="message_input"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="메시지 입력..."
-          />
-          <button type="button" id="send_message_button" onClick={handleSubmit}>
-            <IoIosSend />
-          </button>
-        </div>
-        
+
+        {selectedRoom ? (
+          <div className="form_container">
+            <input
+              type="file"
+              id="file_input"
+              style={{ display: "none" }}
+              onChange={handleFileSend}
+            />
+            <button
+              type="button"
+              id="send_file_button"
+              onClick={() => document.getElementById("file_input").click()}
+            >
+              <CgAddR />
+            </button>
+            <input
+              autoComplete="off"
+              type="text"
+              id="message_input"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="메시지 입력..."
+            />
+
+            <button
+              type="button"
+              id="send_message_button"
+              onClick={handleSubmit}
+            >
+              <IoIosSend />
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
+      {/* <button
+        onClick={() => {
+          console.log(selectedRoom);
+        }}
+      >
+        asdf
+      </button> */}
     </div>
   );
 }

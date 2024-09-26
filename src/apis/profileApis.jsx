@@ -146,6 +146,7 @@ export const getEmail = async (email) => {
 export const postEmailAuthNum = async (data) => {
   try {
     const response = await apiClient.post(`/api/v1/email-auth/confirm`, data);
+    console.log(response);
     return response;
   } catch (error) {
     return error;

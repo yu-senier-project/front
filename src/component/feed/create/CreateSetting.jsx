@@ -39,7 +39,7 @@ const CreateSetting = ({ onSetIsChat }) => {
           <table>
             <tr>
               <label htmlFor="open">
-                <td>채팅 열기</td>
+                <td>댓글 열기</td>
               </label>
               <td className="empty"></td>
               <td>
@@ -54,7 +54,7 @@ const CreateSetting = ({ onSetIsChat }) => {
             </tr>
             <tr>
               <label htmlFor="close">
-                <td>채팅 닫기</td>
+                <td>댓글 닫기</td>
               </label>
               <td className="empty"></td>
               <td>

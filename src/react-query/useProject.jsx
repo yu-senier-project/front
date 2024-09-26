@@ -481,7 +481,6 @@ export const useUpdateTodoState = (projectId) => {
   const queryClient = useQueryClient();
   const { mutate, status, refetch } = useMutation({
     mutationFn: ({ taskId, data }) => {
-      console.log(taskId);
       return updateTodoState(taskId, data);
     },
     onError: (e) => {
@@ -517,8 +516,9 @@ export const useGetAllTodos = (projectId) => {
     queryFn: () => getAllTodos(projectId),
     staleTime: 5 * 1000 * 60,
     gcTime: 10 * 1000 * 60,
-    // refetchOnWindowFocus: false,
-    // refetchOnReconnect: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
   return { data, isLoading };
 };

@@ -1,0 +1,66 @@
+.AlarmModal {
+  position: fixed;
+  padding-left: 10px;
+  width: 400px;
+  top: 0px;
+  left: 210px;
+  bottom: 0px;
+  border-right: 1px solid lightgrey;
+  overflow: auto;
+  transform: translateX(0%);
+  transition: all 0.5s ease;
+  opacity: 1;
+  background-color: white;
+  z-index: 100;
+  // 960px 이하일 때 margin-left를 70px로 변경
+  @media (max-width: 960px) {
+    left: 70px;
+  }
+}
+
+.AlarmModalOut {
+  z-index: 0;
+  transition: all 0.5 ease;
+  transform: translateX(-150%);
+  opacity: 0;
+}
+
+.AlarmItem {
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+}
+
+.AlarmItem-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  text-wrap: wrap;
+
+  p {
+    width: 210px;
+    cursor: pointer;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.AlarmItem-right {
+  display: flex;
+  align-items: center;
+}

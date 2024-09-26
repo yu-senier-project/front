@@ -80,7 +80,7 @@ export const ProjectInfo = ({ setOnProjectInfo }) => {
               padding: "10px",
               borderRadius: "10px",
               height: "25px",
-              overflow: "scroll",
+              overflow: "auto",
             }}
           >
             {title}
@@ -94,7 +94,7 @@ export const ProjectInfo = ({ setOnProjectInfo }) => {
               padding: "10px",
               borderRadius: "10px",
               height: "120px",
-              overflow: "scroll",
+              overflow: "auto",
             }}
           >
             {detail}
@@ -108,7 +108,7 @@ export const ProjectInfo = ({ setOnProjectInfo }) => {
               padding: "10px",
               borderRadius: "10px",
               height: "120px",
-              overflow: "scroll",
+              overflow: "auto",
             }}
           >
             {goal}
