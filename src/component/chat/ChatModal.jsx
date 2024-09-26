@@ -33,6 +33,22 @@ const ChatModal = ({
     staleTime: 1000 * 60 * 5,
   });
 
+  useEffect(() => {
+    const onClickEsc = (e) => {
+      if (e.key === "Escape") {
+        handleChatButtonClick();
+      }
+    };
+
+    document.addEventListener("keydown", onClickEsc);
+
+    if (backgroundRef.current) {
+      backgroundRef.current.scrollTop = 0;
+    }
+
+    return () => document.removeEventListener("keydown", onClickEsc);
+  }, []);
+
   const nav = useNavigate();
 
   const onDelete = () => {

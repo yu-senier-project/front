@@ -104,12 +104,17 @@
     justify-content: flex-start;
     align-items: flex-start;
     overflow-y: auto; /* 스크롤이 필요하면 자동으로 표시 */
+    overflow-x: hidden;
     max-height: 100vh; /* 최대 높이를 화면 높이로 제한 */
   }
 
-  .ChatModalCloseButton {
-    display: none;
+  .ChatModalUser {
+    justify-content: space-between;
   }
+
+  // .ChatModalCloseButton {
+  //   display: none;
+  // }
 
   .ChatModalText {
     flex-direction: column;
@@ -120,7 +125,7 @@
   }
 
   .ChatModalFeed-info {
-    width: 100%;
+    width: auto;
   }
 
   .ChatModalFeed {

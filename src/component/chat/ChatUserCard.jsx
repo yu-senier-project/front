@@ -32,7 +32,7 @@ const ChatUserCard = ({
   const nav = useNavigate();
   const myName = localStorage.getItem("userNickName");
   const imgClassName = `width-${imgWidth}`;
-  const textClassName = `ChatUserCard-text width-${commentWidth}`;
+  const textClassName = `ChatUserCard-text `;
   const queryClient = useQueryClient();
   const [onSetting, setOnSetting] = useState(false);
 
@@ -235,7 +235,7 @@ const ChatUserCard = ({
         </div>
       </div>
       <div className="ChatUserCard-reply">
-        <div>
+        <div style={{ width: "100%" }}>
           <ChatReply
             postId={postId}
             commentId={commentId}

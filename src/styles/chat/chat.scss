@@ -1,7 +1,6 @@
 .Chat {
   padding: 20px;
   padding-right: 0px;
-
   border-radius: 0px 10px 10px 0px;
   height: 100%;
   width: 100%;
@@ -11,5 +10,11 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+}
+
+@media (max-width: 550px) {
+  .Chat {
+    padding: 0px;
   }
 }
