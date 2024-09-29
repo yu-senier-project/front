@@ -10,6 +10,7 @@ import { postFeed, postFeedImg } from "../../../apis/feedApis";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loading } from "../../basic/Loading";
 import { useNavigate } from "react-router-dom";
+import { useSelectedMenu } from "../../../store/nav/useNavStore";
 const CreateFeed = () => {
   const nav = useNavigate();
   const queryClient = useQueryClient();
@@ -18,6 +19,7 @@ const CreateFeed = () => {
   const hashList = useRef([]);
   const mentionList = useRef([]);
   const inputRef = useRef(null);
+  const { setSelectedMenu } = useSelectedMenu();
 
   const [content, setContent] = useState("");
   const [isChat, setIsChat] = useState(null);
@@ -88,6 +90,7 @@ const CreateFeed = () => {
       isChat,
     });
 
+    setSelectedMenu(`Profile`);
     nav(`/Profile/${localStorage.getItem("memberId")}`);
   };
 

@@ -75,7 +75,7 @@ const Home = () => {
       {feedList?.map((item) => (
         <Feed feedList={item} key={item.id} />
       ))}
-      {isFetchingNextPage && <FeedSkeletonList num={5} />}
+      {isFetchingNextPage && <FeedSkeletonList num={2} />}
     </div>
   );
 };

@@ -3,7 +3,7 @@
   padding-left: 10px;
   width: 400px;
   top: 0px;
-  left: 110px;
+  left: 210px;
   bottom: 0px;
   border-right: 1px solid lightgrey;
   overflow: auto;
@@ -12,9 +12,10 @@
   opacity: 1;
   background-color: white;
   z-index: 100;
-}
-
-.AlarmModalIn {
+  // 960px 이하일 때 margin-left를 70px로 변경
+  @media (max-width: 960px) {
+    left: 70px;
+  }
 }
 
 .AlarmModalOut {
