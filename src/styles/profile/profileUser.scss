@@ -1,5 +1,6 @@
 .ProfileUser {
-  width: 700px;
+  max-width: 700px;
+  width: 100%;
   // border: 1px solid black;
   margin: auto;
   margin-top: 20px;
@@ -64,5 +65,31 @@
   cursor: pointer;
   &:hover {
     border-bottom: 1px solid grey;
+  }
+}
+
+@media (max-width: 750px) {
+  .ProfileUser-info {
+    flex-direction: column;
+  }
+  .ProfileUser-info-img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  .ProfileUser-info-text {
+    text-align: center;
+    width: 100%;
+    margin-left: 0px;
+    padding: 0px;
+  }
+
+  .ProfileUser-belong {
+    text-align: center;
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import "../../../styles/profile/profileUser.scss";
-import { useMemberData } from "../../../react-query/useProfile";
 
 export const ProfileUser = ({
   myProfile,

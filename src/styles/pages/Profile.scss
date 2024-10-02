@@ -2,3 +2,9 @@
   margin: auto;
   width: 65%;
 }
+
+@media (max-width: 600px) {
+  .Profile {
+    width: 100%;
+  }
+}
