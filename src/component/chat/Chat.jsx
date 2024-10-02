@@ -19,7 +19,7 @@ const Chat = ({ id, data, isLoading }) => {
   };
 
   return (
-    <div className="Chat width-400">
+    <div className="Chat">
       <div className="chat-userCard">
         <div
           style={{

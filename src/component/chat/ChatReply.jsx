@@ -21,7 +21,7 @@ export const ChatReply = ({ replyNum, onClickReply, postId, commentId }) => {
   });
 
   return (
-    <div className="ChatReply">
+    <div className="ChatReply" style={{ width: "100%" }}>
       <div className="ChatReply-openButton">
         {replyNum !== 0 ? (
           !isOpen ? (

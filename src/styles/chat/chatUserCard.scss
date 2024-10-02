@@ -6,6 +6,8 @@
   .ChatUserCard-text {
     margin-left: 15px;
     font-size: 15px;
+    width: 100%;
+    max-width: 500px;
     overflow-wrap: break-word;
 
     .ChatUserCard-userName {

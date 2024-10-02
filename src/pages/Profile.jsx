@@ -113,6 +113,7 @@ export const Profile = () => {
           setEnd={setEnd}
         />
       ) : null}
+
       <ProfileFeedList
         start={start}
         end={end}

@@ -29,7 +29,7 @@ export const ChatReplyUserCard = ({
 }) => {
   const imgClassName = `width-${imgWidth}`;
   const myName = localStorage.getItem("userNickName");
-  const textClassName = `ChatUserCard-text width-${commentWidth}`;
+  const textClassName = `ChatUserCard-text`;
   const queryClient = useQueryClient();
 
   const [onSetting, setOnSetting] = useState(false);
