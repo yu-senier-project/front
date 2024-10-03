@@ -8,7 +8,7 @@ import Input from "../../component/basic/Input";
 import Button from "../../component/basic/Button";
 import useTimer from "../../hooks/useTimer";
 import useFindStore from "../../store/find/useFindStore";
-import "../../styles/find/find.scss";
+import "../../styles/find/findid.scss";
 
 export default function IdFind() {
   const { minutes, seconds, isActive, toggle } = useTimer(5, 0);

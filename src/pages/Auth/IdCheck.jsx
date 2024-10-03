@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useFindStore from "../../store/find/useFindStore";
 import Tobbar from "../../component/Topbar";
-import "../../styles/find/find.scss";
+import "../../styles/find/checkid.scss";
 export default function IdCheck() {
   const { checkId } = useFindStore();
   const navigate = useNavigate();
