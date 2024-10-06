@@ -7,7 +7,7 @@ import Input from "../../component/basic/Input";
 import Button from "../../component/basic/Button";
 import useFindStore from "../../store/find/useFindStore";
 import useTimer from "../../hooks/useTimer";
-import "../../styles/find/find.scss";
+// import "../../styles/find/find.scss";
 
 export default function PwInitCheckId() {
   const { minutes, seconds, isActive, toggle } = useTimer(5, 0); // 타이머 훅
@@ -15,9 +15,9 @@ export default function PwInitCheckId() {
   const [isSend, setIsSend] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const [formData, setFormData] = useState({
-    firstName: '',
-    secondName: '',
-    id: '',
+    firstName: "",
+    secondName: "",
+    id: "",
     email: "",
     authCode: "",
   });
@@ -34,28 +34,34 @@ export default function PwInitCheckId() {
 
   const checkNameId = async () => {
     console.log(formData.firstName, formData.secondName, formData.id);
-    if (formData.firstName === "" || formData.secondName === "" || formData.id === "") {
+    if (
+      formData.firstName === "" ||
+      formData.secondName === "" ||
+      formData.id === ""
+    ) {
       alert("빈칸을 채워주세요.");
       return;
     }
 
     try {
-      await checkAuthCode(); 
-      const data =  {
+      await checkAuthCode();
+      const data = {
         firstName: formData.firstName,
         lastName: formData.secondName,
         nickname: formData.id,
         email: formData.email,
       };
-      const response = await axios.post("http://43.203.69.159/api/v1/auth/password-inquiry/verification", data);
+      const response = await axios.post(
+        "http://43.203.69.159/api/v1/auth/password-inquiry/verification",
+        data
+      );
       console.log(response);
       if (response.status === 200) {
         navigate("/PasswordInit", { state: { email: formData.email } });
       } else {
         alert("유효하지 않은 사용자 정보입니다.");
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
       if (error.response) {
         const { code } = error.response.data;
@@ -79,10 +85,12 @@ export default function PwInitCheckId() {
     }
     setIsLoading(true); // 로딩 상태 시작
     try {
-      const res = await axios.get(BaseUrl + "/api/v1/email-auth/request/" + formData.email);
+      const res = await axios.get(
+        BaseUrl + "/api/v1/email-auth/request/" + formData.email
+      );
       console.log(res);
       setIsSend(true);
-      toggle();  // 타이머 시작
+      toggle(); // 타이머 시작
     } catch (err) {
       console.error("Error in sending email:", err);
       alert("이메일 전송에 실패했습니다.");
@@ -103,7 +111,10 @@ export default function PwInitCheckId() {
     console.log(data);
     if (isActive) {
       try {
-        const res = await axios.post(BaseUrl + `/api/v1/email-auth/confirm`, data);
+        const res = await axios.post(
+          BaseUrl + `/api/v1/email-auth/confirm`,
+          data
+        );
         if (res.status === 200) {
           return true;
         } else {
@@ -122,71 +133,73 @@ export default function PwInitCheckId() {
   };
 
   return (
-    <div id="pwfind_container">
-      <Tobbar />
-      <div id="find_content">
-        <h1>비밀번호 초기화</h1>
-        <h2>아래 양식을 작성후 버튼을 클릭해 주세요.</h2>
-        <div className="name_box">
-          <Input
-            placeholder={"성"}
-            size={"Big"}
-            name={"firstName"}
-            value={formData.firstName}
-            onChange={handleInputChange}
-            id={"first_name"}
-            style={{ marginRight: "auto" }}
-          />
-          <Input
-            placeholder={"이름"}
-            size={"Big"}
-            name={"secondName"}
-            value={formData.secondName}
-            onChange={handleInputChange}
-            id={"second_name"}
-            style={{ marginLeft: "auto" }}
-          />
+    <div className="find_container">
+      <div className="init_likemodal">
+        <Tobbar />
+        <div className="init_section">
+          <div className="init_section_text">
+            <p>비밀번호 초기화</p>
+            <p>아래 양식을 작성후 버튼을 클릭해 주세요.</p>
+          </div>
+          <div className="init_section__info">
+            <Input
+              placeholder={"성"}
+              size={"Big"}
+              name={"firstName"}
+              value={formData.firstName}
+              onChange={handleInputChange}
+              id={"first_name"}
+            />
+            <Input
+              placeholder={"이름"}
+              size={"Big"}
+              name={"secondName"}
+              value={formData.secondName}
+              onChange={handleInputChange}
+              id={"second_name"}
+            />
+          </div>
+          <div className="init_section__id">
+            <Input
+              placeholder={"아이디"}
+              size={"Small"}
+              name={"id"}
+              value={formData.id}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="init_section__email">
+            <Input
+              placeholder={"이메일"}
+              size={"Small"}
+              name={"email"}
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+            <button onClick={sendAuthCode} disabled={isActive || isLoading}>
+              인증
+            </button>
+          </div>
+          <div className="init_section__auth">
+            <Input
+              placeholder={"인증번호"}
+              size={"Small"}
+              name={"authCode"}
+              value={formData.authCode}
+              onChange={handleInputChange}
+            />
+            {isActive ? (
+              <span className="auth_time">{`${minutes}:${
+                seconds < 10 ? `0${seconds}` : seconds
+              }`}</span>
+            ) : (
+              <span></span>
+            )}
+          </div>
         </div>
-        <div className="authcode_input">
-          <Input
-            placeholder={"아이디"}
-            size={"Small"}
-            name={"id"}
-            value={formData.id}
-            onChange={handleInputChange}
-          />
+        <div className="init_section_action">
+          <Button size={"Small"} text={"다음"} onClick={checkNameId} />
         </div>
-        <div className="email_input">
-          <Input
-            placeholder={"이메일"}
-            size={"Small"}
-            name={"email"}
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-          <button
-            className="auth_button"
-            onClick={sendAuthCode}
-            disabled={isActive || isLoading}
-          >
-            {isLoading ? '전송 중...' : '인증'}  
-          </button>
-        </div>
-        <div className="authcode_input">
-          <Input
-            placeholder={"인증번호"}
-            size={"Small"}
-            name={"authCode"}
-            value={formData.authCode}
-            onChange={handleInputChange}
-          />
-          {isActive ? (
-            <span className="auth_time">{`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</span>
-          ) : (
-            <></>
-          )}
-        </div>
-        <Button size={"Small"} text={"다음"} onClick={checkNameId} />
       </div>
     </div>
   );

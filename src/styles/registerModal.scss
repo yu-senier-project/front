@@ -1,216 +1,397 @@
-.register-modal {
+.MuiBackdrop-root.MuiModal-backdrop.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  background-color: rgba(91, 112, 131, 0.4);
+}
+.MuiFormControl-root.css-1869usk-MuiFormControl-root {
+  background-color: #fff;
+  text-align: center;
+}
+.register_modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
-  width: 60vw;
-  height: 80vh;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  .title {
-    text-align: start;
-    width: 70%;
-    margin-top: 0px;
-    margin-bottom: 20px;
-    position: fixed;
-    top:5%;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    top: 0%;
-    .close-button {
-      background-color: transparent;
-      border: none;
-      padding-right: 10px;
-      cursor: pointer;
-    }
-  }
-
-  .company-list {
-    background-color: rgb(216, 216, 216);
-    height: 300px;
-    width: 70%;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    border-radius: 8px;
-    overflow-y: auto;
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      border-bottom: 3px solid #ccc;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      button {
-        padding: 5px 10px;
-        background-color: #71c9ce;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-        &:hover {
-          background-color: darken(#60aeb3, 10%);
-        }
-
-        &:active {
-          background-color: #71c9ce;
-        }
-      }
-    }
-  }
-
-  .birthday-selecter {
-    width: 70%;
-
-    .birthday {
-      text-align: start;
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-  }
-
-  .name-space {
-    width: 30vw;
-    position: relative;
-    top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .position-space {
-    width: 30vw;
-    // margin-bottom: 50px;
-  }
-
-  .next_button {
-    width: 33.7vw;
-    position: fixed;
-    bottom: 0px;
-    // margin-bottom: 10px;
-  }
-
-  .id-space {
-    position: relative;
-    // margin-bottom: 20px;
-
-    Input {
-      width: 33.7vw;
-
-      // width: calc(100% - 80px); // 중복 확인 버튼 크기만큼 너비 조정
-      padding-right: 70px; // 중복 확인 버튼 공간 확보
-    }
-
-    .duplication_button {
-      position: absolute;
-      width: 6vw;
-      right: 5px;
-      top: 2.5vh;
-      transform: translateY(-50%);
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 5px 10px;
-    }
-  }
-
-  .password-space {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 40vw;
-    Input{
-      width: 33.7vw;
-    }
-  }
-
-}
-
-#input-error {
-  border: 2px solid red;
-}
-
-.auth_container {
-  width: 40vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .email_input {
-    width: 33.7vw;
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    border: 2px solid #b9b8b8;
-    margin-bottom: 20px;
-    Input {
-      flex: 1;
-      border: none;
-      margin: 0;
-    }
-
-    .auth_button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 5px 10px;
-
-      &:active {
-        background-color: #aaaaaa;
-      }
-    }
-  }
-
-  .authcode_input {
-    width: 33.7vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  padding: 2rem 1.5rem;
+  max-width: 40vw;
+  max-height: 70vh;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-rows: 0.1fr 2fr 0.1fr;
+  color: #fff;
+  input {
+    margin: 0;
     padding: 0;
-    position: relative; /* 부모 요소를 상대적으로 설정 */
-  
-    input {
-      flex: 1;
-      margin-right: 10px;
-      margin: 0;
+  }
+}
+.register_modal__header {
+  display: flex;
+  position: relative;
+  button {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 0.8rem;
+    &:first-child {
+      left: 0;
     }
-  
-    .auth_time {
-      position: absolute; /* 절대 위치 설정 */
-      right: 10px; /* 부모 요소의 오른쪽 끝에 배치 */
-      top: 50%; /* 부모 요소의 중간 높이에 배치 */
-      transform: translateY(-50%); /* 수직 중앙 정렬 */
-      color: red;
-      white-space: nowrap;
+    &:last-child {
+      right: 0;
     }
   }
-  
+  .title {
+    display: flex;
+    flex: 1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+  }
 }
-.error-message{
-  color: red;
-  font-size: 10px;
+
+.register_modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
 }
+
+.register_section__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+  input {
+    padding: 0.5rem;
+    width: 100%;
+    margin: 0;
+  }
+  .register_section__result {
+    display: flex;
+    flex: 1;
+    background-color: #1e1e1e;
+    border-radius: 0.5rem;
+    ul,
+    p {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      margin: 0;
+
+      padding: 1rem;
+      overflow-y: scroll;
+      li {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #626262;
+        button {
+          border: none;
+          padding: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+.register_modal__footer {
+  button {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+}
+
+.register_section__position {
+  input {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
+.register_section__name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  input {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
+.register_section__birthday {
+  margin-top: 1.5rem;
+  p {
+    font-weight: bold;
+    text-align: center;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+  }
+}
+.register_modal__idform {
+  background-color: #fff;
+  display: flex;
+  input {
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem;
+    display: flex;
+    flex: 1;
+  }
+  button {
+    margin-right: 0.7rem;
+    background-color: transparent;
+    border: none;
+  }
+}
+
+.register_modal__passwordform {
+  display: flex;
+  gap: 0.5rem;
+  input {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
+
+.register_modal__email {
+  display: flex;
+  background-color: #fff;
+  input {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex: 1;
+    padding: 0.5rem;
+  }
+  span {
+    display: flex;
+    align-items: center;
+    color: #626262;
+  }
+  button {
+    background-color: transparent;
+    border: none;
+  }
+}
+
+.register_modal__auth {
+  display: flex;
+  background-color: #fff;
+  justify-content: space-between;
+  input {
+    padding: 0.5rem;
+    background-color: transparent;
+    border: none;
+  }
+  span {
+    padding-right: 0.7rem;
+    display: flex;
+    align-items: center;
+    color: red;
+  }
+}
+
+//   .title {
+//     text-align: start;
+//     width: 70%;
+//     margin-top: 0px;
+//     margin-bottom: 20px;
+//     position: fixed;
+//     top:5%;
+//   }
+
+//   .header {
+//     display: flex;
+//     justify-content: space-between;
+//     width: 100%;
+//     height: 50px;
+//     position: fixed;
+//     top: 0%;
+//     .close-button {
+//       background-color: transparent;
+//       border: none;
+//       padding-right: 10px;
+//       cursor: pointer;
+//     }
+//   }
+
+//   .company-list {
+//     background-color: rgb(216, 216, 216);
+//     height: 300px;
+//     width: 70%;
+//     margin-bottom: 20px;
+//     margin-top: 10px;
+//     border-radius: 8px;
+//     overflow-y: auto;
+
+//     ul {
+//       list-style: none;
+//       padding: 0;
+//       margin: 0;
+//     }
+
+//     li {
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       padding: 10px 20px;
+//       border-bottom: 3px solid #ccc;
+
+//       &:last-child {
+//         border-bottom: none;
+//       }
+
+//       button {
+//         padding: 5px 10px;
+//         background-color: #71c9ce;
+//         color: white;
+//         border: none;
+//         border-radius: 4px;
+//         cursor: pointer;
+//         transition: background-color 0.3s;
+
+//         &:hover {
+//           background-color: darken(#60aeb3, 10%);
+//         }
+
+//         &:active {
+//           background-color: #71c9ce;
+//         }
+//       }
+//     }
+//   }
+
+//   .birthday-selecter {
+//     width: 70%;
+
+//     .birthday {
+//       text-align: start;
+//       margin-top: 0px;
+//       margin-bottom: 0px;
+//     }
+//   }
+
+//   .name-space {
+//     width: 30vw;
+//     position: relative;
+//     top: 10px;
+//     margin-bottom: 10px;
+//   }
+
+//   .position-space {
+//     width: 30vw;
+//     // margin-bottom: 50px;
+//   }
+
+//   .next_button {
+//     width: 33.7vw;
+//     position: fixed;
+//     bottom: 0px;
+//     // margin-bottom: 10px;
+//   }
+
+//   .id-space {
+//     position: relative;
+//     // margin-bottom: 20px;
+
+//     Input {
+//       width: 33.7vw;
+
+//       // width: calc(100% - 80px); // 중복 확인 버튼 크기만큼 너비 조정
+//       padding-right: 70px; // 중복 확인 버튼 공간 확보
+//     }
+
+//     .duplication_button {
+//       position: absolute;
+//       width: 6vw;
+//       right: 5px;
+//       top: 2.5vh;
+//       transform: translateY(-50%);
+//       background-color: transparent;
+//       border: none;
+//       cursor: pointer;
+//       padding: 5px 10px;
+//     }
+//   }
+
+//   .password-space {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     width: 40vw;
+//     Input{
+//       width: 33.7vw;
+//     }
+//   }
+
+// }
+
+// #input-error {
+//   border: 2px solid red;
+// }
+
+// .auth_container {
+//   width: 40vw;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+
+//   .email_input {
+//     width: 33.7vw;
+//     display: flex;
+//     align-items: center;
+//     border-radius: 5px;
+//     border: 2px solid #b9b8b8;
+//     margin-bottom: 20px;
+//     Input {
+//       flex: 1;
+//       border: none;
+//       margin: 0;
+//     }
+
+//     .auth_button {
+//       background-color: transparent;
+//       border: none;
+//       cursor: pointer;
+//       padding: 5px 10px;
+
+//       &:active {
+//         background-color: #aaaaaa;
+//       }
+//     }
+//   }
+
+//   .authcode_input {
+//     width: 33.7vw;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     padding: 0;
+//     position: relative; /* 부모 요소를 상대적으로 설정 */
+
+//     input {
+//       flex: 1;
+//       margin-right: 10px;
+//       margin: 0;
+//     }
+
+//     .auth_time {
+//       position: absolute; /* 절대 위치 설정 */
+//       right: 10px; /* 부모 요소의 오른쪽 끝에 배치 */
+//       top: 50%; /* 부모 요소의 중간 높이에 배치 */
+//       transform: translateY(-50%); /* 수직 중앙 정렬 */
+//       color: red;
+//       white-space: nowrap;
+//     }
+//   }
+
+// }
+// .error-message{
+//   color: red;
+//   font-size: 10px;
+// }
