@@ -37,7 +37,6 @@ const initialDate = {
 function RegistrationModal({ open, handleClose }) {
   const { minutes, seconds, isActive, toggle } = useTimer(5, 0); // 타이머 훅
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState(initialFormData);
   const [date, setDate] = useState(initialDate);
   const [modalStep, setModalStep] = useState(0);

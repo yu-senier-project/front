@@ -3,7 +3,6 @@ import Input from "../basic/Input";
 import Button from "../basic/Button";
 import CloseButton from "../basic/CloseButton";
 import axios from "axios";
-import "../../styles/find/find.scss";
 
 function StepAuthVerification({
   handleInputChange,
@@ -71,84 +70,89 @@ function StepAuthVerification({
   const firstErrorField = Object.keys(errors)[0];
 
   return (
-    <div className="register-modal">
-      <div className="header">
+    <div className="register_modal">
+      <div className="register_modal__header">
         <button
-          className="close-button"
           onClick={() => {
             setModalStep(1);
           }}
         >
-          <h1>←</h1>
+          ←
         </button>
-        <button className="close-button">
+        <p className="title">가입하기</p>
+        <button>
           <CloseButton onCloseButton={handleCloseWithReset} />
         </button>
       </div>
-      <h2 className="title">가입하기</h2>
-      <div className="id-space">
-        <Input
-          size="Large"
-          placeholder={"아이디"}
-          onChange={handleInputChange}
-          value={formData.userNickName}
-          name={"userNickName"}
-          autocomplete={'off'}
+      <div className="register_modal__section">
+        <div className="register_modal__idform">
+          <Input
+            size="Large"
+            placeholder={"아이디"}
+            onChange={handleInputChange}
+            value={formData.userNickName}
+            name={"userNickName"}
+            autocomplete={"off"}
+          />
+          <button className="duplication_button" onClick={handleDuplicateCheck}>
+            중복확인
+          </button>
+          {firstErrorField === "userNickName" && (
+            <div
+              className="error-message"
+              style={{ color: "red", marginTop: "5px" }}
+            >
+              *{errors.userNickName}
+            </div>
+          )}
+        </div>
+        <div className="register_modal__passwordform">
+          <Input
+            size="Large"
+            placeholder={"비밀번호"}
+            onChange={handleInputChange}
+            name={"password"}
+            value={formData.password}
+            type="password"
+            autocomplete={"off"}
+          />
+          {firstErrorField === "password" && (
+            <div
+              className="error-message"
+              style={{ color: "red", marginTop: "5px" }}
+            >
+              *{errors.password}
+            </div>
+          )}
+          <Input
+            size="Large"
+            placeholder={"비밀번호 확인"}
+            onChange={handleInputChange}
+            name={"checkPassword"}
+            value={formData.checkPassword}
+            type="password"
+            autocomplete={"off"}
+          />
+          {firstErrorField === "checkPassword" && (
+            <div
+              className="error-message"
+              style={{ color: "red", marginTop: "5px" }}
+            >
+              *{errors.checkPassword}
+            </div>
+          )}
+        </div>
 
-        />
-        <button className="duplication_button" onClick={handleDuplicateCheck}>
-          중복확인
-        </button>
-        {firstErrorField === "userNickName" && (
-          <div className="error-message" style={{ color: 'red', marginTop: '5px' }}>
-            *{errors.userNickName}
-          </div>
-        )}
-      </div>
-      <div className="password-space">
-        <Input
-          size="Large"
-          placeholder={"비밀번호"}
-          onChange={handleInputChange}
-          name={"password"}
-          value={formData.password}
-          type="password" 
-          autocomplete={'off'}
-
-        />
-        {firstErrorField === "password" && (
-          <div className="error-message" style={{ color: 'red', marginTop: '5px' }}>
-            *{errors.password}
-          </div>
-        )}
-        <Input
-          size="Large"
-          placeholder={"비밀번호 확인"}
-          onChange={handleInputChange}
-          name={"checkPassword"}
-          value={formData.checkPassword}
-          type="password"
-          autocomplete={'off'}
-
-        />
-        {firstErrorField === "checkPassword" && (
-          <div className="error-message" style={{ color: 'red', marginTop: '5px' }}>
-            *{errors.checkPassword}
-          </div>
-        )}
-      </div>
-      <div className="auth_container">
-        <div className="email_input">
+        <div className="register_modal__email">
           <Input
             placeholder={"이메일"}
             size={"Large"}
             name={"email"}
             value={formData.email}
             onChange={handleInputChange}
-          autocomplete={'off'}
-
+            autocomplete={"off"}
           />
-         {companyEmail?"@" + companyEmail:""}
+          <span>{companyEmail ? "@" + companyEmail : ""}</span>
           <button
             className="auth_button"
             onClick={sendAuthCode}
@@ -156,13 +160,17 @@ function StepAuthVerification({
           >
             인증
           </button>
+
+          {firstErrorField === "email" && (
+            <div
+              className="error-message"
+              style={{ color: "red", marginTop: "5px" }}
+            >
+              *{errors.email}
+            </div>
+          )}
         </div>
-        {firstErrorField === "email" && (
-          <div className="error-message" style={{ color: 'red', marginTop: '5px' }}>
-            *{errors.email}
-          </div>
-        )}
-        <div className="authcode_input">
+        <div className="register_modal__auth">
           <Input
             placeholder={"인증번호"}
             size={"Large"}
@@ -170,24 +178,26 @@ function StepAuthVerification({
             value={formData.authCode}
             onChange={handleInputChange}
             disabled={!isActive}
-          autocomplete={'off'}
-
+            autocomplete={"off"}
           />
           {isActive ? (
             <span className="auth_time">{`${minutes}:${
               seconds < 10 ? `0${seconds}` : seconds
             }`}</span>
           ) : (
-            <></>
+            <span></span>
           )}
         </div>
         {firstErrorField === "authCode" && (
-          <div className="error-message" style={{ color: 'red', marginTop: '5px' }}>
+          <div
+            className="error-message"
+            style={{ color: "red", marginTop: "5px" }}
+          >
             *{errors.authCode}
           </div>
         )}
       </div>
-      <div className="next_button">
+      <div className="register_modal__footer">
         <Button text={"다음"} size={"Large"} onClick={handleNextClick} />
       </div>
     </div>

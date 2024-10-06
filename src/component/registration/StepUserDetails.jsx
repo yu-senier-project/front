@@ -43,108 +43,111 @@ function StepUserDetails({
   };
 
   return (
-    <div className="register-modal">
-      <div className="header">
+    <div className="register_modal">
+      <div className="register_modal__header">
         <button
-          className="close-button"
           onClick={() => {
             setModalStep(0);
           }}
         >
-          <h1>←</h1>
+          ←
         </button>
-        <button className="close-button">
-          <CloseButton onCloseButton={handleCloseWithReset} />
-        </button>
-      </div>
-      <h2 className="title">가입하기</h2>
-      <div className="position-space">
-        <Input
-          size="Large"
-          placeholder={"직무 (무직일 경우 '희망 직무')"}
-          onChange={handleInputChange}
-          value={formData.position}
-          name={"position"}
-          autocomplete={"off"}
-        />
-        {errors.position && (
-          <div
-            className="error-message"
-            style={{ color: "red", fontSize: "10px" }}
-          >
-            *{errors.position}
-          </div>
-        )}
-      </div>
-      <div className="name-space">
-        <Input
-          size="Large"
-          placeholder={"성"}
-          onChange={handleInputChange}
-          value={formData.firstName}
-          name={"firstName"}
-          id="input-error"
-          autocomplete={"off"}
-        />
-        {errors.firstName && (
-          <div
-            className="error-message"
-            style={{ color: "red", fontSize: "10px" }}
-          >
-            *{errors.firstName}
-          </div>
-        )}
-        <Input
-          size="Large"
-          placeholder={"이름"}
-          value={formData.secondName}
-          onChange={handleInputChange}
-          name={"secondName"}
-          autocomplete={"off"}
-        />
-        {errors.secondName && (
-          <div
-            className="error-message"
-            style={{ color: "red", fontSize: "10px" }}
-          >
-            *{errors.secondName}
-          </div>
-        )}
-      </div>
 
-      <div className="birthday-selecter">
-        <h3 className="birthday">생년월일</h3>
-        <SelectComponent
-          id="year-select"
-          placeholder="년도 선택"
-          value={date.year}
-          onChange={(value) => handleDateChange("year", value)}
-          data={years}
-        />
-        <SelectComponent
-          id="month-select"
-          placeholder="월 선택"
-          value={date.month}
-          onChange={(value) => handleDateChange("month", value)}
-          data={months}
-        />
-        <SelectComponent
-          id="day-select"
-          placeholder="일 선택"
-          value={date.day}
-          onChange={(value) => handleDateChange("day", value)}
-          data={days}
-        />
-        {errors.date && (
-          <div
-            className="error-message"
-            style={{ color: "red", fontSize: "10px" }}
-          >
-            *{errors.date}
-          </div>
-        )}
+        <p className="title">가입하기</p>
+
+        <CloseButton onCloseButton={handleCloseWithReset} />
       </div>
-      <div className="next_button">
+      <div className="register_modal__section">
+        <div className="register_section__position">
+          <Input
+            size="Large"
+            placeholder={"직무 (무직일 경우 '희망 직무')"}
+            onChange={handleInputChange}
+            value={formData.position}
+            name={"position"}
+            autocomplete={"off"}
+          />
+          {errors.position && (
+            <div
+              className="error-message"
+              style={{ color: "red", fontSize: "10px" }}
+            >
+              *{errors.position}
+            </div>
+          )}
+        </div>
+        <div className="register_section__name">
+          <Input
+            size="Large"
+            placeholder={"성"}
+            onChange={handleInputChange}
+            value={formData.firstName}
+            name={"firstName"}
+            id="input-error"
+            autocomplete={"off"}
+          />
+          {errors.firstName && (
+            <div
+              className="error-message"
+              style={{ color: "red", fontSize: "10px" }}
+            >
+              *{errors.firstName}
+            </div>
+          )}
+          <Input
+            size="Large"
+            placeholder={"이름"}
+            value={formData.secondName}
+            onChange={handleInputChange}
+            name={"secondName"}
+            autocomplete={"off"}
+          />
+          {errors.secondName && (
+            <div
+              className="error-message"
+              style={{ color: "red", fontSize: "10px" }}
+            >
+              *{errors.secondName}
+            </div>
+          )}
+        </div>
+
+        <div className="register_section__birthday">
+          <p className="birthday_text">생년월일</p>
+          <div>
+            <SelectComponent
+              id="year-select"
+              placeholder="년도 선택"
+              value={date.year}
+              onChange={(value) => handleDateChange("year", value)}
+              data={years}
+            />
+            <SelectComponent
+              id="month-select"
+              placeholder="월 선택"
+              value={date.month}
+              onChange={(value) => handleDateChange("month", value)}
+              data={months}
+            />
+            <SelectComponent
+              id="day-select"
+              placeholder="일 선택"
+              value={date.day}
+              onChange={(value) => handleDateChange("day", value)}
+              data={days}
+            />
+          </div>
+          {errors.date && (
+            <div
+              className="error-message"
+              style={{ color: "red", fontSize: "10px" }}
+            >
+              *{errors.date}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="register_modal__footer">
         <Button text={"다음"} size={"Large"} onClick={handleNextClick} />
       </div>
     </div>
