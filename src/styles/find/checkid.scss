@@ -1,0 +1,34 @@
+@import url("./findid.scss");
+.check_section {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  .check_section_text {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .check_section_main {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}
+
+.check_action {
+  display: flex;
+  padding: 2rem;
+  button {
+    width: 50%;
+    height: 100%;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    &:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  }
+}

@@ -111,7 +111,7 @@
     padding: 2rem;
     background-color: #000;
     min-height: 50vh;
-    min-width: 50vw;
+    min-width: 40vw;
     max-height: 100%;
     display: grid;
     grid-template-rows: 1fr 2fr 1fr;
@@ -180,8 +180,9 @@
     width: 100%;
     border: 1px solid #fff;
     background-color: transparent;
-  }
-  button:active {
-    background-color: #1d1d1d;
+    &:hover {
+      background-color: #fff;
+      color: #000;
+    }
   }
 }
