@@ -19,7 +19,7 @@
   width: 60%;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 60px);
+  grid-template-rows: repeat(10, 1fr);
 
   grid-template-areas:
     "top top top top top top top top top top"
@@ -82,6 +82,9 @@
 
 .setting {
   grid-area: setting;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .btn-wrap {
@@ -93,4 +96,34 @@
 #createFeed-closeButton {
   margin-left: auto;
   margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0px;
+
+    grid-template-areas:
+      "top top top top top top top top top top"
+      "img img img img img img img img img img"
+      "img img img img img img img img img img"
+      "img img img img img img img img img img"
+      "img img img img img img img img img img"
+      "img img img img img img img img img img"
+      "content content content content content setting setting setting setting setting"
+      "content content content content content setting setting setting setting setting"
+      "content content content content content setting setting setting setting setting"
+      "content content content content content setting setting setting setting setting";
+  }
+
+  .createFeed-content {
+    border-bottom: none;
+    border-top: 1px solid black;
+  }
+
+  .setting {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+  }
 }
