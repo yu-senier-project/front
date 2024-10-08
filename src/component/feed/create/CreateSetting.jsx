@@ -36,7 +36,31 @@ const CreateSetting = ({ onSetIsChat }) => {
       </div>
       <div className="radio">
         <div className={className}>
-          <table>
+          <div className="radio-item">
+            <label htmlFor="open">댓글 열기</label>
+            <div>
+              <input
+                type="radio"
+                id="open"
+                name="setting"
+                value={true}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+          <div className="radio-item">
+            <label htmlFor="close">댓글 닫기</label>
+            <div>
+              <input
+                type="radio"
+                name="setting"
+                id="close"
+                value={false}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+          {/* <table>
             <tr>
               <label htmlFor="open">
                 <td>댓글 열기</td>
@@ -67,7 +91,7 @@ const CreateSetting = ({ onSetIsChat }) => {
                 />
               </td>
             </tr>
-          </table>
+          </table> */}
         </div>
       </div>
     </div>

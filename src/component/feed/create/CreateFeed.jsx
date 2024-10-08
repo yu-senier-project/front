@@ -53,7 +53,7 @@ const CreateFeed = () => {
     return await postFeed(postData);
   };
 
-  const { data, mutate, mutateAsync, status } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: postFeedWithImage,
     onSuccess: (data) => {
       onClose();
