@@ -59,7 +59,7 @@ const Image = ({ formData, setImageList }) => {
   return (
     <div className="Image">
       <label htmlFor="file">
-        <div className="btn">이미지 추가</div>
+        <div className="btn center">이미지 추가</div>
       </label>
       <input
         type="file"
@@ -76,6 +76,7 @@ const Image = ({ formData, setImageList }) => {
             }}
             navigation={true}
             modules={[Pagination, Navigation]}
+            style={{ height: "100%" }}
             className="image-btn"
           >
             {showImages.map((image, id) => (
@@ -84,7 +85,7 @@ const Image = ({ formData, setImageList }) => {
                   src={image}
                   alt={`Preview ${id}`}
                   width={"100%"}
-                  height={"540px"}
+                  height={"100%"}
                 />
                 <div
                   className="minus-btn"
