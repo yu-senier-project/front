@@ -1,0 +1,142 @@
+.ProjectChannel {
+  padding: 30px 100px 30px 220px;
+
+  @media (max-width: 960px) {
+    padding-left: 120px;
+  }
+}
+
+.ProjectChannel-btn {
+  display: flex;
+  margin-bottom: 20px;
+
+  div {
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+  button {
+    cursor: pointer;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #345fd6;
+    color: white;
+
+    &:hover {
+      background-color: #3252aa;
+    }
+  }
+}
+
+.ProjectChannel-channelList {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.ProjectChannel-project {
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px 20px 20px 30px;
+  width: 280px;
+  height: 200px;
+  position: relative;
+
+  p {
+    &:nth-child(3) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 60%;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
+
+    &:nth-child(4) {
+      font-size: 12px;
+      height: 15%;
+    }
+  }
+
+  &:hover {
+    box-shadow: 2px 2px 2px 2px lightgrey;
+  }
+}
+
+.ProjectChannel-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 50px;
+}
+
+.edit-btn,
+.delete-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #71c9ce;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background-color: #61acb0;
+}
+
+.delete-btn {
+  background-color: #f44336;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+}
+
+.ProjectChannel-content ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 30px;
+  margin-top: 30px;
+}
+
+.ProjectChannel-content {
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.ProjectChannel-content p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ProjectChannel-project {
+  min-height: 200px;
+  height: auto;
+  &:hover {
+    box-shadow: 2px 2px 5px lightgray;
+  }
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-info img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}

@@ -28,6 +28,11 @@ import {
   deleteTodo,
   updateTodoState,
   getAllTodos,
+  getAllChannels,
+  createChannel,
+  exitChannel,
+  updateChannel,
+  deleteChannel
 } from "../apis/projectApis";
 import { QueryStatsTwoTone } from "@mui/icons-material";
 
@@ -521,4 +526,115 @@ export const useGetAllTodos = (projectId) => {
     refetchOnReconnect: true,
   });
   return { data, isLoading };
+};
+
+//화상 채팅 채널 가져오기
+export const useGetAllChannels = (projectId) => {
+  const {data, isLoading} = useQuery({
+    queryKey : ["allChannels",projectId],
+    queryFn: () => getAllChannels(projectId),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  });
+  return {data, isLoading};
+}
+
+//화상 채팅 채널 만들기
+export const useCreateChannel = (projectId) => {
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => createChannel(data, projectId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["allChannels", projectId]);
+      const newArr = [...prevData.data, data];
+      queryClient.setQueryData(["allChannels", projectId], { data: newArr });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["allChannels",projectId]);
+    }
+  });
+
+  return { mutate, status };
+}
+
+//채널 나가기
+export const useExitChannel = (projectId, channelId) => {
+  const queryClient = useQueryClient();
+  const nav = useNavigate();
+
+  const { mutate, status } = useMutation({
+    mutationFn: () => exitChannel(projectId, channelId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+      nav(`/ProjectHome/Channel/${projectId}`);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    }
+  });
+
+  return { mutate, status };
+};
+
+//채널 명 수정
+export const useUpdateChannel = (projectId, channelId) => {
+  const queryClient = useQueryClient();
+
+  const { mutate, status } = useMutation({
+    mutationFn: (data) => updateChannel(data, projectId, channelId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    },
+    onMutate: (data) => {
+      const prevData = queryClient.getQueryData(["allChannels", projectId]);
+      const updatedChannels = prevData.data.map((channel) =>
+        channel.id === channelId ? { ...channel, name: data.name } : channel
+      );
+      queryClient.setQueryData(["allChannels", projectId], { data: updatedChannels });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    }
+  });
+
+  return { mutate, status };
+};
+
+//채널 삭제
+export const useDeleteChannel = (projectId, channelId) => {
+  const queryClient = useQueryClient();
+
+  const { mutate, status } = useMutation({
+    mutationFn: () => deleteChannel(projectId, channelId),
+    onError: (e) => {
+      console.log(e);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    },
+    onMutate: () => {
+      const prevData = queryClient.getQueryData(["allChannels", projectId]);
+      const updatedChannels = prevData.data.filter(channel => channel.id !== channelId);
+      queryClient.setQueryData(["allChannels", projectId], { data: updatedChannels });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["allChannels", projectId]);
+    }
+  });
+
+  return { mutate, status };
 };

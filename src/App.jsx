@@ -24,6 +24,8 @@ import { NotFound } from './pages/NotFound';
 
 import ProjectGantt from './pages/project/ProjectGantt';
 import ProJectPost from './pages/project/ProjectPost';
+import ProjectChannel from "./pages/project/ProjectChannel";
+import ChannelDetail from "./pages/project/ChannelDetail";
 
 // <<<<<<< style/message
 // import { UpdateProject } from './pages/project/UpdateProject';
@@ -174,7 +176,15 @@ function App() {
               path="Post/:projectId"
               element={<ProtectedRoute element={ProJectPost} />}
             />
+            <Route
+              path="Channel/:projectId"
+              element={<ProtectedRoute element={ProjectChannel} />}
+            />
           </Route>
+          <Route
+              path="ProjectHome/Channel/:projectId/ChannelDetail/:channelId"
+              element={<ProtectedRoute element={ChannelDetail} />}
+          />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>

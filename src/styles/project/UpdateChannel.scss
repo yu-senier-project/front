@@ -1,0 +1,55 @@
+.UpdateChannel {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000000000;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-name: fadeIn;
+    animation-duration: 0.2s;
+}
+
+.UpdateChannel-wrap {
+    width: 600px;
+    position: relative;
+    padding: 10px 25px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 2px 2px 2px 2px grey;
+
+    h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+}
+
+.UpdateChannel-title {
+    width: 100%;
+    margin-bottom: 20px;
+    input {
+        outline: none;
+        font-size: 18px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid grey;
+    }
+}
+
+.grey {
+    color: grey;
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    background-color: #71c9ce;
+    border-radius: 10px;
+  }

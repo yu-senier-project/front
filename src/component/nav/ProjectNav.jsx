@@ -17,6 +17,7 @@ import { FaChartGantt } from "react-icons/fa6";
 import { MdDynamicFeed } from "react-icons/md";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { SlNotebook } from "react-icons/sl";
+import { BiWebcam } from "react-icons/bi";
 
 export const ProjectNav = () => {
   const { projectId, title, managerId } = useProjectStore();
@@ -67,6 +68,13 @@ export const ProjectNav = () => {
             <div className="SmallNav-menu">
               <SlNotebook className="icon" />
               <p>할 일</p>
+            </div>
+          </Link>
+          <Link
+            to={`/ProjectHome/Channel/${projectId}`}>
+            <div className="SmallNav-menu">
+              <BiWebcam className="icon" />
+              <p>화상 회의</p>
             </div>
           </Link>
         </div>

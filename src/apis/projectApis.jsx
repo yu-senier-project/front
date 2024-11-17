@@ -182,3 +182,81 @@ export const updateTodoState = async (taskId, data) => {
 export const getAllTodos = async (projectId) => {
   return apiClient.get(`/api/v1/task/all?projectId=${projectId}`);
 };
+
+
+// 전체 채널 목록 가져오는 api
+export const getAllChannels = async (projectId) => {
+  return apiClient.get(`/api/v1/project/${projectId}/channel`);
+};
+
+// 화상채팅 채널 생성하는 api
+export const createChannel = async (data, projectId) => {
+  try {
+    const response = await apiClient.post(
+      `/api/v1/project/${projectId}/channel`,
+      data
+    );
+    return response;
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+// 화상채팅 채널 퇴장하는 api
+export const exitChannel = async (projectId, channelId) => {
+  try {
+    const response = await apiClient.delete(
+      `/api/v1/project/${projectId}/channel/${channelId}/connection`
+    )
+    return response.data;
+  } catch (error){
+    console.log(error);
+  }
+}
+
+// 화상채팅 세션 생성하는 api
+export const createSession = async (projectId, channelId) => {
+  try {
+    const response = await apiClient.post(
+      `/api/v1/project/${projectId}/channel/${channelId}`
+    )
+    return response.data;
+  } catch (error){
+    console.log(error);
+  }
+}
+
+// 화상채팅 토큰 생성하는 api
+export const generateToken = async (projectId, channelId, sessionId) => {
+  try {
+    const response = await apiClient.post(
+      `/api/v1/project/${projectId}/channel/${channelId}/connection/${sessionId}`
+    )
+    return response.data;
+  } catch (error){
+    console.log(error);
+  }
+}
+
+export const updateChannel = async (data, projectId, channelId) => {
+  try {
+    const response = await apiClient.put(
+      `/api/v1/project/${projectId}/channel/${channelId}`,
+      data
+    )
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const deleteChannel = async (projectId, channelId) => {
+  try {
+    const response = await apiClient.delete(
+      `/api/v1/project/${projectId}/channel/${channelId}`
+    )
+    return response;
+  }catch (error){
+    console.log(error);
+  }
+}
