@@ -3,7 +3,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import apiClient from "../../util/BaseUrl";
 
-const socketUrl = "http://43.203.69.159:80/stomp-chat/info";
+const socketUrl = "https://43.203.69.159/stomp-chat/info";
 const socket = new SockJS(socketUrl);
 const stompClient = Stomp.over(socket);
 
