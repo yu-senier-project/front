@@ -28,7 +28,7 @@ export default function ChannelDetail() {
         console.log(token);
       // OpenVidu 초기화
       const OV = new OpenVidu();
-      const mySession = OV.initSession();
+      const mySession = OV.initSession("wss://cns-openvidu.kr");
 
       mySession.on("streamCreated", (event) => {
         const subscriber = mySession.subscribe(event.stream, undefined);
