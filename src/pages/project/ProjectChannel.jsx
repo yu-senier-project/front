@@ -64,10 +64,7 @@ export default function ProjectChannel() {
     };
   
     const handleChannelClick = async (channelId, channelName) => {
-        const hasDevices = await checkDevices();
-        if (hasDevices) {
-            nav(`/ProjectHome/Channel/${projectId}/ChannelDetail/${channelId}?name=${channelName}`);
-        }
+        nav(`/ProjectHome/Channel/${projectId}/ChannelDetail/${channelId}?name=${channelName}`);
     };
 
     const handleEditButton = (channelId, channelName) => {
